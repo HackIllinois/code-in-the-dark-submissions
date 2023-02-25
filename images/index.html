@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HackIllinois 2023 Code in the Dark Images</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script>
+    const images = [
+      'CAT-Logo-small.png',
+      'home/client1.png',
+      'home/footer.png',
+      'home/icon1.png',
+      'home/icon2.png',
+      'home/icon3.png',
+      'home/image1.png',
+      'home/image2.png',
+      'home/image3.png',
+      'home/profile1.png',
+      'home/profile2.png',
+      'home/SeveralCats.png',
+      'home/slider-bg.png',
+      'home/tour-bg.png',
+      'home/tour-icon1.png',
+      'home/tour-icon2.png',
+      'home/under.png',
+      'home/slider/birds1.png',
+      'home/slider/birds2.png',
+      'home/slider/hill.png',
+      'home/slider/house.png',
+      'home/slider/sun.png',
+    ]
+  </script>
+</head>
+<body>
+  <header>
+    <h2 id="title">HackIllinois 2023 Code in the Dark Images</h2>
+    <h4 id="subtitle">Click on an image to copy its URL!</h4>
+  </header>
+
+  <div id="images-grid"></div>
+
+  <script>
+    images.forEach(imagePath => {
+      const imageName = imagePath.slice(imagePath.lastIndexOf('/') + 1);
+      const absoluteImageUrl = location.href + imagePath
+      const imageElement = `
+        <div class="image-container" onClick="handleImageClick('${imagePath}')">
+          <div class="spacer"></div>
+          <img src="${imagePath}" alt="${imageName}" />
+          <div class="spacer"></div>
+          <p>${imageName}</p>
+        </div>
+      `;
+      document.getElementById('images-grid').innerHTML += imageElement;
+    });
+
+    function handleImageClick(imagePath) {
+      const img = document.querySelector(`img[src="${imagePath}"]`);
+      let src = img.src;
+      if (!src.startsWith('http')) { // the src isn't an absolute URL, so we fallback to constructing it manually
+        // src = location.href + src;
+        let href = location.href;
+        if (href.endsWith('.html') || href.endsWith('/')) {
+          href = href.slice(0, href.lastIndexOf('/'));
+        }
+        src = `${href}/${imagePath}`;
+      }
+
+      copyToClipboard(src, 'Copied URL to clipboard!');
+    }
+
+    function copyToClipboard(textToCopy, message = 'Copied to clipboard!') {
+      const el = document.createElement('textarea');
+      el.value = textToCopy;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+
+      if (message) {
+        Toastify({
+          text: message,
+          duration: 3000,
+          className: 'toast',
+          gravity: 'bottom', // `top` or `bottom`
+          position: 'right', // `left`, `center` or `right`
+          // backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
+        }).showToast();
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    header {
+      text-align: center;
+      margin-top: 40px;
+      width: 100%;
+    }
+    
+    #title {
+      margin-bottom: 0;
+      font-weight: 700;
+      font-size: 1.75rem;
+    }
+
+    #subtitle {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-top: 10px;
+    }
+
+    #images-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-gap: 10px;
+      margin: 0 auto;
+      max-width: 1200px;
+      margin-top: 50px;
+    }
+
+    .image-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      border-radius: 10px;
+      padding: 25px;
+      box-sizing: border-box;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 5px;
+    }
+
+    .image-container .spacer {
+      flex: 1;
+    }
+
+    .image-container:hover {
+      cursor: pointer;
+      background-color: #EEEEEE;
+    }
+  </style>
+</body>
+</html>
