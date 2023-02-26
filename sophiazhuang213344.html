@@ -1,12 +1,259 @@
-<!--Name: Sophia Zhuang--><html>
+<!--Name: Sophia Zhuang--><!DOCTYPE html>
+<html lang="en">
+  
   <head>
-    <title>Code in the Dark</title>
+    <!--
+      This is the page head - it contains info the browser uses to display the page
+      You won't see what's in the head in the page
+      Scroll down to the body element for the page content
+    -->
 
-    <style></style>
+    
   </head>
+  <style>
+  body {font-family: Arial, Helvetica, sans-serif;}
+  * {box-sizing: border-box;}
 
-  <body>
+  input[type=text], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
+  }
 
-    <script></script>
+  input[type=submit] {
+    background-color: #04AA6D;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  input[type=submit]:hover {
+    background-color: #45a049;
+    width: 100%;
+  }
+
+  .container {
+    border-radius: 5px;
+    padding: 20px;
+  }
+  ul {
+  background-color: white;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-align: right;
+  text-color: black;
+}
+    
+    <script>
+var id = null;
+function myMove() {
+  var elem = document.getElementById("myAnimation");   
+  var pos = 0;
+  clearInterval(id);
+  id = setInterval(frame, 10);
+  function frame() {
+    if (pos == 350) {
+      clearInterval(id);
+    } else {
+      pos++; 
+      elem.style.top = pos + 'px'; 
+    }
+  }
+}
+</script>
+
+    
+  ul > li {
+    display: inline-block;
+    /* You can also add some margins here to make it look prettier */
+}
+  * {
+    box-sizing: border-box;
+  }
+  a:link { text-decoration: none; }
+    
+.menu-item:hover > a {
+    -webkit-transform: skewY(10deg);
+    transform: skewY(30deg);
+}
+  /* Create three equal columns that floats next to each other */
+  .column {
+    float: left;
+    width: 25%;
+    padding: 10px;
+    height: 300px; /* Should be removed. Only for demonstration */
+    word-wrap: break-word;
+  }
+
+    /* Create three equal columns that floats next to each other */
+  .home-col {
+    float: left;
+    width: 50%;
+    padding: 10px;
+    height: 300px; /* Should be removed. Only for demonstration */
+    word-wrap: break-word;
+  }
+
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+    word-wrap: break-word;
+  }
+    
+  .button {
+  border: 2px solid green;
+  color: green;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+    background-color: transparent;
+    
+}
+  body {
+  background-image: url("https://codeinthedark.hackillinois.org/submissions-2023/images/home/slider-bg.png");
+  background-repeat: no-repeat;
+}
+    
+.button1 {} /* Green */
+  </style>
+  <body onload = "myMove()" style= "background-color: #ffcc00; font:lato">
+    <!--
+      This is the body of the page
+      Look at the elements and see how they appear in the rendered page on the right
+      Each element is defined using tags, with < and > indicating where each one opens and closes
+      There are elements for sections of the page, images, text, and more
+      The elements include attributes referenced in the CSS for the page style
+    -->
+
+    <!-- The wrapper and content divs set margins and positioning -->
+    <div class="wrapper">
+    <div class="wrapper">
+      <div class="content">
+        <ul>
+        <li><a href="default.asp" style = ""> <img src = "https://codeinthedark.hackillinois.org/submissions-2023/images/CAT-Logo-small.png"></a></li>
+        <li><a href="default.asp" style = "text-align: right">Home</a></li>
+        <li><a href="news.asp" style = "text-align: right ">Pages</a></li>
+        <li><a href="contact.asp" style = "text-align: right">Blog</a></li>
+        <li><a href="about.asp" style = "text-align: right">Products</a></li>
+      </ul>
+
+        
+        <div class="home-col">
+          <h1>
+            Code in the Dark 2023
+          </h1>
+          <p>
+          Coding here and there! Try your best to recreate the responsive site under <b>25 mins...</b> Take a look to the details, eac of them count! Do your best to recreate them and be the CAT ninja <u>n!nj@ cOdEr!</u>
+        </p>
+        <button class="button button1">Go D@RK!!!</button>
+        </div>
+        
+        <div class="home-col">
+          <img  id = "myAnimation" src = "https://codeinthedark.hackillinois.org/submissions-2023/images/home/slider/hill.png">
+<br>
+          
+        </div>
+        
+                                                                                                                       
+        <div>
+          <p>
+            <br>
+          </p>
+          <br>
+        </div>
+        <div style="margin-bottom: 50px;">
+                 <div class="home-col">
+          <h1>
+            Be Creative and Bolt
+          </h1>
+          <p>
+            asldfjalsdfkja;sldkfj;alsdfjl;asdfja;sfd
+          </p>
+        </div>
+        
+        <div class="home-col">
+                  <img src = "https://codeinthedark.hackillinois.org/submissions-2023/images/home/image2.png">
+                <br>
+          
+        </div> 
+        </div>
+
+        <div style="margin-bottom: 50px;">
+                 <div class="home-col">
+                            <img src = "https://codeinthedark.hackillinois.org/submissions-2023/images/home/image2.png">
+                <br>
+  
+        </div>
+        
+        <div class="home-col">
+        <h1>
+            Be Creative and Bolt
+          </h1>
+          <p>
+            asldfjalsdfkja;sldkfj;alsdfjl;asdfja;sfd
+          </p>
+          
+        </div> 
+        </div>
+        
+      </div>
+    </div>
+    <!-- The footer holds our remix button — you can use it for structure or cut it out ✂ -->
+    <footer class="footer">
+      <div class="row">
+        <div class="column">
+          <img src="https://codeinthedark.hackillinois.org/submissions-2023/images/home/footer.png" alt="Flowers in Chania">
+        </div>
+        
+        <div class="column">
+          <h2>Famous Quote</h2>
+          <p >"ksdjfl;askdjfl;ksadjf;lasd"</p>
+          <p style="color: red">-Jhon Johns</p>
+        </div>
+        
+        <div class="column">
+          <h2>Contacts</h2>
+          <p>E-mail: Gcorrales@gmail.com</p>
+          <p>Phone: +1(223 456 7890</p>
+          <p>Fax: +1(123) 456 7891</p>
+          <h2>Address</h2>
+          <p>1223 Long Bright St.</p>
+          <p>East Side</p>
+          <p>East Peoria, IL 61703</p>
+          <p>USA</p>
+        </div>
+        
+        <div class="column" >
+      <div>
+        <h3>Send a Message</h3>
+
+        <div class="container">
+          <form action="/action_page.php">
+            <input type="text" id="fname" name="firstname" placeholder="Name">
+
+            <input type="text" id="fname" name="firstname" placeholder="Question">
+
+            <textarea id="subject" name="subject" placeholder="Your text here" style="height:200px"></textarea>
+
+            <input type="submit" value="SUBMIT">
+          </form>
+        </div>
+      </div>
+        </div>
+      </div>
+      
+
+    </footer>
   </body>
 </html>
