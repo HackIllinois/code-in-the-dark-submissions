@@ -1,0 +1,391 @@
+<!--Name: Andrew L--><html>
+    <head>
+        <title>Code in the Dark</title>
+
+        <style>
+            *,
+            ::before,
+            ::after {
+                box-sizing: border-box;
+                margin: 0;
+            }
+
+            :root {
+                --yellow: rgb(221, 211, 120);
+                --blue: #0e80c1;
+            }
+
+            body {
+                background-color: var(--yellow);
+            }
+
+            header {
+                display: flex;
+
+                background-color: white;
+                padding-block: 5px;
+                height: 50px;
+                width: 100%;
+
+                margin-top: 40px;
+                padding-inline: 30px;
+                background-color: white;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            a {
+                color: gray;
+                margin-right: 10px;
+                text-transform: uppercase;
+                text-decoration: none;
+            }
+
+            a.active {
+                color: var(--blue);
+            }
+
+            .big {
+                display: flex;
+                background: url('https://codeinthedark.hackillinois.org/submissions-2023/images/home/slider-bg.png');
+                background-position: 0 0;
+                background-size: contain;
+            }
+
+            .big > * {
+                flex: 1 1 50%;
+                height: 75vh;
+            }
+
+            .hill {
+                position: relative;
+            }
+
+            .hill > img {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                animation: slide-top 1s ease 1 1s both;
+            }
+
+            button {
+                text-transform: uppercase;
+                appearance: none;
+                border: 1px solid var(--blue);
+                border-radius: 5px;
+                padding: 10px 20px;
+                background-color: transparent;
+                color: var(--blue);
+            }
+
+            .text-main {
+                display: flex;
+                flex-direction: column;
+                align-items: start;
+                gap: 10px;
+                margin-left: 50px;
+                justify-content: center;
+                animation: left-slide 1s ease 1 both;
+            }
+
+            .text-main > p {
+                max-width: 50ch;
+            }
+
+            @keyframes left-slide {
+                from {
+                    opacity: 0;
+                    transform: translateX(-75%);
+                }
+                to {
+                    transform: none;
+                    opacity: 1;
+                }
+            }
+
+            @keyframes slide-top {
+                from {
+                    opacity: 0;
+                    transform: translate(-50%, -125%);
+                }
+                to {
+                    transform: translate(-50%, -50%);
+                    opacity: 1;
+                }
+            }
+
+            .text-main > h1 {
+                color: var(--blue);
+            }
+
+            .house {
+                top: 65% !important;
+            }
+
+            .sun {
+                top: 55% !important;
+                left: 35% !important;
+            }
+
+            .items {
+                width: 100%;
+                display: flex;
+                flex-flow: column nowrap;
+                flex-flow: row;
+                justify-content: space-evenly;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .items > * {
+                display: flex;
+                flex-flow: column nowrap;
+                padding-inline: 20px;
+                text-align: center;
+                margin-bottom: 10px;
+                gap: 20px;
+                max-width: 25ch;
+            }
+
+            section.white {
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                background-color: white;
+            }
+
+            section.yellow-2 {
+                display: flex;
+                flex-flow: row;
+                padding: 50px;
+                gap: 30px;
+            }
+
+            section.yellow-2 > img {
+                flex: 1 1 0;
+            }
+
+            section.yellow-2 > div {
+                flex: 2 1 0;
+            }
+
+            section.yellow-2:nth-child(odd) > img {
+                order: 2;
+            }
+
+            .clients {
+                display: flex;
+                flex-flow: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            form {
+                display: flex;
+                flex-flow: column nowrap;
+                gap: 10px;
+            }
+
+            form > * {
+                width: 100%;
+                max-width: 75ch;
+                border: 0;
+                border-radius: 5px;
+                padding: 10px;
+            }
+
+            .last {
+                width: 100%;
+                background: url('https://codeinthedark.hackillinois.org/submissions-2023/images/home/footer.png');
+                background-position: center bottom;
+                background-size: 100%;
+                padding-top: 300px;
+                padding-inline: 20px;
+                gap: 30px;
+            }
+
+            .last > * {
+                flex: 1 1 0;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <img
+                src="https://codeinthedark.hackillinois.org/submissions-2023/images/CAT-Logo-small.png"
+            />
+
+            <nav>
+                <a href="" class="active"> Home </a>
+                <a href=""> Pages v</a>
+                <a href=""> Blog v</a>
+                <a href=""> Product v</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="big">
+                <div class="text-main">
+                    <h1>Code in the Dark 2023</h1>
+                    <p>
+                        Coding here and there! Try your best to recreate this
+                        responsive site <b>under 25 mins…</b>. Take a look to
+                        the details, <i>each of them count!</i>. Do your best to
+                        recreate them and be the CAT <s>ninja</s>
+                        <u>n!nj@cOdEr!</u>.
+                    </p>
+                    <button>Go d@rk!!!</button>
+                </div>
+                <div class="hill">
+                    <img
+                        src="https://codeinthedark.hackillinois.org/submissions-2023/images/home/slider/hill.png"
+                    />
+                    <img
+                        class="house"
+                        src="https://codeinthedark.hackillinois.org/submissions-2023/images/home/slider/house.png"
+                    />
+                    <img
+                        class="sun"
+                        src="https://codeinthedark.hackillinois.org/submissions-2023/images/home/slider/sun.png"
+                    />
+                </div>
+            </section>
+            <section class="items">
+                <div>
+                    <img
+                        src="https://codeinthedark.hackillinois.org/submissions-2023/images/home/icon1.png"
+                    />
+                    <h2>CAT loves xyz</h2>
+                    <p>
+                        some testvwgfegowi gwiagwap9gi waiug piw hap98g a8q p
+                        h8g
+                    </p>
+                </div>
+                <div>
+                    <img
+                        src="https://codeinthedark.hackillinois.org/submissions-2023/images/home/icon2.png"
+                    />
+                    <h2>CAT loves xyz</h2>
+                    <p>
+                        some testvwgfegowi gwiagwap9gi waiug piw hap98g a8q p
+                        h8g
+                    </p>
+                </div>
+                <div>
+                    <img
+                        src="https://codeinthedark.hackillinois.org/submissions-2023/images/home/icon3.png"
+                    />
+                    <h2>CAT loves xyz</h2>
+                    <p>
+                        some testvwgfegowi gwiagwap9gi waiug piw hap98g a8q p
+                        h8g
+                    </p>
+                </div>
+            </section>
+            <section class="white">
+                <div>
+                    <h2>HackIllinois 2023</h2>
+                    <p>Yoyooyoyoyooyo</p>
+                </div>
+                <button id="hitme">HIT ME!</button>
+                <img
+                    src="https://codeinthedark.hackillinois.org/submissions-2023/images/home/tour-icon2.png"
+                />
+            </section>
+            <section class="yellow-2">
+                <img
+                    src="https://codeinthedark.hackillinois.org/submissions-2023/images/home/image1.png"
+                />
+                <div>
+                    <h3>Show your skills</h3>
+                    <p>
+                        Some contente etghogu wpiguewagawyg 9pewog weageauhwpaw
+                        uapwiug ewaui awhoiaw igehaw
+                    </p>
+                </div>
+            </section>
+            <section class="yellow-2">
+                <img
+                    src="https://codeinthedark.hackillinois.org/submissions-2023/images/home/image2.png"
+                />
+                <div>
+                    <h3>Be creative and bold</h3>
+                    <p>
+                        Some contente etghogu wpiguewagawyg 9pewog weageauhwpaw
+                        uapwiug ewaui awhoiaw igehaw
+                    </p>
+                </div>
+            </section>
+            <section class="yellow-2">
+                <img
+                    src="https://codeinthedark.hackillinois.org/submissions-2023/images/home/image3.png"
+                />
+                <div>
+                    <h3>Gain experience</h3>
+                    <p>
+                        Some contente etghogu wpiguewagawyg 9pewog weageauhwpaw
+                        uapwiug ewaui awhoiaw igehaw
+                    </p>
+                </div>
+            </section>
+            <section class="clients">
+                <img
+                    src="https://codeinthedark.hackillinois.org/submissions-2023/images/home/SeveralCats.png"
+                />
+                <h1>Happy Clients</h1>
+                <p>efiuwhfwgoyfgoywfgyw ogf wgyfgyw ofwgfwg9 fwgwf</p>
+            </section>
+            <section style="display: flex; max-width: 100%" class="last">
+                <div>
+                    <h2>Fwiohuqf ihiu weguf</h2>
+                    <p>
+                        fgoiewhguwuigh hwiog wg whgu ig euh hguwuigh hwiog wg
+                        whgu ig euhhguwuigh hwiog wg whgu ig euh hguwuigh hwiog
+                        wg whgu ig euh hguwuigh hwiog wg whgu ig euh
+                    </p>
+                </div>
+                <div>
+                    <div>
+                        <h2>Contacts</h2>
+                        <p>fwehg ehguiwu g wig ehw gpuwu igwwg</p>
+                    </div>
+                    <div>
+                        <h2>Address</h2>
+                        <p>fwehg ehguiwu g wig ehw gpuwu igwwg</p>
+                    </div>
+                </div>
+                <div>
+                    <form>
+                        <input type="text" placeholder="Name" />
+                        <input type="text" placeholder="Question" />
+
+                        <textarea
+                            placeholder="Your text here"
+                            style="height: 100px"
+                        ></textarea>
+                        <button
+                            style="
+                                letter-spacing: 10px;
+                                text-align: center;
+                                padding: 10px;
+                                width: 100%;
+                                background-color: rgb(3, 155, 157);
+                                color: white;
+                                border-radius: 5px;
+                            "
+                        >
+                            SUBMIT
+                        </button>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+        <script>
+            document.getElementById('hitme').onclick = () =>
+                (document.body.scrollTop = 0);
+        </script>
+    </body>
+</html>
