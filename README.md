@@ -1,1 +1,2 @@
-# code-in-the-dark-submissions-2023
+# code-in-the-dark-submissions
+Repo to host submissions for the HackIllinois Code in the Dark event. Every time someone submits, this repo will be automatically updated through a Netlify function from the editor repo, and an instant preview of their submission will be generated through Netlify auto-deploys.

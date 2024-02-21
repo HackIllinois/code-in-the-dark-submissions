@@ -4,11 +4,16 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HackIllinois 2023 Code in the Dark Images</title>
+  <title>HackIllinois 2024 Code in the Dark Images</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script>
+    // the submissions repo is currently available at https://codeinthedark.hackillinois.org/submissions/
+    // so this file is at /submissions/images, need to update basePath if this changes
+    const basePath = "/submissions/images";
+
+    // relative paths to each available image asset
     const images = [
       'CAT-Logo-small.png',
       'home/client1.png',
@@ -37,7 +42,7 @@
 </head>
 <body>
   <header>
-    <h2 id="title">HackIllinois 2023 Code in the Dark Images</h2>
+    <h2 id="title">HackIllinois 2024 Code in the Dark Images</h2>
     <h4 id="subtitle">Click on an image to copy its URL!</h4>
   </header>
 
@@ -50,7 +55,7 @@
       const imageElement = `
         <div class="image-container" onClick="handleImageClick('${imagePath}')">
           <div class="spacer"></div>
-          <img src="${imagePath}" alt="${imageName}" />
+          <img src="${basePath}/${imagePath}" alt="${imageName}" />
           <div class="spacer"></div>
           <p>${imageName}</p>
         </div>
