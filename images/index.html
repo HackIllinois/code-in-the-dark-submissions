@@ -49,13 +49,13 @@
   <div id="images-grid"></div>
 
   <script>
-    images.forEach(imagePath => {
-      const imageName = imagePath.slice(imagePath.lastIndexOf('/') + 1);
-      const absoluteImageUrl = location.href + imagePath
+    images.forEach(imageRelativePath => {
+      const imageName = imageRelativePath.slice(imageRelativePath.lastIndexOf('/') + 1);
+      const imageAbsolutePath = `${basePath}/${imageRelativePath}`;
       const imageElement = `
-        <div class="image-container" onClick="handleImageClick('${imagePath}')">
+        <div class="image-container" onClick="handleImageClick('${imageAbsolutePath}')">
           <div class="spacer"></div>
-          <img src="${basePath}/${imagePath}" alt="${imageName}" />
+          <img src="${imageAbsolutePath}" alt="${imageName}" />
           <div class="spacer"></div>
           <p>${imageName}</p>
         </div>
@@ -63,19 +63,12 @@
       document.getElementById('images-grid').innerHTML += imageElement;
     });
 
-    function handleImageClick(imagePath) {
-      const img = document.querySelector(`img[src="${imagePath}"]`);
-      let src = img.src;
-      if (!src.startsWith('http')) { // the src isn't an absolute URL, so we fallback to constructing it manually
-        // src = location.href + src;
-        let href = location.href;
-        if (href.endsWith('.html') || href.endsWith('/')) {
-          href = href.slice(0, href.lastIndexOf('/'));
-        }
-        src = `${href}/${imagePath}`;
-      }
-
-      copyToClipboard(src, 'Copied URL to clipboard!');
+    function handleImageClick(imageAbsolutePath) {
+      const img = document.querySelector(`img[src="${imageAbsolutePath}"]`);
+      
+      // Accessing .src will always return the full resolved absolute URL (and not what was provided in the markup)
+      const imageFullUrl = img.src;
+      copyToClipboard(imageFullUrl, 'Copied URL to clipboard!');
     }
 
     function copyToClipboard(textToCopy, message = 'Copied to clipboard!') {
