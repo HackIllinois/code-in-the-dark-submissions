@@ -2,11 +2,181 @@
   <head>
     <title>Code in the Dark</title>
 
-    <style></style>
+    <style>
+      
+    </style>
   </head>
 
-  <body>
+  <style>
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  
+  .navbar {
+    overflow: hidden;
+    background-color: white;
+  }
+  
+  .navbar a {
+    float: right;
+    font-size: 16px;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  .dropdown {
+    float: right;
+    overflow: hidden;
+  }
+  
+  .dropdown .dropbtn {
+    font-size: 16px;  
+    border: none;
+    outline: none;
+    color: black;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+  }
+  
+  .navbar a:hover, .dropdown:hover .dropbtn {
+    /*background-color: red;*/
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+  }
+  
+  .dropdown-content a:hover {
+    background-color: #ddd;
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  .leftcont {
+    width: 45%;
+    float: left;
+    margin-left: 5%;
+    margin-top: 3%;
+  }
+  
+  .rightcont {
+    margin-right: 5%;
+    width: 45%;
+    float: right;
+    margin-top: 3%;
+  }
+  
+  .anim {
+        align: center;
+        animation: image 1s ease-out;
+      }
+      @keyframes image {
+        0%   { 
+        transform: translateY(-200%);
+        }
+      }
+      p {
+        align: center;
+        animation: text 2s ease-out;
+      }
+      h1 {
+        align: center;
+        animation: text 2s ease-out;
+      }
+      @keyframes text {
+        0% { 
+        transform: translateX(-100%);
+        }
 
-    <script></script>
+  </style>
+  </head>
+  <body style="background-color:lightgray;">
+  
+  <div class="navbar">
+    <a href=""><img src="https://codeinthedark.hackillinois.org/submissions/images/CAT-Logo-small.png">
+</a>
+    <div class="dropdown">
+      <button class="dropbtn">Products 
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a href="#">Link 1</a>
+        <a href="#">Link 2</a>
+        <a href="#">Link 3</a>
+      </div>
+    </div> 
+        <div class="dropdown">
+      <button class="dropbtn">Blog
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a href="#">Link 1</a>
+        <a href="#">Link 2</a>
+        <a href="#">Link 3</a>
+      </div>
+    </div> 
+
+        <div class="dropdown">
+      <button class="dropbtn">Pages 
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a href="#">Link 1</a>
+        <a href="#">Link 2</a>
+        <a href="#">Link 3</a>
+      </div>
+    </div> 
+      <a href="#home">Home</a>
+  
+  </div>
+  
+  <div class="leftcont">
+    
+     <h1>Code in the Dark</h1>
+     <p>Coding here and there! Try your best to recreate this responsive site <b>under 25 mins...</b>
+     Take a look to the details, each of them <em>count</em>! Do your best to recreate them to be the CAT.
+     
+     
+     </p>
+    
+    
+  </div>
+  
+    <div class="rightcont">
+    <img class="" src="https://codeinthedark.hackillinois.org/submissions/images/home/slider/truck.png">
+
+    
+    
+  </div>
+
+      </div>
+      <div>
+        <img class="anim" src="https://codeinthedark.hackillinois.org/submissions/images/home/SeveralCats.png">
+      </div>
+      <footer>
+        <img class="anim" src="https://codeinthedark.hackillinois.org/submissions/images/home/footer.png">
+      </footer>  
   </body>
+
 </html>
