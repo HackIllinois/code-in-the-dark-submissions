@@ -1,0 +1,185 @@
+<!--Name: Rudy--><!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Code in the Dark</title>
+  <style>
+    body {
+      width: 100%;
+      background-color: black;
+      color: white;
+
+      margin: 10px, 10px, 10px, 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font: 1.5em 'Courier New', monospace;
+    }
+
+    .out {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 50%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .container div {
+      width: 48%;
+      /* Give a bit of gap between the two divs */
+    }
+
+    .truck {
+      max-width: 100%;
+      height: auto;
+      animation: slideDown 1s forwards;
+      opacity: 0;
+    }
+
+    .cat {
+      max-width: 100%;
+      height: auto;
+      animation: slideUp 1s forwards;
+      opacity: 0;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(50%);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+
+
+    .imgs {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-200%);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    button {
+      background-color: white;
+      color: green;
+      border-radius: 5px;
+      /* no shadows around */
+      box-shadow: none;
+
+    }
+
+    .cols {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .red {
+      background-color: red;
+      width: 50px;
+      height: 50px;
+    }
+
+    .blue {
+      background-color: blue;
+      width: 50px;
+      height: 50px;
+    }
+
+    .yellow {
+      background-color: yellow;
+      width: 50px;
+      height: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="out">
+    <div class="container">
+      <div>
+        <h2>Code in the Dark</h2>
+        <p>‎ﺩ／|、\ </p>
+        <p>(ﾟ､ 。7</p>
+        <p>(︱ ︶ヽ</p>
+        <p>_U U c )ノ</p>
+        <p></p>
+        <button>Go Dark</button>
+      </div>
+      <div class="imgs">
+        <img class="truck" src="https://codeinthedark.hackillinois.org/submissions/images/home/SeveralCats.png"
+          alt="cat" width="500" height="500">
+        <img class="cat" src="https://codeinthedark.hackillinois.org/submissions/images/home/slider/catlogo.png"
+          alt="cat" width="300" height="300">
+
+      </div>
+    </div>
+
+    <div class="cols">
+      <div class="red">
+      </div>
+      <div class="blue">
+      </div>
+      <div class="yellow">
+      </div>
+    </div>
+  </div>
+
+  <!-- We will put our React component inside this div. -->
+  <div id="root"></div>
+
+  <!-- Load React. -->
+  <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+  <script type="text/babel">
+    'use strict';
+    class LikeButton extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = { liked: false };
+      }
+
+      render() {
+        if (this.state.liked) {
+          return 'You liked this.';
+        }
+
+        return <button onClick={() => this.setState({ liked: true })} > Like </button >;
+      }
+    }
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+
+    root.render()
+  </script>
+</body>
+
+</html>
