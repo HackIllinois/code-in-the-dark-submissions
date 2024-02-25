@@ -22,17 +22,19 @@ nt!.</em> Do your best to recreate them and be the <code>CAT</code> <strike>ninj
 <img id="birds_right" src="https://codeinthedark.hackillinois.org/submissions/images/home/slider/birds2.png" alt="supposed to be a "></img>
 </div>
     <script>
-const truck = document.getElementById("truck_front_page")
 
+truck = document.getElementById("truck_front_page");
 truck.style.width = "1000px";
 truck.style.height = "700px";
-document.getElementById("birds_left").style.width = "150px";
-document.getElementById("birds_left").style.height = "150px";
+birds_left = document.getElementById("birds_left");
+birds_left.style.width = "150px";
+birds_right.style.height = "150px";
 document.getElementById("birds_right").style.width = "150px";
 document.getElementById("birds_right").style.height = "150px";
 
 
-positionElement(truck, 50, 150);
+positionElement(truck, 1000, 150);
+positionElement(birds_left, truck.style.left+50, truck.style.right+50);
 
 </script>
   </body>
