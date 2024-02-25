@@ -1,12 +1,102 @@
 <!--Name: Rami--><html>
   <head>
     <title>Code in the Dark</title>
+    <img src="https://codeinthedark.hackillinois.org/submissions/images/CAT-Logo-small.png">
+    <style>
+      
+    #ABC {
+      background-color: blue;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
 
-    <style></style>
+    body{
+      background: lightblue;
+      margin: 0;
+    }
+    
+    head{
+      background: white;
+    }
+    .bgimg {
+      background-image: url(https://codeinthedark.hackillinois.org/submissions/images/home/slider-bg.png);
+    }
+    .split {
+      height: 100%;
+      width: 50%;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      overflow-x: hidden;
+      padding-top: 20px;
+    }
+    
+    /* Control the left side */
+    .left {
+      left: 0;
+    }
+    
+    /* Control the right side */
+    .right {
+      right: 0;
+    }
+    
+    .centered {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: left;
+    }
+    
+    /* Style the image inside the centered container, if needed */
+    .centered img {
+      width: 600px;
+    }
+    .parent {
+      position: relative;
+      top: 0;
+      left: 0;
+    }
+    .image1 {
+      position: relative;
+      top: 250px;
+      left: 200px;
+    }
+    .image2 {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+    }
+
+    </style>
   </head>
 
-  <body>
-
+  <body class="bgimg">
+    <div class="split left">
+      <div class="centered">
+        <h2>Code in the Dark</h2>
+        Coding here and there! Try your best to recreate this responive site <b>under 25 mins...</b> Take a look to the details, <i>each of them count!</i> Do your best to recreate them and be the <span style="background-color: #FFFFFF">CAT</span> <strike>ninja</strike> <a href="url">n!nj@ c0dEr!</a>
+        <br>
+        <br>
+        <br>
+        <br>
+        <button type="button">Go D@RK!</button>
+      </div>
+    </div>
+    <div class="split right">
+      <div>
+        
+        <div class="parent">
+          <img class="image2" src="https://codeinthedark.hackillinois.org/submissions/images/home/slider/truck.png" />
+          <img class="image1" src="https://codeinthedark.hackillinois.org/submissions/images/home/slider/catlogo.png" width="310" height="126" />
+          
+        </div>
+      </div>
+    </div>
     <script></script>
   </body>
 </html>
