@@ -1,0 +1,554 @@
+<!--Name: Rishi Pankhaniya--><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Website</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Styles */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #007bff;
+        }
+
+        .nav-links a.active {
+            color: #007bff;
+            font-weight: 700;
+        }
+
+        /* Hero Section with Join Form and Hill Image */
+        #home {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            position: relative;
+            padding: 0 5%;
+            overflow: hidden;
+        }
+
+        .join-us-container {
+            max-width: 500px;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            z-index: 2;
+            margin-right: 2rem;
+            flex: 1;
+        }
+
+        .join-us-container h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #FDB515;
+        }
+
+        .join-us-container p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .join-btn {
+            display: inline-block;
+            background: #FDB515;
+            color: #333;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .join-btn:hover {
+            background: #e6a313;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .hill-image-container {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100%;
+        }
+
+        .hill-image {
+            max-height: 80vh;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        /* Blog Section */
+        #blog {
+            min-height: 100vh;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 2rem;
+        }
+
+        .blog-content {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .blog-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+
+        .blog-grid {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            margin-top: 2rem;
+        }
+
+        .blog-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            flex: 1;
+            max-width: calc(33.333% - 20px);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .blog-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .blog-card-content {
+            padding: 1.5rem;
+        }
+
+        .blog-card h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        /* Happy Clients Section */
+        .clients-section {
+            padding: 60px 0;
+            background: #f8f9fa;
+            text-align: center;
+        }
+
+        .clients-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+
+        .clients-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .client-icon {
+            max-width: 120px;
+            transition: transform 0.3s;
+        }
+
+        .client-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .client-count {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 40px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .count-item {
+            text-align: center;
+        }
+
+        .count-item h3 {
+            font-size: 2.5rem;
+            color: #007bff;
+            margin-bottom: 0.5rem;
+        }
+
+        .count-item p {
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Footer with Footer Background */
+        #contact {
+            position: relative;
+            background: url('https://codeinthedark.hackillinois.org/submissions/images/home/footer.png') center/cover;
+            color: white;
+            padding: 80px 2rem;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .quote-section {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .quote-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .quote-text {
+            font-style: italic;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .quote-author {
+            font-weight: bold;
+        }
+
+        .contact-section {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 10px;
+            color: #333;
+        }
+
+        .contact-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        .contact-form button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+
+        .contact-form button:hover {
+            background: #0056b3;
+        }
+
+        .footer-bottom {
+            margin-top: 3rem;
+            width: 100%;
+            text-align: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .blog-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .blog-card {
+                max-width: 100%;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                margin-top: 1rem;
+                gap: 1rem;
+            }
+
+            #home {
+                flex-direction: column;
+                padding-top: 80px;
+            }
+
+            .join-us-container {
+                margin: 2rem auto;
+                text-align: center;
+            }
+
+            .hill-image-container {
+                justify-content: center;
+                margin-top: 2rem;
+            }
+
+            .hill-image {
+                max-height: 50vh;
+            }
+
+            .join-us-container h1 {
+                font-size: 2rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .quote-section, .contact-section {
+                width: 100%;
+            }
+
+            .client-count {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">
+            <img src="https://codeinthedark.hackillinois.org/submissions/images/CAT-Logo-small.png" alt="Logo">
+        </div>
+        <div class="nav-links">
+            <a href="#home" class="active">Home</a>
+            <a href="#blog">Blog</a>
+            <a href="#clients">Clients</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Join Form and Hill Image -->
+    <section id="home">
+        <div class="join-us-container">
+            <h1>Join Our Community</h1>
+            <p>Be part of something extraordinary. We're building the future together and looking for passionate individuals to join our journey.</p>
+            <a href="#contact" class="join-btn">Join Us Now</a>
+        </div>
+        <div class="hill-image-container">
+            <img src="https://codeinthedark.hackillinois.org/submissions/images/hill.png" alt="Hill" class="hill-image">
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog">
+        <div class="blog-content">
+            <h2>Latest Blog Posts</h2>
+            <p>Stay updated with our latest news and articles</p>
+            
+            <div class="blog-grid">
+                <div class="blog-card">
+                    <img src="https://codeinthedark.hackillinois.org/submissions/images/home/image1.png" alt="Blog Image 1">
+                    <div class="blog-card-content">
+                        <h3>Innovation in Technology</h3>
+                        <p>Discover the latest trends in technology and how they're shaping our future.</p>
+                    </div>
+                </div>
+                
+                <div class="blog-card">
+                    <img src="https://codeinthedark.hackillinois.org/submissions/images/home/image2.png" alt="Blog Image 2">
+                    <div class="blog-card-content">
+                        <h3>Design Principles</h3>
+                        <p>Learn about the fundamental design principles that create engaging user experiences.</p>
+                    </div>
+                </div>
+                
+                <div class="blog-card">
+                    <img src="https://codeinthedark.hackillinois.org/submissions/images/home/image3.png" alt="Blog Image 3">
+                    <div class="blog-card-content">
+                        <h3>Community Spotlight</h3>
+                        <p>Highlighting the amazing work being done by members of our community.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Happy Clients Section -->
+    <section id="clients" class="clients-section">
+        <h2>Our Happy Clients</h2>
+        <div class="clients-bar">
+            <img src="https://codeinthedark.hackillinois.org/submissions/images/home/client1.png" alt="Client 1" class="client-icon">
+            <img src="https://codeinthedark.hackillinois.org/submissions/images/home/client1.png" alt="Client 2" class="client-icon">
+            <img src="https://codeinthedark.hackillinois.org/submissions/images/home/client1.png" alt="Client 3" class="client-icon">
+            <img src="https://codeinthedark.hackillinois.org/submissions/images/home/client1.png" alt="Client 4" class="client-icon">
+        </div>
+        
+        <div class="client-count">
+            <div class="count-item">
+                <h3>250+</h3>
+                <p>Happy Clients</p>
+            </div>
+            <div class="count-item">
+                <h3>120+</h3>
+                <p>Projects Completed</p>
+            </div>
+            <div class="count-item">
+                <h3>15+</h3>
+                <p>Years of Experience</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer with Footer Background -->
+    <section id="contact">
+        <div class="footer-content">
+            <div class="quote-section">
+                <h3>Inspirational Quote</h3>
+                <p class="quote-text">"The future belongs to those who believe in the beauty of their dreams."</p>
+                <p class="quote-author">- Eleanor Roosevelt</p>
+            </div>
+            
+            <div class="contact-section">
+                <h3>Get In Touch</h3>
+                <form class="contact-form">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea rows="4" placeholder="Your Message" required></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2023 Your Company. All Rights Reserved.</p>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Active section highlighting
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop - 60) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
