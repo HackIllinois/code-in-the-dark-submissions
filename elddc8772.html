@@ -3,8 +3,12 @@
 <head>
     <title>Code in the Dark</title>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <style src="./style.css" />
+    <style src="./style.css"></style>
     <style>
+        body.bg-gray-200.dark {
+            background: black !important;
+            color: white !important;
+        }
     </style>
 </head>
 
@@ -48,7 +52,7 @@ clouds
         <div>
             <h1 class="text-3xl font-bold">Code in the dark</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti dolor dolorem dolores dolorum ducimus ex minima odio rerum voluptates voluptatibus? Assumenda consequatur culpa dignissimos facere facilis molestias nihil saepe voluptatem?</p>
-            <button class="border-blue-500 border-2 rounded-md mt-2 px-5 py-2 text-blue-500">Go dark</button>
+            <button class="border-blue-500 border-2 rounded-md mt-2 px-5 py-2 text-blue-500" onclick="dark()">Go dark</button>
         </div>
         <img src="https://codeinthedark.hackillinois.org/submissions/images/hill.png" alt="hill">
     </div>
@@ -112,8 +116,13 @@ clouds
         </div>
     </div>
 
-    <div>quote, contact info, address, form</div>
+    <div class="flex flex-row ">quote, contact info, address, form</div>
     <img src="https://codeinthedark.hackillinois.org/submissions/images/home/footer.png" alt="footer" class="h-80 w-full">
-<script></script>
+<script>
+    const dark = () => {
+        console.log("hi");
+        document.body.classList.toggle("dark");
+    }
+</script>
 </body>
 </html>
