@@ -402,6 +402,36 @@
             width: 100%;
             max-width: 400px;
         }
+
+        /* Gallery Section Styling */
+        .gallery-section {
+            padding: 60px 0;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+
+        .gallery-section h2 {
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 32px;
+        }
+
+        .gallery-images {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .gallery-images img {
+            height: 80px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-images img:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
@@ -568,6 +598,20 @@
             <div class="cat100-content">
                 <img src="https://codeinthedark.hackillinois.org/submissions/images/CAT100Logo.png" alt="CAT 100 Logo">
                 <p>Caterpillar Inc. is celebrating 100 years of innovation and excellence in the heavy equipment industry. From our humble beginnings to becoming a global leader, we've been committed to building the infrastructure of tomorrow. Our equipment helps customers build a better world through sustainable practices, cutting-edge technology, and unmatched reliability.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Section -->
+    <div class="gallery-section">
+        <div class="container">
+            <h2>Gallery</h2>
+            <div class="gallery-images">
+                <img src="https://codeinthedark.hackillinois.org/submissions/images/home/client1.png" alt="Client 1">
+                <img src="https://codeinthedark.hackillinois.org/submissions/images/home/client1.png" alt="Client 2">
+                <img src="https://codeinthedark.hackillinois.org/submissions/images/home/client1.png" alt="Client 3">
+                <img src="https://codeinthedark.hackillinois.org/submissions/images/home/client1.png" alt="Client 4">
+                <img src="https://codeinthedark.hackillinois.org/submissions/images/home/client1.png" alt="Client 5">
             </div>
         </div>
     </div>
