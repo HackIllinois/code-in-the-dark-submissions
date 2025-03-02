@@ -1,0 +1,369 @@
+<!--Name: Ayush Barik--><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Caterpillar & HackIllinois 2025</title>
+  <style>
+    /* Reset & Basic Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #d3ebf8; /* Light blue background */
+      color: #333;
+    }
+    /* Top Strip */
+    .top-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #f5f5f5;
+      padding: 10px 20px;
+    }
+    .top-strip .logo {
+      height: 40px;
+    }
+    /* Navigation */
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+    nav ul li {
+      position: relative;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      padding: 5px 10px;
+    }
+    nav ul li:hover > ul {
+      display: block;
+    }
+    nav ul li ul {
+      display: none;
+      position: absolute;
+      top: 30px;
+      left: 0;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      list-style: none;
+      min-width: 100px;
+    }
+    nav ul li ul li a {
+      display: block;
+      padding: 5px 10px;
+      white-space: nowrap;
+    }
+    /* Dark Mode Button */
+    .dark-mode-btn {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    /* HackIllinois 2025 Bar */
+    .hackillinois-bar {
+      position: sticky;
+      top: 0;
+      background-color: #222;
+      color: #fff;
+      text-align: center;
+      padding: 5px 0;
+      font-size: 14px;
+      font-weight: bold;
+      z-index: 999;
+    }
+    /* Main Content Section (Two Columns) */
+    .content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    .left-column {
+      flex: 1;
+      padding-right: 20px;
+      color: gray;
+    }
+    .left-column h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    .left-column p {
+      font-size: 1em;
+      line-height: 1.4;
+    }
+    .right-column {
+      flex: 1;
+      position: relative;
+      height: 400px; /* Increased height for larger images */
+    }
+    /* Mountain, Birds, Sun in Right Column */
+    .right-column img {
+      position: absolute;
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    @keyframes popIn {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    .hill {
+      top: 80px;
+      left: 100px; /* shifted right */
+      width: 300px; /* larger mountain */
+      animation: popIn 1s forwards;
+      animation-delay: 0.5s;
+    }
+    .birds {
+      top: 40px;
+      left: 150px; /* shifted right */
+      width: 180px; /* larger "cloud" */
+      animation: popIn 1s forwards;
+      animation-delay: 1s;
+    }
+    .tour {
+      top: 20px;
+      left: 300px; /* shifted right */
+      width: 140px; /* larger sun */
+      animation: popIn 1s forwards;
+      animation-delay: 1.5s;
+    }
+    /* Icons Under Mountain */
+    .icons-under-mountain {
+      padding: 10px 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+    .icons-under-mountain img {
+      max-width: 150px;
+      height: auto;
+    }
+    /* Horizontal White Strip with Tractor */
+    .horizontal-strip {
+      background-color: #fff;
+      padding: 20px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .horizontal-strip img.tractor {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+    }
+    /* Intermediate Scroll Images Section (Pop-In Animation) */
+    .scroll-images {
+      margin: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .scroll-row {
+      display: flex;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(50px);
+      animation: popInRow 1s forwards;
+    }
+    .scroll-row.row1 { justify-content: flex-start; animation-delay: 0.5s; }
+    .scroll-row.row2 { justify-content: flex-end; animation-delay: 1s; }
+    .scroll-row.row3 { justify-content: flex-start; animation-delay: 1.5s; }
+    @keyframes popInRow {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .scroll-row img {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+    }
+    /* Footer Info Section with Light Blue Background */
+    .footer-info {
+      background-color: #d3ebf8;
+      padding: 20px;
+    }
+    /* Centered 200 Years Caterpillar Banner */
+    .year-banner {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .year-banner img {
+      max-width: 200px;
+      height: auto;
+    }
+    /* Two-Column Layout for Contact Info and Email Form */
+    .footer-contact-email {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .footer-contact-email .left-col,
+    .footer-contact-email .right-col {
+      flex: 1;
+      min-width: 300px;
+    }
+    /* Left Column now left-aligned */
+    .footer-contact-email .left-col {
+      text-align: left;
+    }
+    .contact-details p {
+      margin: 5px 0;
+    }
+    /* Profile Image */
+    .profile-img {
+      max-width: 100px;
+      height: auto;
+      margin: 0 0 10px;
+      display: block;
+    }
+    /* Email Section */
+    .email-section label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .email-section input,
+    .email-section textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .email-section button {
+      padding: 8px 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #333;
+      color: #fff;
+    }
+    /* Full-width Footer Banner */
+    .full-width-banner img {
+      width: 100%;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Strip with Logo & Nav -->
+  <div class="top-strip">
+    <img class="logo" src="https://codeinthedark.hackillinois.org/submissions/images/CAT-Logo-small.png" alt="Caterpillar Logo">
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li>
+          <a href="#">Pages</a>
+          <ul>
+            <li><a href="#">Page 1</a></li>
+            <li><a href="#">Page 2</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">Blog</a>
+          <ul>
+            <li><a href="#">Blog 1</a></li>
+            <li><a href="#">Blog 2</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">Products</a>
+          <ul>
+            <li><a href="#">Product 1</a></li>
+            <li><a href="#">Product 2</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <button class="dark-mode-btn">Dark Mode</button>
+  </div>
+  <!-- HackIllinois 2025 Bar -->
+  <div class="hackillinois-bar">
+    HackIllinois 2025
+  </div>
+  <!-- Main Content Section -->
+  <div class="content">
+    <!-- Left Column: "Code in the dark" Text -->
+    <div class="left-column">
+      <h1>Code in the dark</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    </div>
+    <!-- Right Column: Mountain with Birds & Sun -->
+    <div class="right-column">
+      <img class="hill" src="https://codeinthedark.hackillinois.org/submissions/images/hill.png" alt="Mountain">
+      <img class="birds" src="https://codeinthedark.hackillinois.org/submissions/images/home/slider/birds1.png" alt="Birds">
+      <img class="tour" src="https://codeinthedark.hackillinois.org/submissions/images/home/tour-icon1.png" alt="Sun">
+    </div>
+  </div>
+  <!-- Icons Under Mountain -->
+  <div class="icons-under-mountain">
+    <img src="https://codeinthedark.hackillinois.org/submissions/images/home/icon1.png" alt="Icon 1">
+    <img src="https://codeinthedark.hackillinois.org/submissions/images/home/icon2.png" alt="Icon 2">
+    <img src="https://codeinthedark.hackillinois.org/submissions/images/home/icon3.png" alt="Icon 3">
+  </div>
+  <!-- Horizontal White Strip with Tractor -->
+  <div class="horizontal-strip">
+    <img class="tractor" src="https://codeinthedark.hackillinois.org/submissions/images/home/tour-icon2.png" alt="Tractor">
+  </div>
+  <!-- Intermediate Scroll Images Section -->
+  <div class="scroll-images">
+    <div class="scroll-row row1">
+      <img src="https://codeinthedark.hackillinois.org/submissions/images/home/image1.png" alt="Image 1">
+    </div>
+    <div class="scroll-row row2">
+      <img src="https://codeinthedark.hackillinois.org/submissions/images/home/image2.png" alt="Image 2">
+    </div>
+    <div class="scroll-row row3">
+      <img src="https://codeinthedark.hackillinois.org/submissions/images/home/image3.png" alt="Image 3">
+    </div>
+  </div>
+  <!-- Footer Info Section with Light Blue Background -->
+  <div class="footer-info">
+    <!-- Centered 200 Years Caterpillar Banner -->
+    <div class="year-banner">
+      <img src="https://codeinthedark.hackillinois.org/submissions/images/CAT100Logo.png" alt="200 Years Caterpillar">
+    </div>
+    <!-- Two-Column Layout for Contact Details and Email Form -->
+    <div class="footer-contact-email">
+      <div class="left-col">
+        <img class="profile-img" src="https://codeinthedark.hackillinois.org/submissions/images/home/profile1.png" alt="Profile">
+        <div class="contact-details">
+          <p><strong>Contact Us</strong></p>
+          <p>1234 Caterpillar Avenue, Example City, IL 60000</p>
+          <p>“This is the best Caterpillar experience I’ve ever had!”</p>
+          <p>— A Very Happy Client</p>
+        </div>
+      </div>
+      <div class="right-col">
+        <div class="email-section">
+          <form action="mailto:your-email@example.com" method="post" enctype="text/plain">
+            <label for="user-email">Your Email:</label>
+            <input type="email" id="user-email" name="user-email" required>
+            <label for="email-message">Message:</label>
+            <textarea id="email-message" name="message" rows="4" required></textarea>
+            <button type="submit">Send</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Full-width Footer Banner -->
+  <div class="full-width-banner">
+    <img src="https://codeinthedark.hackillinois.org/submissions/images/home/footer.png" alt="Footer Banner">
+  </div>
+</body>
+</html>
+
