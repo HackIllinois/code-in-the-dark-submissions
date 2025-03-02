@@ -179,6 +179,7 @@
             max-width: 100%;
             height: auto;
             object-fit: contain;
+            animation: dropIn 1.5s ease-out forwards;
         }
         
         /* Remove the placeholder styles since we're not using it anymore */
@@ -442,6 +443,51 @@
         .header-content {
             display: none;
         }
+        
+        /* Square columns section */
+        .square-columns-section {
+            display: flex;
+            justify-content: space-around;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+        
+        .square-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+            flex: 1;
+            min-width: 200px;
+            max-width: 300px;
+        }
+        
+        .square-image {
+            width: 200px;
+            height: 200px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        
+        .square-column h3 {
+            color: #005a8c;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        
+        @keyframes dropIn {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -504,6 +550,24 @@
             <div class="hero-image">
                 <!-- Mountain image with correct path -->
                 <img src="hill.png" alt="Geometric mountain" class="mountain-image">
+            </div>
+        </section>
+
+        <!-- Three square columns section -->
+        <section class="square-columns-section">
+            <div class="square-column">
+                <img src="icon1.png" alt="CAT loves geeks" class="square-image">
+                <h3>CAT loves geeks</h3>
+            </div>
+            
+            <div class="square-column">
+                <img src="icon2.png" alt="CAT loves CS" class="square-image">
+                <h3>CAT loves CS</h3>
+            </div>
+            
+            <div class="square-column">
+                <img src="icon3.png" alt="HackIllinois 2025" class="square-image">
+                <h3>HackIllinois 2025</h3>
             </div>
         </section>
 
