@@ -1,0 +1,591 @@
+<!--Name: Lev Sosani--><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caterpillar | Code in the Dark</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #bcbcbc;
+        }
+
+        header {
+            background-color: #fff;
+            padding: 15px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .container {
+            
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-weight: bold;
+            color: #333;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        /* Dropdown styling */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+            z-index: 10;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .dropdown-content a {
+            color: #666;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-transform: none;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .hero {
+            display: flex;
+            padding: 50px 0;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-content {
+            flex: 1;
+            padding-right: 50px;
+            max-width: 600px;
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: right;
+            position: relative;
+            height: 400px;
+        }
+
+        /* Stacked images styling */
+        .stacked-image {
+            position: absolute;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            right: 0;
+        }
+
+        .stacked-image.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #img1 {
+            z-index: 1; /* Mountain in back */
+            top: 0;
+        }
+
+        #img2 {
+            z-index: 2; /* Sun in middle */
+            top: 50px;
+            right: 150px; /* Moved further to the left */
+        }
+
+        #img3 {
+            z-index: 3; /* Birds in front */
+            top: 20px;
+            right: 100px; /* Positioned to overlap both images */
+        }
+
+        h1 {
+            color: #333;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #f0f0f0;
+            color: #333;
+            text-decoration: none;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .search-icon::before {
+            content: "🔍";
+        }
+
+        .feature p {
+            font-size: 14px;
+        }
+
+        /* Staggered section styling */
+        .staggered-section {
+            padding: 50px 0;
+        }
+
+        .staggered-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 50px;
+        }
+
+        .staggered-row:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .staggered-image {
+            flex: 1;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .staggered-image img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .staggered-content {
+            flex: 1;
+            padding: 0 20px;
+        }
+
+        .staggered-content h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .staggered-content p {
+            margin-bottom: 20px;
+        }
+
+        /* Features section styling */
+        .features {
+            display: flex;
+            justify-content: space-between;
+            padding: 50px 0;
+            margin-top: 25vh; /* Full viewport height margin */
+        }
+
+        .feature {
+            flex: 1;
+            margin: 0 15px;
+            text-align: center;
+        }
+
+        .feature img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+        }
+
+        .feature h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .feature p {
+            font-size: 14px;
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 40px 0;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            flex: 1;
+        }
+
+        .footer-logo img {
+            /* max-height: 80px; */
+            width: auto;
+            height: auto;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            margin-top: 20px;
+            margin-left: 20px;
+            scale: 0.5;
+            
+
+        }
+
+        .footer-middle {
+            flex: 1;
+            padding: 0 20px;
+        }
+
+        .footer-middle h3, .footer-right h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .address {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .footer-right {
+            flex: 1;
+        }
+
+        .contact-form input, 
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .contact-form button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .contact-form button:hover {
+            background-color: #45a049;
+        }
+
+        /* CAT100 Logo Section Styling */
+        .cat100-section {
+            padding: 80px 0;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+
+        .cat100-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cat100-content img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+        }
+
+        .cat100-content p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        /* White bar styling */
+        .white-bar {
+            background-color: #fff;
+            padding: 40px 0;
+            margin: 50px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .happy-client-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .happy-client-image img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        .happy-client-text h3 {
+            color: #333;
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+        }
+
+        .col-md-4 {
+            width: 100%;
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="https://codeinthedark.hackillinois.org/submissions/images/CAT-Logo-small.png" alt="Caterpillar Logo">
+                </div>
+                <div class="nav-links">
+                    <div class="dropdown">
+                        <a href="#">Home</a>
+                        <div class="dropdown-content">
+                            <a href="#">Homepage 1</a>
+                            <a href="#">Homepage 2</a>
+                            <a href="#">Homepage 3</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#">Pages</a>
+                        <div class="dropdown-content">
+                            <a href="#">About Us</a>
+                            <a href="#">Services</a>
+                            <a href="#">Portfolio</a>
+                            <a href="#">Team</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#">Blog</a>
+                        <div class="dropdown-content">
+                            <a href="#">Blog Grid</a>
+                            <a href="#">Blog List</a>
+                            <a href="#">Blog Single</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#">Products</a>
+                        <div class="dropdown-content">
+                            <a href="#">Product 1</a>
+                            <a href="#">Product 2</a>
+                            <a href="#">Product 3</a>
+                            <a href="#">Product 4</a>
+                        </div>
+                    </div>
+                    <a href="#"><i class="search-icon"></i></a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Code in the Dark</h1>
+                <p>Code a webpage in 15 minutes. You'll have to recreate this homepage in under 25 mins... Take a look at the final result before you start! Our your best to recreate this website in the dark.</p>
+                <a href="#" class="btn">Go D@RK!</a>
+            </div>
+            <div class="hero-image">
+                <img id="img1" class="stacked-image" src="https://codeinthedark.hackillinois.org/submissions/images/hill.png" alt="Hill landscape">
+                <img id="img2" class="stacked-image" src="https://codeinthedark.hackillinois.org/submissions/images/home/slider/sun.png" alt="Tour icon">
+                <img id="img3" class="stacked-image" src="https://codeinthedark.hackillinois.org/submissions/images/home/slider/birds2.png" alt="Birds">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('.stacked-image');
+            
+            // Animate images one after another
+            setTimeout(() => {
+                images[0].classList.add('active');
+                
+                setTimeout(() => {
+                    images[1].classList.add('active');
+                    
+                    setTimeout(() => {
+                        images[2].classList.add('active');
+                    }, 500);
+                }, 500);
+            }, 500);
+        });
+    </script>
+
+    <!-- New Features Section -->
+    <div class="container">
+        <div class="features">
+            <div class="feature">
+                <img src="https://codeinthedark.hackillinois.org/submissions/images/home/icon1.png" alt="Feature 1">
+                <h3>Feature One</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+            <div class="feature">
+                <img src="https://codeinthedark.hackillinois.org/submissions/images/home/icon2.png" alt="Feature 2">
+                <h3>Feature Two</h3>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+            <div class="feature">
+                <img src="https://codeinthedark.hackillinois.org/submissions/images/home/icon3.png" alt="Feature 3">
+                <h3>Feature Three</h3>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- End of 3 images in a row section -->
+
+    <!-- White bar separator -->
+    <div class="white-bar">
+        <div class="container">
+            <div class="happy-client-content">
+                <div class="happy-client-image">
+                    <img src="https://codeinthedark.hackillinois.org/submissions/images/home/tour-icon2.png" alt="Happy Clients">
+                </div>
+                <div class="happy-client-text">
+                    <h3>Happy Clients!</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Start of staggered section with Happy Clients -->
+    <div class="staggered-section">
+        <!-- Row 1: Image left, text right -->
+        <div class="staggered-row">
+            <div class="staggered-image">
+                <img src="https://codeinthedark.hackillinois.org/submissions/images/home/image1.png" alt="Staggered Image 1">
+            </div>
+            <div class="staggered-content">
+                <h2>First Staggered Section</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor.</p>
+                <a href="#" class="btn">Learn More</a>
+            </div>
+        </div>
+        
+        <!-- Row 2: Text left, image right (flex-direction reversed in CSS) -->
+        <div class="staggered-row">
+            <div class="staggered-image">
+                <img src="https://codeinthedark.hackillinois.org/submissions/images/home/image2.png" alt="Staggered Image 2">
+            </div>
+            <div class="staggered-content">
+                <h2>Second Staggered Section</h2>
+                <p>Proin quis tortor orci. Etiam at risus et justo dignissim congue. Donec congue lacinia dui, a porttitor lectus condimentum laoreet. Nunc eu ullamcorper orci.</p>
+                <a href="#" class="btn">Learn More</a>
+            </div>
+        </div>
+        
+        <!-- Row 3: Image left, text right -->
+        <div class="staggered-row">
+            <div class="staggered-image">
+                <img src="https://codeinthedark.hackillinois.org/submissions/images/home/image3.png" alt="Staggered Image 3">
+            </div>
+            <div class="staggered-content">
+                <h2>Third Staggered Section</h2>
+                <p>Quisque eget odio ac lectus vestibulum faucibus eget in metus. In pellentesque faucibus vestibulum. Nulla at nulla justo, eget luctus tortor. Nulla facilisi.</p>
+                <a href="#" class="btn">Learn More</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- CAT100 Logo Section -->
+    <div class="cat100-section">
+        <div class="container">
+            <div class="cat100-content">
+                <img src="https://codeinthedark.hackillinois.org/submissions/images/CAT100Logo.png" alt="CAT 100 Logo">
+                <p>Caterpillar Inc. is celebrating 100 years of innovation and excellence in the heavy equipment industry. From our humble beginnings to becoming a global leader, we've been committed to building the infrastructure of tomorrow. Our equipment helps customers build a better world through sustainable practices, cutting-edge technology, and unmatched reliability.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="https://codeinthedark.hackillinois.org/submissions/images/home/footer.png" alt="HackIllinois Footer Logo">
+            </div>
+            
+            <div class="footer-middle">
+                <h3>About Us</h3>
+                <p class="address">123 Main Street<br>Urbana, IL 61801<br>United States</p>
+                <p>Email: info@example.com</p>
+                <p>Phone: (217) 555-1234</p>
+            </div>
+            
+            <div class="footer-right">
+                <h3>Send a Message</h3>
+                <form class="contact-form">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea placeholder="Your Message" rows="4" required></textarea>
+                    <button type="submit">Send</button>
+                </form>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('.stacked-image');
+            
+            // Animate images one after another
+            setTimeout(() => {
+                images[0].classList.add('active');
+                
+                setTimeout(() => {
+                    images[1].classList.add('active');
+                    
+                    setTimeout(() => {
+                        images[2].classList.add('active');
+                    }, 500);
+                }, 500);
+            }, 500);
+        });
+    </script>
+</body>
+</html>
