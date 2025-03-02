@@ -456,8 +456,216 @@
         <img src="https://codeinthedark.hackillinois.org/submissions/images/home/image1.png" alt="Client 5">
         <img src="https://codeinthedark.hackillinois.org/submissions/images/home/image1.png" alt="Client 6">
     </div>
+    
+    <style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Arial', sans-serif;
+}
+body {
+background-color: #ffffff; /* Changed to white background */
+padding: 20px;
+position: relative;
+min-height: 100vh;
+}
+.content-row {
+display: flex;
+flex-wrap: wrap;
+max-width: 1200px;
+margin: 0 auto 50px auto;
+padding: 20px;
+background-color: #ffffff; /* Changed to white background */
+border-radius: 8px;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.section {
+padding: 15px;
+margin: 10px;
+background-color: #ffffff; /* Changed to white background */
+border-radius: 8px;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+}
+.graphic-area {
+flex: 1;
+min-width: 200px;
+height: 300px;
+display: flex;
+justify-content: center;
+align-items: center;
+overflow: hidden;
+background-color: #ffffff; /* Changed to white background */
+}
+.graphic-area img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+.quote-area {
+flex: 1;
+min-width: 250px;
+border: none;
+}
+.contact-area {
+flex: 1;
+min-width: 250px;
+border: none;
+}
+.message-area {
+flex: 1.5;
+min-width: 300px;
+border: none;
+}
+h2 {
+margin-bottom: 15px;
+color: #1a5276; /* Changed to dark blue for better contrast on white */
+border-bottom: 2px solid #1a5276; /* Darker blue for border */
+padding-bottom: 8px;
+}
+.quote-content, .contact-content {
+min-height: 150px;
+background-color: transparent; /* Removed background color */
+padding: 15px;
+border-radius: 0; /* Removed border radius */
+margin-top: 10px;
+color: #333; /* Changed to dark text for better readability on white */
+border: none; /* Removed border */
+}
+form {
+display: flex;
+flex-direction: column;
+border: none;
+}
+label {
+margin-top: 10px;
+margin-bottom: 5px;
+font-weight: bold;
+color: #1a5276; /* Changed to dark blue for better contrast on white */
+}
+input, textarea {
+padding: 10px;
+border: 1px solid #1a5276; /* Darker blue border */
+border-radius: 4px;
+margin-bottom: 10px;
+background-color: #ffffff; /* Changed to white background */
+color: #333; /* Changed to dark text */
+}
+textarea {
+min-height: 100px;
+resize: vertical;
+}
+button {
+background-color: #1a5276; /* Darker blue for button */
+color: white;
+border: none;
+padding: 12px;
+border-radius: 4px;
+cursor: pointer;
+margin-top: 10px;
+font-weight: bold;
+transition: background-color 0.3s;
+}
+button:hover {
+background-color: #154360; /* Even darker blue on hover */
+}
+footer {
+position: fixed;
+left: 0;
+bottom: 0;
+width: 100%; /* Full width */
+height: 100%;
+z-index: -1; /* Behind content */
+background-color: #ffffff; /* Changed to white background */
+overflow: hidden; /* Prevent content from being cut off */
+}
+.footer-background {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-image: url('https://codeinthedark.hackillinois.org/submissions/images/home/footer.png');
+background-size: cover;
+background-position: center;
+opacity: 0.3; /* Reduced opacity for better visibility on white */
+background-color: #ffffff; /* Changed to white background */
+min-width: 100%; /* Ensure full width coverage */
+}
+.footer-content {
+position: absolute;
+bottom: 20px;
+left: 0; /* Ensure alignment */
+width: 100%;
+color: #1a5276; /* Changed to dark blue for better contrast on white */
+text-align: center;
+padding: 0 20px;
+}
+@media (max-width: 768px) {
+.content-row {
+flex-direction: column;
+}
+.section {
+width: 100%;
+}
+footer {
+position: fixed; /* Fixed to ensure visibility */
+width: 100%;
+height: 100%;
+margin-top: 0;
+z-index: -1; /* Keep behind content */
+background-color: #ffffff; /* Changed to white background */
+left: 0; /* Ensure no cutoff */
+right: 0; /* Ensure full width */
+}
+}
+</style>
+</head>
+<body>
+<div class="content-row">
+<!-- Graphic Area -->
+<div class="section graphic-area">
+<img src="https://codeinthedark.hackillinois.org/submissions/images/home/footer.png" alt="Footer Image">
+</div>
+<!-- Quote Area -->
+<div class="section quote-area">
+<h2>Famous Quote</h2>
+<div class="quote-content">
+Place your quote text here. This area can be expanded to fit longer quotes as needed.
+</div>
+</div>
+<!-- Contact Area -->
+<div class="section contact-area">
+<h2>Contact</h2>
+<div class="contact-content">
+Contact information goes here. You can add phone numbers, email addresses, or other contact details.
+</div>
+</div>
+<!-- Message Form Area -->
+<div class="section message-area">
+<h2>Send a Message</h2>
+<form>
+<label for="name">Name</label>
+<input type="text" id="name" name="name" placeholder="Your name">
+<label for="question">Question</label>
+<input type="text" id="question" name="question" placeholder="Your question">
+<label for="message">Your text here</label>
+<textarea id="message" name="message" placeholder="Type your message here..."></textarea>
+<button type="submit">Send Message</button>
+</form>
+</div>
+</div>
+
+<!-- Footer with background image -->
+<footer>
+<div class="footer-background"></div>
+<div class="footer-content">
+<p>&copy; 2023 Your Company. All rights reserved.</p>
+</div>
+</footer>
 
     <footer>
+  
         <div class="footer-background"></div>
         <div class="footer-content">
             <p>&copy; 2023 HackIllinois. All rights reserved.</p>
