@@ -1,0 +1,662 @@
+<!--Name: Alan Wang--><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CATERPILLAR | Future of Heavy Industry</title>
+    <style>
+        /* --- RESET & VARIABLES --- */
+        :root {
+            --cat-yellow: #FFCC00;
+            --cat-black: #121212;
+            --cat-dark-gray: #1E1E1E;
+            --cat-light-gray: #B3B3B3;
+            --glass-bg: rgba(30, 30, 30, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: var(--cat-black);
+            color: white;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        /* --- BACKGROUND FX --- */
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 15% 50%, rgba(255, 204, 0, 0.08) 0%, transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(255, 204, 0, 0.05) 0%, transparent 25%),
+                linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
+        }
+        .bg-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+        /* --- HEADER --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .logo {
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: white;
+            text-transform: uppercase;
+            cursor: pointer;
+            position: relative;
+        }
+        .logo span {
+            color: var(--cat-yellow);
+        }
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--cat-yellow);
+            transition: var(--transition);
+        }
+        .logo:hover::after {
+            width: 100%;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        nav a {
+            color: var(--cat-light-gray);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            position: relative;
+            padding: 5px 0;
+        }
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--cat-yellow);
+            transition: var(--transition);
+        }
+        nav a:hover {
+            color: var(--cat-yellow);
+        }
+        nav a:hover::before {
+            width: 100%;
+        }
+        /* --- HERO SECTION --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 90px 20px 80px;
+            position: relative;
+        }
+        .hero-content {
+            max-width: 800px;
+            z-index: 10;
+            position: relative;
+        }
+        h1 {
+            font-size: 5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #ffffff, #b3b3b3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards 0.2s;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--cat-light-gray);
+            margin-bottom: 40px;
+            max-width: 680px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards 0.4s;
+        }
+        .cta-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background-color: var(--cat-yellow);
+            color: var(--cat-black);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            opacity: 0;
+            animation: fadeUp 1s ease forwards 0.6s;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+        .cta-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 204, 0, 0.4);
+        }
+        .cta-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        /* --- STATS GRID --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 50px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .stat-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 204, 0, 0.1), transparent);
+            transition: var(--transition);
+        }
+        .stat-card:hover::before {
+            left: 100%;
+        }
+        .stat-card:hover {
+            border-color: var(--cat-yellow);
+            transform: translateY(-5px);
+        }
+        .stat-card h3 {
+            font-size: 3rem;
+            color: var(--cat-yellow);
+            margin-bottom: 10px;
+        }
+        .stat-card p {
+            color: var(--cat-light-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+        }
+        /* --- AI WIDGET --- */
+        .ai-widget-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        .ai-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--cat-yellow);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .ai-toggle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+        .ai-toggle:hover {
+            transform: scale(1.1);
+        }
+        .ai-toggle:hover::before {
+            width: 120px;
+            height: 120px;
+        }
+        .ai-icon {
+            width: 30px;
+            height: 30px;
+            fill: var(--cat-black);
+            position: relative;
+            z-index: 1;
+        }
+        .chat-window {
+            width: 350px;
+            height: 500px;
+            background: rgba(18, 18, 18, 0.95);
+            border: 1px solid var(--cat-yellow);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transform: scale(0);
+            transform-origin: bottom right;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .chat-window.active {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .chat-header {
+            background: var(--cat-yellow);
+            color: var(--cat-black);
+            padding: 15px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #00ff00;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff00;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        .message.bot {
+            background: rgba(255, 255, 255, 0.1);
+            align-self: flex-start;
+            border-left: 2px solid var(--cat-yellow);
+        }
+        .message.user {
+            background: var(--cat-yellow);
+            color: var(--cat-black);
+            align-self: flex-end;
+            font-weight: 600;
+        }
+        .chat-input-area {
+            padding: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: white;
+            outline: none;
+            font-size: 0.9rem;
+        }
+        .send-btn {
+            background: transparent;
+            border: none;
+            color: var(--cat-yellow);
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .send-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 204, 0, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+        .send-btn:hover::before {
+            width: 100px;
+            height: 100px;
+        }
+        .send-btn:hover {
+            color: white;
+        }
+        /* --- CLICK ANIMATION EFFECT --- */
+        .click-ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple 0.6s ease-out;
+            pointer-events: none;
+        }
+        .click-flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 204, 0, 0.3);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .click-flash.active {
+            animation: flash 0.3s ease-out;
+        }
+        /* Click animation for buttons/links */
+        .clickable {
+            position: relative;
+            overflow: hidden;
+        }
+        .clickable:active {
+            transform: scale(0.95);
+        }
+        /* --- ANIMATIONS --- */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        @keyframes flash {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; }
+            nav { display: none; }
+            .chat-window { width: 300px; height: 400px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-mesh">
+        <div class="bg-grid"></div>
+    </div>
+    <header>
+        <div class="logo clickable" data-clickable>CATERPILLAR<span>.</span></div>
+        <nav>
+            <ul>
+                <li><a href="#" class="clickable" data-clickable>EQUIPMENT</a></li>
+                <li><a href="#" class="clickable" data-clickable>TECHNOLOGY</a></li>
+                <li><a href="#" class="clickable" data-clickable>SUSTAINABILITY</a></li>
+                <li><a href="#" class="clickable" data-clickable>SUPPORT</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Building the<br>World of Tomorrow</h1>
+                <p>Autonomous heavy machinery powered by next-gen AI. Precision engineering for the modern industrial age.</p>
+                <button class="cta-btn clickable" data-clickable>Explore Fleet</button>
+            </div>
+        </section>
+        <section class="stats-grid">
+            <div class="stat-card clickable" data-clickable>
+                <h3>20%</h3>
+                <p>Fuel Efficiency Increase</p>
+            </div>
+            <div class="stat-card clickable" data-clickable>
+                <h3>Zero</h3>
+                <p>Carbon Emissions (Electric)</p>
+            </div>
+            <div class="stat-card clickable" data-clickable>
+                <h3>24/7</h3>
+                <p>Autonomous Operation</p>
+            </div>
+        </section>
+    </main>
+    <!-- AI Widget -->
+    <div class="ai-widget-container">
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <div class="status-dot"></div>
+                <span>CAT ASSIST AI</span>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    Hello. I am the CAT AI Assistant. How can I help you optimize your fleet today?
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Ask about equipment specs...">
+                <button class="send-btn clickable" id="sendBtn" data-clickable>Send</button>
+            </div>
+        </div>
+        <button class="ai-toggle clickable" id="aiToggle" data-clickable>
+            <div class="click-flash"></div>
+            <svg class="ai-icon" viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+            </svg>
+        </button>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // === CLICK ANIMATION SYSTEM ===
+            const clickables = document.querySelectorAll('[data-clickable]');
+            
+            clickables.forEach(el => {
+                el.addEventListener('click', function(e) {
+                    // Create ripple effect
+                    const ripple = document.createElement('span');
+                    ripple.classList.add('click-ripple');
+                    
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+                    ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+                    
+                    this.appendChild(ripple);
+                    
+                    // Remove ripple after animation
+                    setTimeout(() => ripple.remove(), 600);
+                    
+                    // Flash effect for buttons with click-flash class
+                    const flash = this.querySelector('.click-flash');
+                    if (flash) {
+                        flash.classList.add('active');
+                        setTimeout(() => flash.classList.remove('active'), 300);
+                    }
+                });
+            });
+            // === AI WIDGET FUNCTIONALITY ===
+            const aiToggle = document.getElementById('aiToggle');
+            const chatWindow = document.getElementById('chatWindow');
+            const chatInput = document.getElementById('chatInput');
+            const sendBtn = document.getElementById('sendBtn');
+            const chatMessages = document.getElementById('chatMessages');
+            let isOpen = false;
+            aiToggle.addEventListener('click', () => {
+                isOpen = !isOpen;
+                if (isOpen) {
+                    chatWindow.classList.add('active');
+                    setTimeout(() => chatInput.focus(), 300);
+                } else {
+                    chatWindow.classList.remove('active');
+                }
+            });
+            const sendMessage = () => {
+                const text = chatInput.value.trim();
+                if (!text) return;
+                appendMessage(text, 'user');
+                chatInput.value = '';
+                setTimeout(() => {
+                    const response = generateMockResponse(text);
+                    appendMessage(response, 'bot');
+                }, 1000);
+            };
+            const appendMessage = (text, sender) => {
+                const msgDiv = document.createElement('div');
+                msgDiv.classList.add('message', sender);
+                msgDiv.textContent = text;
+                chatMessages.appendChild(msgDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            };
+            const generateMockResponse = (input) => {
+                const lowerInput = input.toLowerCase();
+                if (lowerInput.includes('price') || lowerInput.includes('cost')) {
+                    return "Contacting regional dealer for pricing on heavy equipment...";
+                } else if (lowerInput.includes('spec') || lowerInput.includes('engine')) {
+                    return "Analyzing engine specifications: Cat® C13 ACERT™. 410-525 hp. High torque rise.";
+                } else if (lowerInput.includes('fuel') || lowerInput.includes('efficiency')) {
+                    return "Our new ADEM™ A5 Electronic Control Module improves fuel efficiency by up to 15%.";
+                } else {
+                    return "Searching heavy equipment database for '" + input + "'. Please hold.";
+                }
+            };
+            sendBtn.addEventListener('click', sendMessage);
+            
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            // === NAV LINK FUNCTIONALITY ===
+            document.querySelectorAll('nav a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const text = e.target.textContent;
+                    console.log(`Navigating to: ${text}`);
+                    
+                    // Visual feedback
+                    const originalText = e.target.textContent;
+                    e.target.textContent = 'LOADING...';
+                    setTimeout(() => {
+                        e.target.textContent = originalText;
+                    }, 1500);
+                });
+            });
+            // === CTA BUTTON FUNCTIONALITY ===
+            document.querySelector('.cta-btn').addEventListener('click', () => {
+                const btn = document.querySelector('.cta-btn');
+                const originalText = btn.textContent;
+                btn.textContent = 'LOADING FLEET...';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    // Scroll to stats
+                    document.querySelector('.stats-grid').scrollIntoView({ 
+                        behavior: 'smooth' 
+                    });
+                }, 1000);
+            });
+            // === STAT CARDS FUNCTIONALITY ===
+            document.querySelectorAll('.stat-card').forEach((card, index) => {
+                card.addEventListener('click', () => {
+                    const h3 = card.querySelector('h3');
+                    const originalText = h3.textContent;
+                    h3.textContent = '...';
+                    setTimeout(() => {
+                        h3.textContent = originalText;
+                    }, 800);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
