@@ -1,6 +1,5 @@
 <!--Name: Juhi Khare and Karan Salot--><!DOCTYPE html>
 <html lang="en" class="dark">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,28 +30,18 @@
         }
     </script>
 
-    <!-- Google Fonts (Modern Typography) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
 
-    <!-- Custom Styles -->
     <style>
 /* Base Styles & Utility overrides not covered by Tailwind */
-
 :root {
     --theme-primary: #FFD100;
     --theme-bg: #000000;
     --theme-text: #f3f4f6;
     --theme-accent: #333333;
-    
-    /* Variables for smooth transitions during theme shifts */
     --transition-speed: 0.5s;
 }
 
-/* Cyberpunk Theme Overrides (Applied via JS) */
 html.theme-cyberpunk {
     --theme-primary: #00F0FF;
     --theme-bg: #050510;
@@ -65,52 +54,21 @@ body {
     transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
 }
 
-/* Custom Scrollbar for Agent/Terminal feel */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-::-webkit-scrollbar-track {
-    background: rgba(0,0,0,0.1); 
-}
-::-webkit-scrollbar-thumb {
-    background: var(--theme-primary); 
-    border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: var(--theme-accent); 
-}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+::-webkit-scrollbar-thumb { background: var(--theme-primary); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--theme-accent); }
 
-/* Specific animations */
-.animate-spin-slow {
-    animation: spin 4s linear infinite;
-}
-
-@keyframes scanline {
-    0% {
-        transform: translateY(-100%);
-    }
-    100% {
-        transform: translateY(100vh);
-    }
-}
+.animate-spin-slow { animation: spin 4s linear infinite; }
 
 .scanline-effect::after {
     content: " ";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    display: block; position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
     background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    z-index: 2;
-    background-size: 100% 2px, 3px 100%;
-    pointer-events: none;
-    opacity: 0.3;
+    z-index: 2; background-size: 100% 2px, 3px 100%; pointer-events: none; opacity: 0.3;
 }
 
-/* Theme shift specific overrides */
 html.theme-cyberpunk .bg-cat-yellow { background-color: var(--theme-primary) !important; color: black !important;}
 html.theme-cyberpunk .text-cat-yellow { color: var(--theme-primary) !important; }
 html.theme-cyberpunk .border-cat-yellow { border-color: var(--theme-primary) !important; }
@@ -118,10 +76,9 @@ html.theme-cyberpunk .selection\:bg-cat-yellow::selection { background-color: va
 html.theme-cyberpunk .shadow-cat-yellow { box-shadow: 0 0 10px var(--theme-primary); }
     </style>
 
-    <!-- SEO and Agent Meta -->
-    <meta name="description"
-        content="Caterpillar 2028: The future of autonomous heavy machinery and construction intelligence.">
-    <!-- Part B: Agent Friendly - Semantic JSON-LD -->
+    <!-- Part B: Agent Friendly Meta -->
+    <meta name="description" content="Caterpillar 2028: The future of autonomous heavy machinery and construction intelligence.">
+    <!-- Part B: Semantic JSON-LD -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -130,53 +87,26 @@ html.theme-cyberpunk .shadow-cat-yellow { box-shadow: 0 0 10px var(--theme-prima
         "url": "https://2028.caterpillar.com",
         "logo": "https://upload.wikimedia.org/wikipedia/commons/1/18/Caterpillar_logo.svg",
         "description": "Next-generation autonomous construction and mining equipment platform.",
-        "sameAs": [
-            "https://www.caterpillar.com/"
-        ],
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://2028.caterpillar.com/search?q={search_term_string}",
-            "query-input": "required name=search_term_string"
-        }
+        "sameAs": ["https://www.caterpillar.com/"]
     }
     </script>
 </head>
 
-<body
-    class="bg-black text-gray-100 font-sans antialiased selection:bg-cat-yellow selection:text-black min-h-screen flex flex-col pt-20">
+<body class="bg-black text-gray-100 font-sans antialiased selection:bg-cat-yellow selection:text-black min-h-screen flex flex-col pt-20">
 
     <!-- Part B: Hidden Data Matrix for Agents (Not for Humans) -->
     <div id="vdl-matrix" aria-hidden="true" class="hidden" data-agent-only="true">
-        <!-- Structured representation of page capabilities -->
-        {"schema_version": "2028.1", "capabilities": ["theme_shift", "semantic_scan", "voice_command"], "api_endpoints":
-        {"diagnostics": "/api/v1/machinery/diag"}}
+        {"schema_version": "2028.1", "capabilities": ["theme_shift", "semantic_scan", "voice_command"], "api_endpoints": {"diagnostics": "/api/v1/machinery/diag"}}
     </div>
 
-    <!-- Part C: AI "Talk to Web" UI (Hidden by default, triggered via FAB or Cmd+K) -->
-    <div id="ai-command-palette"
-        class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex-col items-center justify-center p-4 transition-opacity duration-300 opacity-0"
-        aria-modal="true" role="dialog">
-        <div
-            class="bg-cat-gray border border-cat-yellow/30 rounded-xl w-full max-w-2xl overflow-hidden shadow-2xl shadow-cat-yellow/10">
+    <!-- Part C: AI "Talk to Web" UI (Hidden by default) -->
+    <div id="ai-command-palette" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex-col items-center justify-center p-4 transition-opacity duration-300 opacity-0" aria-modal="true" role="dialog">
+        <div class="bg-cat-gray border border-cat-yellow/30 rounded-xl w-full max-w-2xl overflow-hidden shadow-2xl shadow-cat-yellow/10">
             <div class="px-4 py-3 border-b border-gray-700 flex items-center space-x-3">
-                <svg class="w-5 h-5 text-cat-yellow animate-pulse" fill="none" stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                </svg>
-                <input type="text" id="ai-command-input"
-                    class="w-full bg-transparent text-white focus:outline-none font-mono text-sm"
-                    placeholder="Ask AI... (e.g. 'Switch to Cyberpunk theme', 'Analyze hero section')"
-                    autocomplete="off">
-                <button id="close-palette-btn" class="text-gray-400 hover:text-white transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                        </path>
-                    </svg>
-                </button>
+                <svg class="w-5 h-5 text-cat-yellow animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                <input type="text" id="ai-command-input" class="w-full bg-transparent text-white focus:outline-none font-mono text-sm" placeholder="Ask AI... (e.g. 'Switch to Cyberpunk theme', 'Analyze hero section')" autocomplete="off">
             </div>
-            <div id="ai-command-response"
-                class="px-4 py-6 min-h-[150px] max-h-[300px] overflow-y-auto text-sm text-gray-300 font-mono">
+            <div id="ai-command-response" class="px-4 py-6 min-h-[150px] max-h-[300px] overflow-y-auto text-sm text-gray-300 font-mono">
                 <p class="text-cat-yellow opacity-70 mb-2">System Initialized. Awaiting commands...</p>
                 <ul class="text-gray-500 space-y-1 mt-4">
                     <li>> Try: <span class="text-gray-300">"switch theme"</span></li>
@@ -188,45 +118,21 @@ html.theme-cyberpunk .shadow-cat-yellow { box-shadow: 0 0 10px var(--theme-prima
     </div>
 
     <!-- AI Floating Action Button -->
-    <button id="ai-fab"
-        class="fixed bottom-6 right-6 z-40 bg-cat-yellow text-black p-4 rounded-full shadow-lg hover:shadow-cat-yellow/50 hover:scale-105 transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-cat-yellow focus:ring-offset-2 focus:ring-offset-black"
-        aria-label="Open AI Assistant">
-        <svg class="w-6 h-6 group-hover:animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-            </path>
-        </svg>
+    <button id="ai-fab" class="fixed bottom-6 right-6 z-40 bg-cat-yellow text-black p-4 rounded-full shadow-lg hover:shadow-cat-yellow/50 hover:scale-105 transition-all duration-300 group">
+        <svg class="w-6 h-6 group-hover:animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
     </button>
 
     <!-- Header / Navigation -->
-    <header
-        class="fixed top-0 left-0 right-0 z-30 bg-black/70 backdrop-blur-lg border-b border-white/10 transition-colors duration-300">
+    <header class="fixed top-0 left-0 right-0 z-30 bg-black/70 backdrop-blur-lg border-b border-white/10 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
-                <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center gap-3">
-                    <!-- Placeholder CAT Logo.  Using a stylized text for 2028 feel -->
-                    <div
-                        class="w-10 h-10 bg-cat-yellow flex items-center justify-center font-bold text-black text-xl tracking-tighter rounded-sm">
-                        CAT
-                    </div>
-                    <span class="font-mono text-sm font-bold tracking-widest text-white"><span
-                            class="text-cat-yellow">20</span>28_OS</span>
+                    <div class="w-10 h-10 bg-cat-yellow flex items-center justify-center font-bold text-black text-xl tracking-tighter rounded-sm">CAT</div>
+                    <span class="font-mono text-sm font-bold tracking-widest text-white"><span class="text-cat-yellow">20</span>28_OS</span>
                 </div>
-
-                <!-- Desktop Nav -->
                 <nav class="hidden md:flex space-x-8" aria-label="Main Navigation">
-                    <a href="#equipment"
-                        class="text-sm font-medium text-gray-300 hover:text-cat-yellow transition-colors hover:shadow-[0_0_10px_rgba(255,209,0,0.5)] px-3 py-2 rounded-md">Autonomous
-                        Fleet</a>
-                    <a href="#power"
-                        class="text-sm font-medium text-gray-300 hover:text-cat-yellow transition-colors hover:shadow-[0_0_10px_rgba(255,209,0,0.5)] px-3 py-2 rounded-md">Microgrids</a>
-                    <a href="#ai"
-                        class="text-sm font-medium text-gray-300 hover:text-cat-yellow transition-colors hover:shadow-[0_0_10px_rgba(255,209,0,0.5)] px-3 py-2 rounded-md">Site
-                        Intelligence</a>
-                    <a href="#parts"
-                        class="text-sm font-medium text-gray-300 hover:text-cat-yellow transition-colors hover:shadow-[0_0_10px_rgba(255,209,0,0.5)] px-3 py-2 rounded-md">Predictive
-                        Parts</a>
+                    <a href="#equipment" class="text-sm font-medium text-gray-300 hover:text-cat-yellow transition-colors hover:shadow-[0_0_10px_rgba(255,209,0,0.5)] px-3 py-2 rounded-md">Autonomous Fleet</a>
+                    <a href="#ai" class="text-sm font-medium text-gray-300 hover:text-cat-yellow transition-colors hover:shadow-[0_0_10px_rgba(255,209,0,0.5)] px-3 py-2 rounded-md">Site Intelligence</a>
                 </nav>
             </div>
         </div>
@@ -234,184 +140,87 @@ html.theme-cyberpunk .shadow-cat-yellow { box-shadow: 0 0 10px var(--theme-prima
 
     <main class="flex-grow">
         <!-- Part A & B: Hero Section -->
-        <section id="hero" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-cover bg-center"
-            style="background-image: url('assets/cat_hero_bg.png');" aria-labelledby="hero-title"
-            data-agent-context="primary_overview">
-            <!-- Background effects -->
+        <section id="hero" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-cover bg-center" style="background-image: url('assets/cat_hero_bg.png');" aria-labelledby="hero-title" data-agent-context="primary_overview">
             <div class="absolute inset-0 z-0 bg-black/60 backdrop-blur-[2px]"></div>
-            <div class="absolute inset-0 z-0 pointer-events-none">
-                <div class="absolute inset-0 bg-gradient-to-b from-cat-yellow/10 to-black opacity-80 mix-blend-overlay">
-                </div>
-            </div>
-            <!-- Grid pattern -->
-            <div class="absolute inset-0"
-                style="background-image: radial-gradient(#FFD100 1px, transparent 1px); background-size: 40px 40px; opacity: 0.05;">
-            </div>
+            <div class="absolute inset-0 z-0 pointer-events-none"><div class="absolute inset-0 bg-gradient-to-b from-cat-yellow/10 to-black opacity-80 mix-blend-overlay"></div></div>
+            <div class="absolute inset-0" style="background-image: radial-gradient(#FFD100 1px, transparent 1px); background-size: 40px 40px; opacity: 0.05;"></div>
             <div class="scanline-effect absolute inset-0 mix-blend-overlay pointer-events-none"></div>
 
             <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-start">
-                <div
-                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cat-gray/50 border border-cat-yellow/30 text-xs font-mono text-cat-yellow mb-6 shadow-[0_0_15px_rgba(255,209,0,0.2)]">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cat-gray/50 border border-cat-yellow/30 text-xs font-mono text-cat-yellow mb-6 shadow-[0_0_15px_rgba(255,209,0,0.2)]">
                     <span class="w-2 h-2 rounded-full bg-cat-yellow animate-pulse"></span>
                     System Online // 2028 OS
                 </div>
-
-                <h1 id="hero-title"
-                    class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cat-yellow to-white drop-shadow-md">
-                    Autonomy <br /><span class="text-white">Unleashed.</span>
-                </h1>
-
-                <p class="max-w-2xl text-lg md:text-xl text-gray-400 mb-10 font-light leading-relaxed">
-                    The next generation of heavy machinery is intelligent, electric, and fully autonomous. Constructing
-                    the world of 2028 with pinpoint precision.
-                </p>
-
+                <h1 id="hero-title" class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cat-yellow to-white drop-shadow-md">Autonomy <br /><span class="text-white">Unleashed.</span></h1>
+                <p class="max-w-2xl text-lg md:text-xl text-gray-400 mb-10 font-light leading-relaxed">The next generation of heavy machinery is intelligent, electric, and fully autonomous. Constructing the world of 2028 with pinpoint precision.</p>
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <button data-agent-action="deploy_fleet"
-                        class="px-8 py-4 bg-cat-yellow text-black font-bold uppercase tracking-wide text-sm rounded shadow-[0_0_20px_rgba(255,209,0,0.4)] hover:shadow-[0_0_30px_rgba(255,209,0,0.6)] hover:bg-white transition-all duration-300 transform hover:-translate-y-1">
-                        Deploy Fleet Protocol
-                    </button>
-                    <button data-agent-action="view_specs"
-                        class="px-8 py-4 bg-transparent border border-gray-600 text-white font-bold uppercase tracking-wide text-sm rounded hover:border-cat-yellow hover:text-cat-yellow transition-all duration-300 group flex items-center gap-2">
-                        <span>Agent Specs</span>
-                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                        </svg>
-                    </button>
+                    <button data-agent-action="deploy_fleet" class="px-8 py-4 bg-cat-yellow text-black font-bold uppercase tracking-wide text-sm rounded shadow-[0_0_20px_rgba(255,209,0,0.4)] hover:shadow-[0_0_30px_rgba(255,209,0,0.6)] hover:bg-white transition-all duration-300 transform hover:-translate-y-1">Deploy Fleet Protocol</button>
+                    <button data-agent-action="view_specs" class="px-8 py-4 bg-transparent border border-gray-600 text-white font-bold uppercase tracking-wide text-sm rounded hover:border-cat-yellow hover:text-cat-yellow transition-all duration-300 group flex items-center gap-2"><span>Agent Specs</span></button>
                 </div>
-
-                <div
-                    class="mt-16 flex items-center gap-8 text-xs font-mono text-gray-500 border-t border-gray-800 pt-8 w-full max-w-lg">
-                    <div class="flex flex-col">
-                        <span class="text-cat-yellow">12.4K</span>
-                        <span>Active Units</span>
-                    </div>
-                    <div class="flex flex-col border-l border-gray-800 pl-8">
-                        <span class="text-cat-yellow">0.0ms</span>
-                        <span>Latency Avg</span>
-                    </div>
-                    <div class="flex flex-col border-l border-gray-800 pl-8">
-                        <span class="text-cat-yellow">100%</span>
-                        <span>Green Energy</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Floating Decorative Element -->
-            <div
-                class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/4 hidden lg:block opacity-20 pointer-events-none filter blur-[2px]">
-                <svg width="400" height="400" viewBox="0 0 100 100" fill="none" stroke="#FFD100" stroke-width="0.5">
-                    <circle cx="50" cy="50" r="45" stroke-dasharray="2 4" class="animate-spin-slow" />
-                    <circle cx="50" cy="50" r="30" stroke-dasharray="1 6" />
-                    <polygon points="50,10 90,90 10,90" fill="rgba(255,209,0,0.05)" />
-                </svg>
             </div>
 
             <!-- Part C: AI Section Feedback Node -->
-            <button
-                class="absolute top-4 right-4 bg-cat-gray/80 border border-cat-yellow/50 text-cat-yellow p-2 rounded-lg text-xs font-mono hover:bg-cat-yellow hover:text-black transition-colors backdrop-blur-sm z-20 group"
-                data-action="ai-feedback" data-target-section="hero" aria-label="Provide AI feedback for Hero Section">
+            <button class="absolute top-4 right-4 bg-cat-gray/80 border border-cat-yellow/50 text-cat-yellow p-2 rounded-lg text-xs font-mono hover:bg-cat-yellow hover:text-black transition-colors backdrop-blur-sm z-20 group" data-action="ai-feedback" data-target-section="hero" aria-label="Provide AI feedback">
                 <span class="hidden group-hover:inline mr-2">Agent_Eval</span>
-                <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
+                <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </button>
         </section>
 
         <!-- Part A & B: Core Technologies Grid -->
-        <section id="equipment" class="py-24 bg-cat-black relative border-t border-gray-900"
-            aria-labelledby="tech-title" data-agent-collection="machinery_fleet">
+        <section id="equipment" class="py-24 bg-cat-black relative border-t border-gray-900" aria-labelledby="tech-title" data-agent-collection="machinery_fleet">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="mb-16 md:flex md:justify-between md:items-end">
                     <div>
-                        <h2 id="tech-title"
-                            class="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500 mb-4 tracking-tight">
-                            Capabilities <span class="text-cat-yellow">Matrix</span></h2>
-                        <p class="text-gray-400 max-w-xl text-lg">Next-gen systems fully integrating physical prowess
-                            with extreme digital intelligence.</p>
+                        <h2 id="tech-title" class="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500 mb-4 tracking-tight">Capabilities <span class="text-cat-yellow">Matrix</span></h2>
+                        <p class="text-gray-400 max-w-xl text-lg">Next-gen systems fully integrating physical prowess with extreme digital intelligence.</p>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Tech Card 1 -->
-                    <article
-                        class="bg-gradient-to-b from-gray-900 to-black border border-gray-800 rounded-xl overflow-hidden hover:border-cat-yellow/50 transition-all duration-300 group relative"
-                        data-agent-item="797F_Autonomous_Haul">
-                        <div
-                            class="h-48 bg-gray-800 relative overflow-hidden flex items-center justify-center border-b border-gray-800">
-                            <!-- In production you would use full URLs here depending on where it sits on the filesystem, we kept them local since you have the images in the directory-->
-                            <img src="assets/cat_mining_truck.png" alt="797F Autonomous Haul"
-                                class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div
-                                class="absolute inset-0 bg-cat-yellow/10 opacity-0 group-hover:opacity-100 transition-opacity mix-blend-overlay z-10">
-                            </div>
+                    <article class="bg-gradient-to-b from-gray-900 to-black border border-gray-800 rounded-xl overflow-hidden hover:border-cat-yellow/50 transition-all duration-300 group relative" data-agent-item="797F_Autonomous_Haul">
+                        <div class="h-48 bg-gray-800 relative overflow-hidden flex items-center justify-center border-b border-gray-800">
+                            <img src="assets/cat_mining_truck.png" alt="797F Autonomous Haul" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-cat-yellow/10 opacity-0 group-hover:opacity-100 transition-opacity mix-blend-overlay z-10"></div>
                         </div>
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cat-yellow transition-colors">
-                                797F-A Autonomous Haul</h3>
-                            <p class="text-gray-400 text-sm mb-6">Level 5 Autonomous payload transport with realtime
-                                environmental mesh generation and predictive routing.</p>
+                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cat-yellow transition-colors">797F-A Autonomous Haul</h3>
+                            <p class="text-gray-400 text-sm mb-6">Level 5 Autonomous payload transport with realtime environmental mesh generation and predictive routing.</p>
                             <div class="flex items-center justify-between mt-auto">
-                                <span class="bg-gray-800 text-xs text-cat-yellow px-2 py-1 rounded font-mono">Status:
-                                    ACTIVE</span>
-                                <button class="text-white hover:text-cat-yellow text-sm font-semibold"
-                                    aria-label="Deploy 797F-A" data-agent-action="spawn_instance">Deploy -></button>
+                                <span class="bg-gray-800 text-xs text-cat-yellow px-2 py-1 rounded font-mono">Status: ACTIVE</span>
+                                <button class="text-white hover:text-cat-yellow text-sm font-semibold" aria-label="Deploy 797F-A" data-agent-action="spawn_instance">Deploy -></button>
                             </div>
                         </div>
                     </article>
 
                     <!-- Tech Card 2 -->
-                    <article
-                        class="bg-gradient-to-b from-gray-900 to-black border border-gray-800 rounded-xl overflow-hidden hover:border-cat-yellow/50 transition-all duration-300 group relative"
-                        data-agent-item="D11_Smart_Dozer">
-                        <div
-                            class="h-48 bg-gray-800 relative overflow-hidden flex items-center justify-center border-b border-gray-800">
-                            <img src="assets/cat_dozer.png" alt="D11 Nexus Dozer"
-                                class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div
-                                class="absolute inset-0 bg-cat-yellow/10 opacity-0 group-hover:opacity-100 transition-opacity mix-blend-overlay z-10">
-                            </div>
+                    <article class="bg-gradient-to-b from-gray-900 to-black border border-gray-800 rounded-xl overflow-hidden hover:border-cat-yellow/50 transition-all duration-300 group relative" data-agent-item="D11_Smart_Dozer">
+                        <div class="h-48 bg-gray-800 relative overflow-hidden flex items-center justify-center border-b border-gray-800">
+                            <img src="assets/cat_dozer.png" alt="D11 Nexus Dozer" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-cat-yellow/10 opacity-0 group-hover:opacity-100 transition-opacity mix-blend-overlay z-10"></div>
                         </div>
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cat-yellow transition-colors">
-                                D11 Nexus Dozer</h3>
-                            <p class="text-gray-400 text-sm mb-6">Quantum-calculated blade positioning. Capable of
-                                sub-millimeter grading via linked neural array.</p>
+                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cat-yellow transition-colors">D11 Nexus Dozer</h3>
+                            <p class="text-gray-400 text-sm mb-6">Quantum-calculated blade positioning. Capable of sub-millimeter grading via linked neural array.</p>
                             <div class="flex items-center justify-between mt-auto">
-                                <span class="bg-gray-800 text-xs text-cat-yellow px-2 py-1 rounded font-mono">Status:
-                                    STANDBY</span>
-                                <button class="text-white hover:text-cat-yellow text-sm font-semibold"
-                                    aria-label="Deploy D11 Nexus" data-agent-action="spawn_instance">Deploy -></button>
+                                <span class="bg-gray-800 text-xs text-cat-yellow px-2 py-1 rounded font-mono">Status: STANDBY</span>
+                                <button class="text-white hover:text-cat-yellow text-sm font-semibold" aria-label="Deploy D11 Nexus" data-agent-action="spawn_instance">Deploy -></button>
                             </div>
                         </div>
                     </article>
 
                     <!-- Tech Card 3 -->
-                    <article
-                        class="bg-gradient-to-b from-gray-900 to-black border border-gray-800 rounded-xl overflow-hidden hover:border-cat-yellow/50 transition-all duration-300 group relative"
-                        data-agent-item="Cat_H2_Generator">
-                        <div
-                            class="h-48 bg-gray-800 relative overflow-hidden flex items-center justify-center border-b border-gray-800">
-                            <img src="assets/cat_generator.png" alt="Microgrid Node Alpha"
-                                class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div
-                                class="absolute inset-0 bg-cat-yellow/10 opacity-0 group-hover:opacity-100 transition-opacity mix-blend-overlay z-10">
-                            </div>
+                    <article class="bg-gradient-to-b from-gray-900 to-black border border-gray-800 rounded-xl overflow-hidden hover:border-cat-yellow/50 transition-all duration-300 group relative" data-agent-item="Cat_H2_Generator">
+                        <div class="h-48 bg-gray-800 relative overflow-hidden flex items-center justify-center border-b border-gray-800">
+                            <img src="assets/cat_generator.png" alt="Microgrid Node Alpha" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-cat-yellow/10 opacity-0 group-hover:opacity-100 transition-opacity mix-blend-overlay z-10"></div>
                         </div>
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cat-yellow transition-colors">
-                                Microgrid Node Alpha</h3>
-                            <p class="text-gray-400 text-sm mb-6">Fully integrated Hydrogen/Solar smart generation.
-                                Communicates directly with fleet for load balancing.</p>
+                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cat-yellow transition-colors">Microgrid Node Alpha</h3>
+                            <p class="text-gray-400 text-sm mb-6">Fully integrated Hydrogen/Solar smart generation. Communicates directly with fleet for load balancing.</p>
                             <div class="flex items-center justify-between mt-auto">
-                                <span
-                                    class="bg-gray-800 text-xs text-cyber-blue px-2 py-1 rounded font-mono border border-cyber-blue/30">Charge:
-                                    98%</span>
-                                <button class="text-white hover:text-cat-yellow text-sm font-semibold"
-                                    aria-label="Analyze Grid" data-agent-action="analyze_grid">Analyze -></button>
+                                <span class="bg-gray-800 text-xs text-cyber-blue px-2 py-1 rounded font-mono border border-cyber-blue/30">Charge: 98%</span>
+                                <button class="text-white hover:text-cat-yellow text-sm font-semibold" aria-label="Analyze Grid" data-agent-action="analyze_grid">Analyze -></button>
                             </div>
                         </div>
                     </article>
@@ -419,15 +228,9 @@ html.theme-cyberpunk .shadow-cat-yellow { box-shadow: 0 0 10px var(--theme-prima
             </div>
 
             <!-- Part C: AI Section Feedback Node -->
-            <button
-                class="absolute top-4 right-4 bg-cat-gray/80 border border-cat-yellow/50 text-cat-yellow p-2 rounded-lg text-xs font-mono hover:bg-cat-yellow hover:text-black transition-colors backdrop-blur-sm z-20 group"
-                data-action="ai-feedback" data-target-section="matrix"
-                aria-label="Provide AI feedback for Matrix Section">
+            <button class="absolute top-4 right-4 bg-cat-gray/80 border border-cat-yellow/50 text-cat-yellow p-2 rounded-lg text-xs font-mono hover:bg-cat-yellow hover:text-black transition-colors backdrop-blur-sm z-20 group" data-action="ai-feedback" data-target-section="matrix">
                 <span class="hidden group-hover:inline mr-2">Agent_Eval</span>
-                <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
+                <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </button>
         </section>
     </main>
@@ -435,28 +238,20 @@ html.theme-cyberpunk .shadow-cat-yellow { box-shadow: 0 0 10px var(--theme-prima
     <footer class="bg-cat-black border-t border-gray-800 py-12 mt-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
             <div class="mb-6 md:mb-0">
-                <span class="text-gray-400 text-sm font-mono">&copy; 2028 Caterpillar_Intelligence_Network. All
-                    Operations Monitored.</span>
+                <span class="text-gray-400 text-sm font-mono">&copy; 2028 Caterpillar_Intelligence_Network. All Operations Monitored.</span>
             </div>
             <div class="flex space-x-6">
                 <!-- Data metrics -->
-                <span
-                    class="text-xs text-cat-yellow font-mono bg-cat-yellow/10 px-2 py-1 rounded border border-cat-yellow/20">Sys_Status:
-                    OPTIMAL</span>
-                <span
-                    class="text-xs text-cyber-blue font-mono bg-cyber-blue/10 px-2 py-1 rounded border border-cyber-blue/20">Fleet_Uptime:
-                    99.99%</span>
+                <span class="text-xs text-cat-yellow font-mono bg-cat-yellow/10 px-2 py-1 rounded border border-cat-yellow/20">Sys_Status: OPTIMAL</span>
+                <span class="text-xs text-cyber-blue font-mono bg-cyber-blue/10 px-2 py-1 rounded border border-cyber-blue/20">Fleet_Uptime: 99.99%</span>
             </div>
         </div>
     </footer>
 
     <!-- Application Logic -->
     <script>
-// Core Application Logic for Caterpillar 2028 Web Interface
-
 document.addEventListener('DOMContentLoaded', () => {
     initAICommandPalette();
-    initThemeManager();
     initSectionFeedbackNodes();
 });
 
@@ -464,15 +259,12 @@ document.addEventListener('DOMContentLoaded', () => {
 function initAICommandPalette() {
     const fabBtn = document.getElementById('ai-fab');
     const paletteStr = document.getElementById('ai-command-palette');
-    const closeBtn = document.getElementById('close-palette-btn');
     const inputField = document.getElementById('ai-command-input');
     const responseArea = document.getElementById('ai-command-response');
 
-    // Open/Close Handlers
     const togglePalette = (show) => {
         if (show) {
             paletteStr.classList.remove('hidden');
-            // Small delay to allow display block to apply before opacity transition
             setTimeout(() => {
                 paletteStr.classList.remove('opacity-0');
                 paletteStr.classList.add('opacity-100');
@@ -481,38 +273,27 @@ function initAICommandPalette() {
         } else {
             paletteStr.classList.remove('opacity-100');
             paletteStr.classList.add('opacity-0');
-            setTimeout(() => {
-                paletteStr.classList.add('hidden');
-            }, 300); // match duration
+            setTimeout(() => { paletteStr.classList.add('hidden'); }, 300);
         }
     };
 
     fabBtn.addEventListener('click', () => togglePalette(true));
-    closeBtn.addEventListener('click', () => togglePalette(false));
 
-    // Keyboard shortcut (Cmd+K or Ctrl+K)
     document.addEventListener('keydown', (e) => {
         if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
             e.preventDefault();
-            const isHidden = paletteStr.classList.contains('hidden');
-            togglePalette(isHidden);
+            togglePalette(paletteStr.classList.contains('hidden'));
         }
-        
-        // Escape closes
-        if (e.key === 'Escape' && !paletteStr.classList.contains('hidden')) {
-            togglePalette(false);
-        }
+        if (e.key === 'Escape' && !paletteStr.classList.contains('hidden')) { togglePalette(false); }
     });
 
-    // Handle Input Commands
     inputField.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             const command = inputField.value.trim().toLowerCase();
             if(!command) return;
             
             appendResponse(`> User: ${command}`, 'text-white');
-            inputField.value = ''; // clear
-            
+            inputField.value = ''; 
             processAICommand(command);
         }
     });
@@ -525,7 +306,6 @@ function initAICommandPalette() {
         responseArea.scrollTop = responseArea.scrollHeight;
     }
 
-    // Mock AI Command Processing Engine
     function processAICommand(cmd) {
         setTimeout(() => {
             if (cmd.includes('theme') || cmd.includes('cyberpunk') || cmd.includes('classic')) {
@@ -542,13 +322,8 @@ function initAICommandPalette() {
             } else {
                 appendResponse('[AI]: Unrecognized dialect or command. Please rephrase or specify target sector.');
             }
-        }, 500); // Mock processing delay
+        }, 500);
     }
-}
-
-// Part C: Theme Intelligence
-function initThemeManager() {
-    // Initial theme is already set to dark, standard yellow.
 }
 
 function toggleTheme() {
@@ -564,8 +339,6 @@ function toggleTheme() {
 
 // Part C: AI Section Feedback
 function initSectionFeedbackNodes() {
-    // Will attach listeners to dynamically created feedback nodes in the main DOM.
-    // The nodes are added in the HTML building phase.
     document.addEventListener('click', (e) => {
         const feedbackBtn = e.target.closest('[data-action="ai-feedback"]');
         if (feedbackBtn) {
@@ -576,5 +349,4 @@ function initSectionFeedbackNodes() {
 }
     </script>
 </body>
-
 </html>
