@@ -1,0 +1,1756 @@
+<!--Name: Alisha Rawat--><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Caterpillar Inc. | Building a Better World</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; color: #333; background: #fff; }
+
+    /* TOP BAR */
+    .top-bar {
+      background: #1a1a1a;
+      color: #ccc;
+      font-size: 12px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 6px 40px;
+      gap: 24px;
+    }
+    .top-bar a { color: #ccc; text-decoration: none; transition: color 0.2s; }
+    .top-bar a:hover { color: #ffcd11; }
+    .top-bar select {
+      background: transparent; border: none; color: #ccc; font-size: 12px; cursor: pointer;
+    }
+
+    /* HEADER */
+    header {
+      background: #ffcd11;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      height: 68px;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-box {
+      background: #1a1a1a; color: #ffcd11; font-size: 26px; font-weight: 900;
+      width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+      letter-spacing: -2px; border-radius: 2px;
+    }
+    .logo-text { font-size: 20px; font-weight: 900; color: #1a1a1a; letter-spacing: 2px; text-transform: uppercase; }
+
+    nav { display: flex; align-items: stretch; height: 68px; }
+    .nav-item {
+      position: relative; display: flex; align-items: center;
+    }
+    nav a.nav-link {
+      color: #1a1a1a; text-decoration: none; font-weight: 700; font-size: 13px;
+      padding: 0 16px; height: 100%; display: flex; align-items: center;
+      text-transform: uppercase; letter-spacing: 0.5px; transition: background 0.2s;
+      white-space: nowrap;
+    }
+    nav a.nav-link:hover, .nav-item:hover > a.nav-link { background: rgba(0,0,0,0.12); }
+
+    /* DROPDOWN */
+    .dropdown {
+      display: none; position: absolute; top: 68px; left: 0;
+      background: #1a1a1a; min-width: 220px; border-top: 3px solid #ffcd11;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 999;
+    }
+    .nav-item:hover .dropdown { display: block; }
+    .dropdown a {
+      display: block; color: #ccc; text-decoration: none; padding: 12px 20px;
+      font-size: 13px; border-bottom: 1px solid #2d2d2d; transition: all 0.15s;
+    }
+    .dropdown a:hover { background: #2d2d2d; color: #ffcd11; padding-left: 26px; }
+
+    .nav-search-btn {
+      background: none; border: none; font-size: 18px; cursor: pointer;
+      padding: 0 16px; height: 100%; transition: background 0.2s;
+    }
+    .nav-search-btn:hover { background: rgba(0,0,0,0.12); }
+
+    /* HERO SLIDER */
+    .hero {
+      position: relative; height: 580px; overflow: hidden;
+    }
+    .slide {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      opacity: 0; transition: opacity 0.8s ease; display: flex; align-items: center;
+    }
+    .slide.active { opacity: 1; z-index: 1; }
+    .slide-bg {
+      position: absolute; inset: 0; background-size: cover; background-position: center;
+      filter: brightness(0.45);
+    }
+    .slide-content {
+      position: relative; z-index: 2; padding: 0 80px; max-width: 700px;
+    }
+    .hero-eyebrow {
+      background: #ffcd11; color: #1a1a1a; display: inline-block;
+      font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px;
+      padding: 5px 14px; border-radius: 2px; margin-bottom: 18px;
+    }
+    .slide-content h1 {
+      font-size: 52px; font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 18px;
+    }
+    .slide-content h1 span { color: #ffcd11; }
+    .slide-content p { font-size: 17px; color: #ddd; margin-bottom: 32px; line-height: 1.65; max-width: 560px; }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-yellow {
+      background: #ffcd11; color: #1a1a1a; font-weight: 800; padding: 14px 30px;
+      text-decoration: none; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;
+      border-radius: 2px; transition: background 0.2s, transform 0.1s; display: inline-block;
+    }
+    .btn-yellow:hover { background: #e6b800; transform: translateY(-1px); }
+    .btn-outline {
+      border: 2px solid #fff; color: #fff; font-weight: 700; padding: 12px 28px;
+      text-decoration: none; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;
+      border-radius: 2px; transition: all 0.2s; display: inline-block;
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.12); }
+
+    /* SLIDER DOTS */
+    .hero-dots {
+      position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 10px; z-index: 10;
+    }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.4);
+      cursor: pointer; transition: background 0.2s;
+    }
+    .dot.active { background: #ffcd11; }
+    .hero-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0,0,0,0.5); color: #fff; border: none; font-size: 22px;
+      width: 46px; height: 46px; cursor: pointer; z-index: 10; border-radius: 2px;
+      transition: background 0.2s;
+    }
+    .hero-arrow:hover { background: #ffcd11; color: #1a1a1a; }
+    .hero-arrow.left { left: 20px; }
+    .hero-arrow.right { right: 20px; }
+
+    /* QUICK LINKS BAR */
+    .quick-links {
+      background: #1a1a1a; display: flex; justify-content: center;
+      gap: 0; flex-wrap: wrap;
+    }
+    .quick-link {
+      color: #ccc; text-decoration: none; padding: 16px 28px; font-size: 13px;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+      border-right: 1px solid #333; display: flex; align-items: center; gap: 8px;
+      transition: all 0.2s;
+    }
+    .quick-link:last-child { border-right: none; }
+    .quick-link:hover { background: #ffcd11; color: #1a1a1a; }
+    .quick-link span.ql-icon { font-size: 16px; }
+
+    /* SECTION SHARED */
+    .sec-label {
+      text-align: center; font-size: 11px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 3px; color: #999; margin-bottom: 10px;
+    }
+    .sec-title {
+      text-align: center; font-size: 34px; font-weight: 900; color: #1a1a1a; margin-bottom: 40px;
+    }
+    .sec-title span { color: #e6a800; }
+
+    /* PRODUCT CATEGORIES */
+    .products { background: #f5f5f5; padding: 70px 40px; }
+    .prod-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px; max-width: 1200px; margin: 0 auto;
+    }
+    .prod-card {
+      background: #fff; border-radius: 3px; overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08); transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .prod-card:hover { transform: translateY(-5px); box-shadow: 0 12px 28px rgba(0,0,0,0.15); }
+    .prod-img {
+      height: 200px; overflow: hidden; position: relative;
+    }
+    .prod-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.4s;
+    }
+    .prod-card:hover .prod-img img { transform: scale(1.05); }
+    .prod-tag {
+      position: absolute; top: 12px; left: 12px; background: #ffcd11; color: #1a1a1a;
+      font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+      padding: 4px 10px; border-radius: 2px;
+    }
+    .prod-body { padding: 20px; }
+    .prod-body h3 { font-size: 17px; font-weight: 800; color: #1a1a1a; margin-bottom: 8px; }
+    .prod-body p { font-size: 13px; color: #666; line-height: 1.55; margin-bottom: 16px; }
+    .prod-link {
+      color: #e6a800; font-weight: 700; font-size: 12px; text-decoration: none;
+      text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 5px;
+    }
+    .prod-link:hover { color: #b87800; }
+    .prod-link::after { content: "→"; }
+
+    /* STATS */
+    .stats-band {
+      background: #ffcd11; padding: 52px 40px;
+      display: flex; justify-content: center; gap: 64px; flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-number { font-size: 48px; font-weight: 900; color: #1a1a1a; line-height: 1; }
+    .stat-label { font-size: 12px; font-weight: 700; color: #444; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 8px; }
+
+    /* INNOVATION SPLIT */
+    .innovation {
+      display: grid; grid-template-columns: 1fr 1fr;
+    }
+    .innov-img { overflow: hidden; min-height: 420px; }
+    .innov-img img { width: 100%; height: 100%; object-fit: cover; }
+    .innov-content {
+      background: #1a1a1a; display: flex; flex-direction: column;
+      justify-content: center; padding: 60px 50px;
+    }
+    .innov-content .sec-label { text-align: left; color: #888; }
+    .innov-content h2 { font-size: 36px; font-weight: 900; color: #fff; margin: 10px 0 18px; line-height: 1.2; }
+    .innov-content h2 span { color: #ffcd11; }
+    .innov-content p { color: #aaa; font-size: 15px; line-height: 1.7; margin-bottom: 28px; }
+    .innov-list { list-style: none; margin-bottom: 32px; }
+    .innov-list li {
+      color: #ccc; font-size: 14px; padding: 8px 0; border-bottom: 1px solid #2d2d2d;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .innov-list li::before { content: "▸"; color: #ffcd11; font-size: 12px; }
+
+    /* INDUSTRIES */
+    .industries { padding: 70px 40px; background: #fff; }
+    .ind-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 14px; max-width: 1200px; margin: 0 auto;
+    }
+    .ind-item {
+      border: 2px solid #e0e0e0; border-radius: 3px; padding: 28px 14px;
+      text-align: center; cursor: pointer; transition: all 0.2s; text-decoration: none;
+      display: block;
+    }
+    .ind-item:hover { border-color: #ffcd11; background: #fffae0; transform: translateY(-3px); }
+    .ind-icon { font-size: 36px; margin-bottom: 12px; }
+    .ind-name { font-size: 12px; font-weight: 800; color: #1a1a1a; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* TESTIMONIAL */
+    .testimonial {
+      background: linear-gradient(135deg, #ffcd11 0%, #e6a800 100%);
+      padding: 70px 40px; text-align: center;
+    }
+    .testimonial blockquote {
+      max-width: 780px; margin: 0 auto; font-size: 22px; font-weight: 700;
+      color: #1a1a1a; line-height: 1.5; font-style: italic; margin-bottom: 20px;
+    }
+    .testimonial blockquote::before { content: "\201C"; font-size: 60px; line-height: 0; vertical-align: -0.35em; color: rgba(0,0,0,0.2); }
+    .testimonial cite { font-size: 14px; font-weight: 700; color: #333; text-transform: uppercase; letter-spacing: 1px; font-style: normal; }
+
+    /* NEWS */
+    .news { background: #f5f5f5; padding: 70px 40px; }
+    .news-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 22px; max-width: 1200px; margin: 0 auto 30px;
+    }
+    .news-card {
+      background: #fff; border-radius: 3px; overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07); transition: transform 0.2s;
+    }
+    .news-card:hover { transform: translateY(-4px); }
+    .news-img { height: 190px; overflow: hidden; }
+    .news-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .news-card:hover .news-img img { transform: scale(1.05); }
+    .news-date-bar {
+      background: #1a1a1a; color: #ffcd11; font-size: 10px; font-weight: 800;
+      padding: 7px 14px; text-transform: uppercase; letter-spacing: 1.5px;
+    }
+    .news-body { padding: 18px; }
+    .news-body h3 { font-size: 15px; font-weight: 800; color: #1a1a1a; margin-bottom: 9px; line-height: 1.4; }
+    .news-body p { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 14px; }
+    .news-link {
+      color: #e6a800; font-size: 12px; font-weight: 700; text-decoration: none;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .news-link:hover { text-decoration: underline; }
+    .news-cta { text-align: center; }
+
+    /* BRANDS */
+    .brands { background: #1a1a1a; padding: 60px 40px; }
+    .brands .sec-title { color: #fff; }
+    .brands-grid {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 16px; max-width: 1000px; margin: 0 auto;
+    }
+    .brand-chip {
+      background: #252525; color: #ffcd11; font-weight: 800; font-size: 13px;
+      padding: 13px 26px; border-radius: 2px; text-transform: uppercase; letter-spacing: 1.5px;
+      border: 1px solid #3a3a3a; cursor: pointer; transition: all 0.2s; text-decoration: none;
+      display: inline-block;
+    }
+    .brand-chip:hover { background: #ffcd11; color: #1a1a1a; border-color: #ffcd11; }
+
+    /* SUSTAINABILITY */
+    .sustainability {
+      position: relative; min-height: 420px; display: flex; align-items: center;
+      justify-content: center; overflow: hidden;
+    }
+    .sustain-bg {
+      position: absolute; inset: 0; background-size: cover; background-position: center;
+      filter: brightness(0.35);
+    }
+    .sustain-content {
+      position: relative; z-index: 2; text-align: center; padding: 60px 40px; max-width: 700px;
+    }
+    .sustain-content .sec-label { color: #aaa; }
+    .sustain-content h2 { font-size: 38px; font-weight: 900; color: #fff; margin: 12px 0 20px; }
+    .sustain-content p { color: #ccc; font-size: 16px; line-height: 1.7; margin-bottom: 30px; }
+
+    /* DEALER LOCATOR */
+    .dealer-band {
+      background: #ffcd11; padding: 44px 40px;
+      display: flex; align-items: center; justify-content: center; gap: 30px; flex-wrap: wrap;
+    }
+    .dealer-band h3 { font-size: 26px; font-weight: 900; color: #1a1a1a; }
+    .dealer-band p { font-size: 14px; color: #444; }
+    .dealer-form { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .dealer-form input {
+      padding: 13px 18px; border: 2px solid #1a1a1a; border-radius: 2px;
+      font-size: 14px; width: 260px; outline: none;
+    }
+    .btn-dark {
+      background: #1a1a1a; color: #ffcd11; font-weight: 800; padding: 13px 28px;
+      text-decoration: none; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;
+      border-radius: 2px; border: none; cursor: pointer; transition: background 0.2s;
+    }
+    .btn-dark:hover { background: #333; }
+
+    /* FOOTER */
+    footer { background: #111; color: #aaa; padding: 54px 40px 28px; }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr repeat(4, 1fr);
+      gap: 32px; max-width: 1200px; margin: 0 auto 40px;
+    }
+    .footer-brand .logo-box { width: 56px; height: 56px; font-size: 22px; margin-bottom: 14px; }
+    .footer-brand p { font-size: 13px; color: #777; line-height: 1.6; margin-bottom: 20px; }
+    .social-links { display: flex; gap: 10px; }
+    .social-btn {
+      background: #222; color: #aaa; border: 1px solid #333; width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center; border-radius: 3px;
+      font-size: 14px; text-decoration: none; transition: all 0.2s;
+    }
+    .social-btn:hover { background: #ffcd11; color: #1a1a1a; border-color: #ffcd11; }
+    .footer-col h4 {
+      color: #fff; font-size: 12px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1.5px; margin-bottom: 16px;
+    }
+    .footer-col a {
+      display: block; color: #777; text-decoration: none; font-size: 13px;
+      margin-bottom: 9px; transition: color 0.2s;
+    }
+    .footer-col a:hover { color: #ffcd11; }
+    .footer-bottom {
+      border-top: 1px solid #222; padding-top: 22px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+      gap: 12px; max-width: 1200px; margin: 0 auto;
+    }
+    .footer-bottom-logo { background: #ffcd11; color: #1a1a1a; font-weight: 900; font-size: 14px; padding: 6px 12px; border-radius: 2px; }
+    .footer-copy { font-size: 12px; color: #555; }
+    .footer-legal { display: flex; gap: 18px; flex-wrap: wrap; }
+    .footer-legal a { color: #555; font-size: 12px; text-decoration: none; }
+    .footer-legal a:hover { color: #ffcd11; }
+
+    /* SEARCH OVERLAY */
+    .search-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.96); z-index: 9999;
+      flex-direction: column; align-items: center; justify-content: center; padding: 40px;
+    }
+    .search-overlay.active { display: flex; }
+    .search-close {
+      position: absolute; top: 22px; right: 30px;
+      background: none; border: none; color: #fff; font-size: 34px; cursor: pointer;
+    }
+    .search-inner { width: 100%; max-width: 680px; }
+    .search-inner label { color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 14px; }
+    .search-inner input {
+      width: 100%; padding: 18px 22px; font-size: 22px;
+      border: none; border-bottom: 3px solid #ffcd11; background: transparent;
+      color: #fff; outline: none;
+    }
+    .search-tags { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+    .search-tag {
+      background: #222; color: #aaa; padding: 7px 16px; border-radius: 2px;
+      font-size: 12px; cursor: pointer; border: 1px solid #333; transition: all 0.2s;
+    }
+    .search-tag:hover { background: #ffcd11; color: #1a1a1a; border-color: #ffcd11; }
+
+    @media (max-width: 900px) {
+      .innovation { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      header { padding: 0 20px; }
+      .slide-content { padding: 0 30px; }
+      .slide-content h1 { font-size: 34px; }
+    }
+    @media (max-width: 600px) {
+      .quick-link { padding: 12px 14px; font-size: 11px; }
+      .stats-band { gap: 28px; }
+      .stat-number { font-size: 36px; }
+      nav a.nav-link { padding: 0 10px; font-size: 11px; }
+    }
+  
+  /* ===== AGENT MODE STYLES ===== */
+  .agent-toggle-btn {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 9999;
+    background: #1a1a1a;
+    color: #ffcd11;
+    border: 2px solid #ffcd11;
+    border-radius: 50px;
+    padding: 10px 22px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+    letter-spacing: 0.5px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .agent-toggle-btn:hover { background: #ffcd11; color: #1a1a1a; }
+  .agent-toggle-btn .toggle-icon { font-size: 18px; }
+
+  /* Toggle pill */
+  .toggle-pill {
+    width: 38px; height: 20px;
+    background: #444;
+    border-radius: 20px;
+    position: relative;
+    transition: background 0.2s;
+  }
+  .toggle-pill.on { background: #ffcd11; }
+  .toggle-pill::after {
+    content: '';
+    position: absolute;
+    width: 14px; height: 14px;
+    background: #fff;
+    border-radius: 50%;
+    top: 3px; left: 3px;
+    transition: left 0.2s;
+  }
+  .toggle-pill.on::after { left: 21px; background: #1a1a1a; }
+
+  /* Agent View Panel */
+  #agent-view {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #0d0d0d;
+    color: #00ff88;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    z-index: 9998;
+    overflow-y: auto;
+    padding: 0;
+  }
+  #agent-view.visible { display: block; }
+
+  .agent-header {
+    background: #1a1a1a;
+    border-bottom: 2px solid #ffcd11;
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .agent-header-title {
+    color: #ffcd11;
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .agent-close-btn {
+    background: none;
+    border: 1px solid #ffcd11;
+    color: #ffcd11;
+    padding: 6px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: monospace;
+    font-size: 12px;
+    transition: background 0.2s;
+  }
+  .agent-close-btn:hover { background: #ffcd11; color: #1a1a1a; }
+
+  .agent-body { padding: 24px 32px; }
+
+  .agent-section {
+    margin-bottom: 28px;
+    border: 1px solid #1e3a2a;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .agent-section-title {
+    background: #0a2a18;
+    color: #00ff88;
+    padding: 10px 18px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #1e3a2a;
+  }
+  .agent-section-body { padding: 14px 18px; }
+
+  .agent-kv { display: flex; gap: 16px; margin-bottom: 6px; flex-wrap: wrap; }
+  .agent-key { color: #aaa; min-width: 160px; flex-shrink: 0; }
+  .agent-val { color: #00ff88; }
+  .agent-val a { color: #ffcd11; text-decoration: none; }
+  .agent-val a:hover { text-decoration: underline; }
+
+  .agent-tag {
+    display: inline-block;
+    background: #0a2a18;
+    border: 1px solid #00ff88;
+    color: #00ff88;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    margin: 2px;
+  }
+
+  .agent-json-block {
+    background: #050505;
+    border: 1px solid #1e3a2a;
+    border-radius: 4px;
+    padding: 14px;
+    overflow-x: auto;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .json-key { color: #88ccff; }
+  .json-str { color: #ffcd11; }
+  .json-num { color: #ff8844; }
+  .json-bool { color: #ff5577; }
+
+  .agent-nav-links {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;
+  }
+  .agent-nav-link {
+    background: #0a2a18;
+    border: 1px solid #00ff88;
+    color: #00ff88;
+    padding: 5px 12px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 12px;
+    transition: background 0.15s;
+  }
+  .agent-nav-link:hover { background: #00ff88; color: #0d0d0d; }
+
+  .agent-product-card {
+    border: 1px solid #1e3a2a;
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    background: #050505;
+  }
+  .agent-product-name { color: #ffcd11; font-weight: bold; margin-bottom: 4px; }
+  .agent-product-desc { color: #aaa; font-size: 12px; }
+
+  .agent-news-item {
+    border-left: 3px solid #ffcd11;
+    padding: 6px 12px;
+    margin-bottom: 8px;
+  }
+  .agent-news-headline { color: #00ff88; margin-bottom: 3px; }
+  .agent-news-meta { color: #555; font-size: 11px; }
+
+  .agent-metric {
+    display: inline-block;
+    background: #051a10;
+    border: 1px solid #00ff88;
+    border-radius: 4px;
+    padding: 10px 18px;
+    margin: 4px;
+    text-align: center;
+  }
+  .agent-metric-val { color: #ffcd11; font-size: 20px; font-weight: bold; }
+  .agent-metric-label { color: #aaa; font-size: 11px; margin-top: 2px; }
+
+  
+  /* ==============================
+     AI ASSISTANT STYLES
+  ============================== */
+
+  /* Floating launcher */
+  #ai-launcher {
+    position: fixed; bottom: 90px; right: 28px; z-index: 9997;
+    width: 58px; height: 58px; border-radius: 50%;
+    background: linear-gradient(135deg,#ffcd11,#f0a500);
+    border: none; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,.35);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; transition: transform .2s, box-shadow .2s;
+  }
+  #ai-launcher:hover { transform: scale(1.12); box-shadow: 0 6px 28px rgba(0,0,0,.45); }
+  #ai-launcher .ai-badge {
+    position: absolute; top: -4px; right: -4px;
+    background: #ff3b3b; color: #fff; font-size: 10px; font-weight: 700;
+    width: 18px; height: 18px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid #fff;
+  }
+
+  /* Chat window */
+  #ai-chat-window {
+    position: fixed; bottom: 160px; right: 28px; z-index: 9997;
+    width: 380px; max-height: 560px;
+    background: #fff; border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(0,0,0,.28);
+    display: flex; flex-direction: column;
+    overflow: hidden; transition: opacity .25s, transform .25s;
+    opacity: 0; transform: translateY(20px) scale(.97); pointer-events: none;
+  }
+  #ai-chat-window.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: all; }
+
+  /* Chat header */
+  .ai-chat-header {
+    background: linear-gradient(135deg,#1a1a1a,#2d2d2d);
+    color: #fff; padding: 14px 18px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .ai-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg,#ffcd11,#f0a500);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .ai-chat-header-info { flex: 1; }
+  .ai-chat-header-info strong { display: block; font-size: 14px; }
+  .ai-chat-header-info span { font-size: 11px; color: #aaa; }
+  .ai-online-dot {
+    width: 8px; height: 8px; background: #00e676;
+    border-radius: 50%; display: inline-block; margin-right: 4px;
+  }
+  .ai-chat-close { background: none; border: none; color: #aaa; font-size: 20px; cursor: pointer; padding: 0 4px; }
+  .ai-chat-close:hover { color: #fff; }
+
+  /* Quick actions bar */
+  .ai-quick-bar {
+    background: #f9f9f9; border-bottom: 1px solid #eee;
+    padding: 8px 12px; display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .ai-quick-btn {
+    background: #fff; border: 1px solid #ddd; border-radius: 20px;
+    padding: 4px 12px; font-size: 11px; cursor: pointer; color: #555;
+    transition: all .15s; white-space: nowrap;
+  }
+  .ai-quick-btn:hover { background: #ffcd11; border-color: #ffcd11; color: #1a1a1a; font-weight: 600; }
+
+  /* Messages area */
+  #ai-messages {
+    flex: 1; overflow-y: auto; padding: 16px;
+    display: flex; flex-direction: column; gap: 12px;
+    background: #fafafa;
+  }
+  .ai-msg { display: flex; gap: 8px; align-items: flex-end; max-width: 100%; }
+  .ai-msg.user { flex-direction: row-reverse; }
+  .ai-msg-bubble {
+    max-width: 78%; padding: 10px 14px; border-radius: 14px;
+    font-size: 13px; line-height: 1.5; word-wrap: break-word;
+  }
+  .ai-msg.bot .ai-msg-bubble {
+    background: #fff; border: 1px solid #e8e8e8; color: #222;
+    border-bottom-left-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,.07);
+  }
+  .ai-msg.user .ai-msg-bubble {
+    background: linear-gradient(135deg,#ffcd11,#f0a500);
+    color: #1a1a1a; font-weight: 500; border-bottom-right-radius: 4px;
+  }
+  .ai-msg-avatar {
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg,#ffcd11,#f0a500);
+    display: flex; align-items: center; justify-content: center; font-size: 14px;
+  }
+  .ai-msg.user .ai-msg-avatar { background: #1a1a1a; color: #ffcd11; }
+
+  /* Typing indicator */
+  .ai-typing { display: flex; gap: 4px; padding: 6px 2px; }
+  .ai-typing span {
+    width: 7px; height: 7px; background: #bbb; border-radius: 50%;
+    animation: aiTypeBounce .9s infinite ease-in-out;
+  }
+  .ai-typing span:nth-child(2) { animation-delay: .15s; }
+  .ai-typing span:nth-child(3) { animation-delay: .3s; }
+  @keyframes aiTypeBounce {
+    0%,60%,100% { transform: translateY(0); }
+    30% { transform: translateY(-6px); }
+  }
+
+  /* Input area */
+  .ai-input-area {
+    border-top: 1px solid #eee; padding: 12px 14px;
+    display: flex; gap: 8px; align-items: center; background: #fff;
+  }
+  #ai-input {
+    flex: 1; border: 1px solid #e0e0e0; border-radius: 22px;
+    padding: 9px 16px; font-size: 13px; outline: none;
+    transition: border-color .2s; resize: none; font-family: inherit;
+  }
+  #ai-input:focus { border-color: #ffcd11; }
+  #ai-send-btn {
+    background: linear-gradient(135deg,#ffcd11,#f0a500);
+    border: none; border-radius: 50%; width: 36px; height: 36px;
+    cursor: pointer; font-size: 16px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .15s;
+  }
+  #ai-send-btn:hover { transform: scale(1.1); }
+
+  /* Feedback modal */
+  #feedback-modal {
+    position: fixed; inset: 0; z-index: 10000;
+    background: rgba(0,0,0,.55); display: flex;
+    align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity .25s;
+  }
+  #feedback-modal.open { opacity: 1; pointer-events: all; }
+  .feedback-card {
+    background: #fff; border-radius: 16px; padding: 32px;
+    width: 420px; max-width: 95vw; box-shadow: 0 12px 50px rgba(0,0,0,.3);
+    transform: translateY(20px); transition: transform .25s;
+  }
+  #feedback-modal.open .feedback-card { transform: translateY(0); }
+  .feedback-card h3 { font-size: 20px; margin-bottom: 6px; color: #1a1a1a; }
+  .feedback-card p { font-size: 13px; color: #777; margin-bottom: 18px; }
+  .feedback-stars { display: flex; gap: 8px; margin-bottom: 18px; }
+  .feedback-stars span {
+    font-size: 30px; cursor: pointer; transition: transform .15s;
+    filter: grayscale(1); opacity: .5;
+  }
+  .feedback-stars span:hover,
+  .feedback-stars span.active { filter: grayscale(0); opacity: 1; transform: scale(1.2); }
+  .feedback-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .feedback-tag {
+    border: 1px solid #ddd; border-radius: 20px; padding: 5px 14px;
+    font-size: 12px; cursor: pointer; color: #555; transition: all .15s;
+  }
+  .feedback-tag.sel { background: #ffcd11; border-color: #ffcd11; color: #1a1a1a; font-weight: 600; }
+  .feedback-textarea {
+    width: 100%; border: 1px solid #e0e0e0; border-radius: 8px;
+    padding: 10px 12px; font-size: 13px; resize: none; font-family: inherit;
+    margin-bottom: 16px; outline: none;
+  }
+  .feedback-textarea:focus { border-color: #ffcd11; }
+  .feedback-actions { display: flex; justify-content: flex-end; gap: 10px; }
+  .feedback-cancel { background: none; border: 1px solid #ddd; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-size: 13px; }
+  .feedback-submit {
+    background: linear-gradient(135deg,#ffcd11,#f0a500); border: none;
+    padding: 8px 24px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 13px;
+    transition: transform .15s;
+  }
+  .feedback-submit:hover { transform: scale(1.04); }
+
+  /* Theme toast */
+  #theme-toast {
+    position: fixed; top: 80px; right: 28px; z-index: 10001;
+    background: #1a1a1a; color: #ffcd11; padding: 12px 22px;
+    border-radius: 8px; font-size: 13px; font-weight: 600;
+    box-shadow: 0 4px 18px rgba(0,0,0,.3);
+    opacity: 0; transform: translateY(-10px);
+    transition: opacity .3s, transform .3s; pointer-events: none;
+  }
+  #theme-toast.show { opacity: 1; transform: translateY(0); }
+
+  /* Dark theme overrides */
+  body.theme-dark { background: #111; color: #eee; }
+  body.theme-dark header { background: #222; }
+  body.theme-dark .logo-text { color: #ffcd11; }
+  body.theme-dark .hero-content h1 { color: #fff; }
+  body.theme-dark section { background: #111; }
+  body.theme-dark .card { background: #1e1e1e; border-color: #333; color: #ccc; }
+  body.theme-dark #ai-chat-window { background: #1e1e1e; }
+  body.theme-dark #ai-messages { background: #161616; }
+  body.theme-dark .ai-msg.bot .ai-msg-bubble { background: #2a2a2a; border-color: #333; color: #eee; }
+  body.theme-dark .ai-input-area { background: #1e1e1e; border-top-color: #333; }
+  body.theme-dark #ai-input { background: #2a2a2a; border-color: #444; color: #eee; }
+
+  /* High contrast theme */
+  body.theme-hc { background: #000; color: #fff; filter: contrast(1.25); }
+  body.theme-hc header { background: #000; border-bottom: 3px solid #ffcd11; }
+
+  /* Night / warm theme */
+  body.theme-night { background: #1a1209; color: #e8d5a3; }
+  body.theme-night header { background: #2d1f0a; }
+
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Corporation",
+    "name": "Caterpillar Inc.",
+    "alternateName": "CAT",
+    "url": "https://www.caterpillar.com",
+    "logo": "https://www.caterpillar.com/en/_jcr_content/image.img.jpg",
+    "description": "World's leading manufacturer of construction and mining equipment, diesel and natural gas engines, industrial turbines, and diesel-electric locomotives.",
+    "foundingDate": "1925",
+    "numberOfEmployees": { "@type": "QuantitativeValue", "value": 107700 },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "510 Lake Cook Road",
+      "addressLocality": "Deerfield",
+      "addressRegion": "IL",
+      "postalCode": "60015",
+      "addressCountry": "US"
+    },
+    "sameAs": [
+      "https://www.linkedin.com/company/caterpillar-inc-",
+      "https://twitter.com/caterpillarinc",
+      "https://www.facebook.com/caterpillarinc"
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Cat Equipment Catalog",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Excavators", "description": "From compact mini excavators to large mining shovels" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Bulldozers", "description": "Industry-leading performance for pushing, leveling and grading" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Power Systems", "description": "Diesel and gas generator sets, offshore drilling engines" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Mining Equipment", "description": "Surface and underground mining machines with autonomous haulage" } }
+      ]
+    }
+  }
+  </script>
+  <meta name="description" content="Caterpillar Inc. — World's leading manufacturer of construction and mining equipment, engines, and turbines. Serving 160+ countries." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Caterpillar Inc. | Building a Better World" />
+  <meta property="og:description" content="From autonomous haulage to AI-powered diagnostics, Caterpillar leads the technology revolution on job sites worldwide." />
+  <link rel="alternate" type="application/json" href="/api/v1/site-data.json" title="Machine-Readable Site Data (JSON)" />
+
+</head>
+<body>
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay">
+  <button class="search-close" onclick="document.getElementById('searchOverlay').classList.remove('active')">&times;</button>
+  <div class="search-inner">
+    <label>What are you looking for?</label>
+    <input type="text" placeholder="Search products, parts, dealers..." autofocus />
+    <div class="search-tags">
+      <div class="search-tag">Excavators</div>
+      <div class="search-tag">Find a Dealer</div>
+      <div class="search-tag">Cat Parts</div>
+      <div class="search-tag">Power Systems</div>
+      <div class="search-tag">Financial Services</div>
+      <div class="search-tag">Careers</div>
+    </div>
+  </div>
+</div>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <a href="https://www.cat.com/en_US/dealer-locator.html" target="_blank">Find a Dealer</a>
+  <a href="https://www.cat.com" target="_blank">My.Cat.com</a>
+  <a href="https://www.caterpillar.com/en/company/contact-caterpillar.html" target="_blank">Contact Us</a>
+  <a href="https://www.caterpillar.com/en/investors.html" target="_blank">Investors</a>
+  <a href="https://www.caterpillar.com/en/careers.html" target="_blank">Careers</a>
+  <select>
+    <option>🌐 English</option>
+    <option>Français</option>
+    <option>Español</option>
+    <option>Deutsch</option>
+    <option>日本語</option>
+  </select>
+</div>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="#">
+    <div class="logo-box">CAT</div>
+    <span class="logo-text">Caterpillar</span>
+  </a>
+  <nav>
+    <div class="nav-item">
+      <a href="https://www.cat.com/en_US/products.html" target="_blank" class="nav-link">Products ▾</a>
+      <div class="dropdown">
+        <a href="https://www.cat.com/en_US/products/new/equipment/excavators.html" target="_blank">Excavators</a>
+        <a href="https://www.cat.com/en_US/products/new/equipment/bulldozers.html" target="_blank">Bulldozers</a>
+        <a href="https://www.cat.com/en_US/products/new/equipment/wheel-loaders.html" target="_blank">Wheel Loaders</a>
+        <a href="https://www.cat.com/en_US/products/new/equipment/motor-graders.html" target="_blank">Motor Graders</a>
+        <a href="https://www.cat.com/en_US/products/new/equipment/compactors.html" target="_blank">Compactors</a>
+        <a href="https://www.cat.com/en_US/products/new/power-systems.html" target="_blank">Power Systems</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="https://www.cat.com/en_US/support.html" target="_blank" class="nav-link">Services ▾</a>
+      <div class="dropdown">
+        <a href="https://www.cat.com/en_US/support/parts.html" target="_blank">Cat Parts</a>
+        <a href="https://www.catfinancial.com" target="_blank">Cat Financial</a>
+        <a href="https://www.cat.com/en_US/support/maintenance.html" target="_blank">Maintenance</a>
+        <a href="https://www.cat.com/en_US/support/technology.html" target="_blank">Technology & Telematics</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="https://www.caterpillar.com/en/company/industries.html" target="_blank" class="nav-link">Industries ▾</a>
+      <div class="dropdown">
+        <a href="#" target="_blank">Construction</a>
+        <a href="#" target="_blank">Mining</a>
+        <a href="#" target="_blank">Oil &amp; Gas</a>
+        <a href="#" target="_blank">Marine</a>
+        <a href="#" target="_blank">Forestry</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="https://www.caterpillar.com/en/company.html" target="_blank" class="nav-link">About ▾</a>
+      <div class="dropdown">
+        <a href="https://www.caterpillar.com/en/company/caterpillar-history.html" target="_blank">Our History</a>
+        <a href="https://www.caterpillar.com/en/company/leadership.html" target="_blank">Leadership</a>
+        <a href="https://www.caterpillar.com/en/news.html" target="_blank">Newsroom</a>
+        <a href="https://www.caterpillar.com/en/company/sustainability.html" target="_blank">Sustainability</a>
+      </div>
+    </div>
+    <button class="nav-search-btn" onclick="document.getElementById('searchOverlay').classList.add('active')">🔍</button>
+  </nav>
+</header>
+
+<!-- HERO SLIDER -->
+<section class="hero" id="hero">
+  <div class="slide active">
+    <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80')"></div>
+    <div class="slide-content">
+      <div class="hero-eyebrow">Built For It</div>
+      <h1>Building a <span>Better World</span><br/>Since 1925</h1>
+      <p>Caterpillar is the world's leading manufacturer of construction and mining equipment, diesel and natural gas engines, industrial turbines, and diesel-electric locomotives.</p>
+      <div class="hero-btns">
+        <a href="https://www.cat.com/en_US/products.html" target="_blank" class="btn-yellow">Explore Products</a>
+        <a href="https://www.cat.com/en_US/dealer-locator.html" target="_blank" class="btn-outline">Find a Dealer</a>
+      </div>
+    </div>
+  </div>
+  <div class="slide">
+    <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=1600&q=80')"></div>
+    <div class="slide-content">
+      <div class="hero-eyebrow">Innovation</div>
+      <h1>The Future of <span>Autonomous</span><br/>Equipment</h1>
+      <p>From autonomous haulage to AI-powered diagnostics, Caterpillar is leading the technology revolution on job sites around the world.</p>
+      <div class="hero-btns">
+        <a href="https://www.caterpillar.com/en/company/innovation.html" target="_blank" class="btn-yellow">Explore Innovation</a>
+        <a href="#" class="btn-outline">Watch Video</a>
+      </div>
+    </div>
+  </div>
+  <div class="slide">
+    <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1600&q=80')"></div>
+    <div class="slide-content">
+      <div class="hero-eyebrow">Sustainability</div>
+      <h1>Powering a <span>Greener</span><br/>Tomorrow</h1>
+      <p>Our commitment to sustainability drives every machine we build — reducing emissions, improving fuel efficiency, and investing in renewable energy solutions worldwide.</p>
+      <div class="hero-btns">
+        <a href="https://www.caterpillar.com/en/company/sustainability.html" target="_blank" class="btn-yellow">Our ESG Goals</a>
+        <a href="#" class="btn-outline">2025 Report</a>
+      </div>
+    </div>
+  </div>
+  <button class="hero-arrow left" onclick="changeSlide(-1)">&#8592;</button>
+  <button class="hero-arrow right" onclick="changeSlide(1)">&#8594;</button>
+  <div class="hero-dots">
+    <div class="dot active" onclick="goSlide(0)"></div>
+    <div class="dot" onclick="goSlide(1)"></div>
+    <div class="dot" onclick="goSlide(2)"></div>
+  </div>
+</section>
+
+<!-- QUICK LINKS -->
+<div class="quick-links">
+  <a href="https://www.cat.com/en_US/products.html" target="_blank" class="quick-link"><span class="ql-icon">🚧</span> Browse Equipment</a>
+  <a href="https://www.cat.com/en_US/support/parts.html" target="_blank" class="quick-link"><span class="ql-icon">🔧</span> Order Parts</a>
+  <a href="https://www.cat.com/en_US/dealer-locator.html" target="_blank" class="quick-link"><span class="ql-icon">📍</span> Find a Dealer</a>
+  <a href="https://www.catfinancial.com" target="_blank" class="quick-link"><span class="ql-icon">💰</span> Cat Financial</a>
+  <a href="https://www.caterpillar.com/en/careers.html" target="_blank" class="quick-link"><span class="ql-icon">👷</span> Careers</a>
+  <a href="https://www.caterpillar.com/en/investors.html" target="_blank" class="quick-link"><span class="ql-icon">📈</span> Investors</a>
+</div>
+
+<!-- PRODUCT CATEGORIES -->
+<section class="products">
+  <p class="sec-label">Our Equipment</p>
+  <h2 class="sec-title">Built for Every <span>Challenge</span></h2>
+  <div class="prod-grid">
+    <div class="prod-card">
+      <div class="prod-img">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Excavator" loading="lazy"/>
+        <span class="prod-tag">Construction</span>
+      </div>
+      <div class="prod-body">
+        <h3>Excavators</h3>
+        <p>From compact mini excavators to large mining shovels, Cat excavators deliver power, precision, and durability on any job site.</p>
+        <a href="https://www.cat.com/en_US/products/new/equipment/excavators.html" target="_blank" class="prod-link">Browse Excavators</a>
+      </div>
+    </div>
+    <div class="prod-card">
+      <div class="prod-img">
+        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80" alt="Bulldozer" loading="lazy"/>
+        <span class="prod-tag">Earthmoving</span>
+      </div>
+      <div class="prod-body">
+        <h3>Bulldozers</h3>
+        <p>Industry-leading Cat bulldozers offer the best in class performance for pushing, leveling and grading on any terrain.</p>
+        <a href="https://www.cat.com/en_US/products/new/equipment/bulldozers.html" target="_blank" class="prod-link">Browse Bulldozers</a>
+      </div>
+    </div>
+    <div class="prod-card">
+      <div class="prod-img">
+        <img src="https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=600&q=80" alt="Power Systems" loading="lazy"/>
+        <span class="prod-tag">Power</span>
+      </div>
+      <div class="prod-body">
+        <h3>Power Systems</h3>
+        <p>Reliable diesel and gas generator sets, offshore drilling engines, and industrial power solutions for the world's most demanding applications.</p>
+        <a href="https://www.cat.com/en_US/products/new/power-systems.html" target="_blank" class="prod-link">View Power Systems</a>
+      </div>
+    </div>
+    <div class="prod-card">
+      <div class="prod-img">
+        <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&q=80" alt="Mining" loading="lazy"/>
+        <span class="prod-tag">Mining</span>
+      </div>
+      <div class="prod-body">
+        <h3>Mining Equipment</h3>
+        <p>Surface and underground mining machines designed for maximum productivity, with autonomous haulage systems leading the industry.</p>
+        <a href="https://www.cat.com/en_US/products/new/equipment/mining.html" target="_blank" class="prod-link">View Mining Equipment</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-band">
+  <div class="stat"><div class="stat-number">100+</div><div class="stat-label">Years of Innovation</div></div>
+  <div class="stat"><div class="stat-number">160+</div><div class="stat-label">Countries Served</div></div>
+  <div class="stat"><div class="stat-number">113K</div><div class="stat-label">Global Employees</div></div>
+  <div class="stat"><div class="stat-number">$67.6B</div><div class="stat-label">2025 Revenue</div></div>
+</section>
+
+<!-- INNOVATION SPLIT -->
+<section class="innovation">
+  <div class="innov-img">
+    <img src="https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=900&q=80" alt="Innovation" loading="lazy"/>
+  </div>
+  <div class="innov-content">
+    <p class="sec-label">Technology & Innovation</p>
+    <h2>The Future of<br/><span>Intelligent</span> Machines</h2>
+    <p>At CES 2025, Caterpillar showcased how AI, automation, and connectivity are transforming construction and mining operations globally.</p>
+    <ul class="innov-list">
+      <li>Autonomous Haulage Systems (AHS) with 3B+ tons hauled</li>
+      <li>Cat® Command for remote machine operation</li>
+      <li>VisionLink® fleet management &amp; telematics</li>
+      <li>AI-powered predictive maintenance diagnostics</li>
+      <li>Electric &amp; hybrid next-generation machines</li>
+    </ul>
+    <a href="https://www.caterpillar.com/en/company/innovation.html" target="_blank" class="btn-yellow">Explore Innovation</a>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section class="industries">
+  <p class="sec-label">Industries We Serve</p>
+  <h2 class="sec-title">Wherever Work Gets <span>Done</span></h2>
+  <div class="ind-grid">
+    <a href="https://www.caterpillar.com/en/company/industries.html" target="_blank" class="ind-item"><div class="ind-icon">🏗️</div><div class="ind-name">Construction</div></a>
+    <a href="https://www.cat.com/en_US/products/new/equipment/mining.html" target="_blank" class="ind-item"><div class="ind-icon">⛏️</div><div class="ind-name">Mining</div></a>
+    <a href="#" class="ind-item"><div class="ind-icon">🌾</div><div class="ind-name">Agriculture</div></a>
+    <a href="#" class="ind-item"><div class="ind-icon">⚡</div><div class="ind-name">Oil &amp; Gas</div></a>
+    <a href="#" class="ind-item"><div class="ind-icon">🚢</div><div class="ind-name">Marine</div></a>
+    <a href="#" class="ind-item"><div class="ind-icon">🚂</div><div class="ind-name">Rail</div></a>
+    <a href="#" class="ind-item"><div class="ind-icon">🏛️</div><div class="ind-name">Government</div></a>
+    <a href="#" class="ind-item"><div class="ind-icon">🔌</div><div class="ind-name">Electric Power</div></a>
+    <a href="#" class="ind-item"><div class="ind-icon">🌲</div><div class="ind-name">Forestry</div></a>
+    <a href="#" class="ind-item"><div class="ind-icon">🏙️</div><div class="ind-name">Waste</div></a>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial">
+  <blockquote>Our team's continued discipline in a dynamic environment, coupled with a growing backlog, positions us for sustained momentum and long-term profitable growth.</blockquote>
+  <cite>— Joe Creed, CEO, Caterpillar Inc.</cite>
+</section>
+
+<!-- NEWS -->
+<section class="news">
+  <p class="sec-label">Latest Updates</p>
+  <h2 class="sec-title">Caterpillar <span>News</span></h2>
+  <div class="news-grid">
+    <div class="news-card">
+      <div class="news-img">
+        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80" alt="CONEXPO" loading="lazy"/>
+      </div>
+      <div class="news-date-bar">February 19, 2026</div>
+      <div class="news-body">
+        <h3>Caterpillar CEO Joe Creed to Participate in Fireside Chat at CONEXPO</h3>
+        <p>CEO Joe Creed and Construction Industries Group President Rod Shurman will participate in a fireside chat during CONEXPO in Las Vegas.</p>
+        <a href="https://www.caterpillar.com/en/news/corporate-press-releases.html" target="_blank" class="news-link">Read More →</a>
+      </div>
+    </div>
+    <div class="news-card">
+      <div class="news-img">
+        <img src="https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=600&q=80" alt="RPMGlobal" loading="lazy"/>
+      </div>
+      <div class="news-date-bar">February 17, 2026</div>
+      <div class="news-body">
+        <h3>Caterpillar Bolsters Mining Technology with RPMGlobal Acquisition</h3>
+        <p>Caterpillar has acquired RPMGlobal, an Australian-based mining software company, to strengthen its mining technology solutions portfolio.</p>
+        <a href="https://www.caterpillar.com/en/news/corporate-press-releases.html" target="_blank" class="news-link">Read More →</a>
+      </div>
+    </div>
+    <div class="news-card">
+      <div class="news-img">
+        <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80" alt="Financial Results" loading="lazy"/>
+      </div>
+      <div class="news-date-bar">January 28, 2026</div>
+      <div class="news-body">
+        <h3>Caterpillar Reports Full-Year 2025 Results: $67.6B Revenue</h3>
+        <p>Caterpillar reported fourth-quarter 2025 sales and revenues of $19.1 billion, with full-year 2025 revenues totaling $67.6 billion.</p>
+        <a href="https://investors.caterpillar.com/news/news-details/2026/Caterpillar-Reports-Fourth-Quarter-and-Full-Year-2025-Results/default.aspx" target="_blank" class="news-link">Read More →</a>
+      </div>
+    </div>
+  </div>
+  <div class="news-cta">
+    <a href="https://www.caterpillar.com/en/news.html" target="_blank" class="btn-dark">View All News</a>
+  </div>
+</section>
+
+<!-- BRANDS -->
+<section class="brands">
+  <p class="sec-label" style="color:#777;">Our Family of Brands</p>
+  <h2 class="sec-title">The Caterpillar Portfolio</h2>
+  <div class="brands-grid">
+    <a href="https://www.cat.com" target="_blank" class="brand-chip">Cat</a>
+    <a href="https://www.catfinancial.com" target="_blank" class="brand-chip">Cat Financial</a>
+    <a href="https://www.sem-machinery.com" target="_blank" class="brand-chip">SEM</a>
+    <a href="https://www.fgwilson.com" target="_blank" class="brand-chip">FG Wilson</a>
+    <a href="#" class="brand-chip">MaK</a>
+    <a href="https://www.solarturbines.com" target="_blank" class="brand-chip">Solar Turbines</a>
+    <a href="https://www.perkins.com" target="_blank" class="brand-chip">Perkins</a>
+    <a href="https://www.progressrail.com" target="_blank" class="brand-chip">Progress Rail</a>
+    <a href="#" class="brand-chip">Anchor Coupling</a>
+  </div>
+</section>
+
+<!-- SUSTAINABILITY -->
+<section class="sustainability">
+  <div class="sustain-bg" style="background-image:url('https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1600&q=80')"></div>
+  <div class="sustain-content">
+    <p class="sec-label">Our Commitment</p>
+    <h2>Sustainability &amp; Purpose</h2>
+    <p>Caterpillar is committed to helping customers build a better, more sustainable world — reducing emissions, improving efficiency, and investing in the communities where we live and work.</p>
+    <a href="https://www.caterpillar.com/en/company/sustainability.html" target="_blank" class="btn-yellow">Learn About Our ESG Goals</a>
+  </div>
+</section>
+
+<!-- DEALER LOCATOR -->
+<section class="dealer-band">
+  <div>
+    <h3>Find Your Nearest Cat Dealer</h3>
+    <p>Backed by one of the largest dealer networks in the world — 160+ countries.</p>
+  </div>
+  <div class="dealer-form">
+    <input type="text" placeholder="Enter city, state, or ZIP code..." />
+    <button class="btn-dark" onclick="window.open('https://www.cat.com/en_US/dealer-locator.html','_blank')">Search Dealers</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo-box">CAT</div>
+      <p>Caterpillar Inc. is the world's leading manufacturer of construction and mining equipment, diesel and natural gas engines, industrial gas turbines, and diesel-electric locomotives.</p>
+      <div class="social-links">
+        <a href="https://www.linkedin.com/company/caterpillar-inc-" target="_blank" class="social-btn">in</a>
+        <a href="https://www.youtube.com/caterpillarinc" target="_blank" class="social-btn">▶</a>
+        <a href="https://www.facebook.com/caterpillarinc" target="_blank" class="social-btn">f</a>
+        <a href="https://twitter.com/caterpillarinc" target="_blank" class="social-btn">𝕏</a>
+        <a href="https://www.instagram.com/caterpillarinc" target="_blank" class="social-btn">◎</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <a href="https://www.cat.com/en_US/products/new/equipment/excavators.html" target="_blank">Excavators</a>
+      <a href="https://www.cat.com/en_US/products/new/equipment/bulldozers.html" target="_blank">Bulldozers</a>
+      <a href="https://www.cat.com/en_US/products/new/equipment/wheel-loaders.html" target="_blank">Wheel Loaders</a>
+      <a href="https://www.cat.com/en_US/products/new/equipment/motor-graders.html" target="_blank">Motor Graders</a>
+      <a href="https://www.cat.com/en_US/products/new/power-systems.html" target="_blank">Power Systems</a>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <a href="https://www.catfinancial.com" target="_blank">Cat Financial</a>
+      <a href="https://www.cat.com/en_US/support/parts.html" target="_blank">Cat Parts</a>
+      <a href="#" target="_blank">Cat Insurance</a>
+      <a href="https://www.cat.com/en_US/support/technology.html" target="_blank">Technology</a>
+      <a href="https://www.cat.com/en_US/support/maintenance.html" target="_blank">Rebuild &amp; Repair</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="https://www.caterpillar.com/en/company/caterpillar-history.html" target="_blank">Our History</a>
+      <a href="https://www.caterpillar.com/en/company/leadership.html" target="_blank">Leadership</a>
+      <a href="https://www.caterpillar.com/en/investors.html" target="_blank">Investor Relations</a>
+      <a href="https://www.caterpillar.com/en/news.html" target="_blank">Newsroom</a>
+      <a href="https://www.caterpillar.com/en/careers.html" target="_blank">Careers</a>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <a href="https://www.cat.com/en_US/dealer-locator.html" target="_blank">Find a Dealer</a>
+      <a href="https://www.caterpillar.com/en/company/contact-caterpillar.html" target="_blank">Contact Us</a>
+      <a href="https://www.cat.com/en_US/support/safety.html" target="_blank">Safety</a>
+      <a href="#" target="_blank">Training</a>
+      <a href="#" target="_blank">Documentation</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-logo">CAT®</div>
+    <span class="footer-copy">&copy; 2026 Caterpillar Inc. All Rights Reserved.</span>
+    <div class="footer-legal">
+      <a href="https://www.caterpillar.com/en/privacy-policy.html" target="_blank">Privacy Policy</a>
+      <a href="https://www.caterpillar.com/en/terms-of-use.html" target="_blank">Terms of Use</a>
+      <a href="#">Accessibility</a>
+      <a href="#">Cookie Settings</a>
+      <a href="#">Sitemap</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+
+  function goSlide(n) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+  function changeSlide(dir) { goSlide(current + dir); }
+  setInterval(() => changeSlide(1), 5500);
+</script>
+
+  <!-- ===== AGENT VIEW PANEL ===== -->
+  <div id="agent-view" role="complementary" aria-label="Machine-readable agent view">
+    <div class="agent-header">
+      <div class="agent-header-title">
+        <span>⚙</span>
+        AGENT / MACHINE-READABLE VIEW
+        <span style="font-size:10px;color:#aaa;font-weight:normal;margin-left:12px;">caterpillar.com · structured data mode</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <span style="color:#555;font-size:11px;">Switch back to human view →</span>
+        <button class="agent-close-btn" onclick="toggleAgentMode()">✕ CLOSE AGENT VIEW</button>
+      </div>
+    </div>
+
+    <div class="agent-body">
+
+      <!-- ENTITY IDENTITY -->
+      <div class="agent-section">
+        <div class="agent-section-title">📋 Entity Identity</div>
+        <div class="agent-section-body">
+          <div class="agent-kv"><span class="agent-key">entity_type</span><span class="agent-val">Corporation</span></div>
+          <div class="agent-kv"><span class="agent-key">legal_name</span><span class="agent-val">Caterpillar Inc.</span></div>
+          <div class="agent-kv"><span class="agent-key">ticker</span><span class="agent-val">NYSE: CAT</span></div>
+          <div class="agent-kv"><span class="agent-key">founded</span><span class="agent-val">1925</span></div>
+          <div class="agent-kv"><span class="agent-key">headquarters</span><span class="agent-val">Deerfield, Illinois, USA</span></div>
+          <div class="agent-kv"><span class="agent-key">employees</span><span class="agent-val">~107,700</span></div>
+          <div class="agent-kv"><span class="agent-key">ceo</span><span class="agent-val">Joe Creed</span></div>
+          <div class="agent-kv"><span class="agent-key">global_presence</span><span class="agent-val">160+ countries via dealer network</span></div>
+          <div class="agent-kv"><span class="agent-key">primary_url</span><span class="agent-val"><a href="https://www.caterpillar.com" target="_blank">https://www.caterpillar.com</a></span></div>
+          <div class="agent-kv"><span class="agent-key">schema_type</span><span class="agent-val">schema.org/Corporation</span></div>
+        </div>
+      </div>
+
+      <!-- KEY FINANCIALS -->
+      <div class="agent-section">
+        <div class="agent-section-title">📊 Key Financials (FY 2025)</div>
+        <div class="agent-section-body">
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+            <div class="agent-metric"><div class="agent-metric-val">$67.6B</div><div class="agent-metric-label">Full-Year Revenue</div></div>
+            <div class="agent-metric"><div class="agent-metric-val">$19.1B</div><div class="agent-metric-label">Q4 2025 Revenue</div></div>
+            <div class="agent-metric"><div class="agent-metric-val">160+</div><div class="agent-metric-label">Countries Served</div></div>
+            <div class="agent-metric"><div class="agent-metric-val">107,700</div><div class="agent-metric-label">Employees</div></div>
+          </div>
+          <div class="agent-kv"><span class="agent-key">source</span><span class="agent-val">Caterpillar Q4 2025 Earnings Release</span></div>
+          <div class="agent-kv"><span class="agent-key">reporting_period</span><span class="agent-val">Full Year 2025</span></div>
+        </div>
+      </div>
+
+      <!-- PRODUCT CATALOG -->
+      <div class="agent-section">
+        <div class="agent-section-title">🏗 Product Catalog</div>
+        <div class="agent-section-body">
+          <div class="agent-product-card">
+            <div class="agent-product-name">Excavators</div>
+            <div class="agent-product-desc">From compact mini excavators to large mining shovels. Power, precision, and durability on any job site.</div>
+            <div style="margin-top:6px;"><span class="agent-tag">construction</span><span class="agent-tag">mining</span><span class="agent-tag">earthmoving</span></div>
+            <div class="agent-kv" style="margin-top:8px;"><span class="agent-key">catalog_url</span><span class="agent-val"><a href="#">/equipment/excavators</a></span></div>
+          </div>
+          <div class="agent-product-card">
+            <div class="agent-product-name">Bulldozers</div>
+            <div class="agent-product-desc">Industry-leading performance for pushing, leveling, and grading on any terrain.</div>
+            <div style="margin-top:6px;"><span class="agent-tag">construction</span><span class="agent-tag">grading</span><span class="agent-tag">infrastructure</span></div>
+            <div class="agent-kv" style="margin-top:8px;"><span class="agent-key">catalog_url</span><span class="agent-val"><a href="#">/equipment/bulldozers</a></span></div>
+          </div>
+          <div class="agent-product-card">
+            <div class="agent-product-name">Power Systems</div>
+            <div class="agent-product-desc">Diesel and gas generator sets, offshore drilling engines, and industrial power solutions.</div>
+            <div style="margin-top:6px;"><span class="agent-tag">energy</span><span class="agent-tag">power-gen</span><span class="agent-tag">offshore</span></div>
+            <div class="agent-kv" style="margin-top:8px;"><span class="agent-key">catalog_url</span><span class="agent-val"><a href="#">/equipment/power-systems</a></span></div>
+          </div>
+          <div class="agent-product-card">
+            <div class="agent-product-name">Mining Equipment</div>
+            <div class="agent-product-desc">Surface and underground mining machines with autonomous haulage systems.</div>
+            <div style="margin-top:6px;"><span class="agent-tag">mining</span><span class="agent-tag">autonomous</span><span class="agent-tag">underground</span></div>
+            <div class="agent-kv" style="margin-top:8px;"><span class="agent-key">catalog_url</span><span class="agent-val"><a href="#">/equipment/mining</a></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LATEST NEWS / UPDATES -->
+      <div class="agent-section">
+        <div class="agent-section-title">📰 Latest Updates</div>
+        <div class="agent-section-body">
+          <div class="agent-news-item">
+            <div class="agent-news-headline">CEO Joe Creed and Rod Shurman to participate at CONEXPO fireside chat (Las Vegas)</div>
+            <div class="agent-news-meta">type: event · source: caterpillar.com/news</div>
+          </div>
+          <div class="agent-news-item">
+            <div class="agent-news-headline">Caterpillar acquires RPMGlobal — Australian mining software company</div>
+            <div class="agent-news-meta">type: acquisition · sector: mining_technology</div>
+          </div>
+          <div class="agent-news-item">
+            <div class="agent-news-headline">Q4 2025 revenues: $19.1B · FY2025 total: $67.6B</div>
+            <div class="agent-news-meta">type: financial_result · period: FY2025</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INDUSTRIES SERVED -->
+      <div class="agent-section">
+        <div class="agent-section-title">🏭 Industries Served</div>
+        <div class="agent-section-body" style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span class="agent-tag">Construction</span>
+          <span class="agent-tag">Mining</span>
+          <span class="agent-tag">Oil &amp; Gas</span>
+          <span class="agent-tag">Marine</span>
+          <span class="agent-tag">Power Generation</span>
+          <span class="agent-tag">Rail</span>
+          <span class="agent-tag">Agriculture</span>
+          <span class="agent-tag">Forestry</span>
+          <span class="agent-tag">Government / Defense</span>
+          <span class="agent-tag">Waste</span>
+        </div>
+      </div>
+
+      <!-- SITE NAVIGATION MAP -->
+      <div class="agent-section">
+        <div class="agent-section-title">🗺 Site Navigation Map</div>
+        <div class="agent-section-body">
+          <div class="agent-kv"><span class="agent-key">primary_nav</span></div>
+          <div class="agent-nav-links">
+            <a class="agent-nav-link" href="#">Equipment</a>
+            <a class="agent-nav-link" href="#">Industries</a>
+            <a class="agent-nav-link" href="#">Services</a>
+            <a class="agent-nav-link" href="#">Technology</a>
+            <a class="agent-nav-link" href="#">Sustainability</a>
+            <a class="agent-nav-link" href="#">About</a>
+            <a class="agent-nav-link" href="#">Investors</a>
+            <a class="agent-nav-link" href="#">News</a>
+            <a class="agent-nav-link" href="#">Careers</a>
+            <a class="agent-nav-link" href="#">Support</a>
+            <a class="agent-nav-link" href="#">Cat Financial</a>
+            <a class="agent-nav-link" href="#">Find a Dealer</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- STRUCTURED DATA EXPORT -->
+      <div class="agent-section">
+        <div class="agent-section-title">💾 Structured Data Export (JSON-LD Preview)</div>
+        <div class="agent-section-body">
+          <div class="agent-json-block">
+<span class="json-key">"@context"</span>: <span class="json-str">"https://schema.org"</span>,<br>
+<span class="json-key">"@type"</span>: <span class="json-str">"Corporation"</span>,<br>
+<span class="json-key">"name"</span>: <span class="json-str">"Caterpillar Inc."</span>,<br>
+<span class="json-key">"ticker"</span>: <span class="json-str">"NYSE:CAT"</span>,<br>
+<span class="json-key">"revenue_fy2025"</span>: <span class="json-str">"$67.6B"</span>,<br>
+<span class="json-key">"employees"</span>: <span class="json-num">107700</span>,<br>
+<span class="json-key">"founded"</span>: <span class="json-num">1925</span>,<br>
+<span class="json-key">"ceo"</span>: <span class="json-str">"Joe Creed"</span>,<br>
+<span class="json-key">"headquarters"</span>: <span class="json-str">"Deerfield, IL, USA"</span>,<br>
+<span class="json-key">"global_dealer_countries"</span>: <span class="json-num">160</span>,<br>
+<span class="json-key">"products"</span>: [<span class="json-str">"Excavators"</span>, <span class="json-str">"Bulldozers"</span>, <span class="json-str">"Power Systems"</span>, <span class="json-str">"Mining Equipment"</span>],<br>
+<span class="json-key">"sustainability_focus"</span>: <span class="json-bool">true</span>,<br>
+<span class="json-key">"autonomous_tech"</span>: <span class="json-bool">true</span>
+          </div>
+          <div style="margin-top:10px;">
+            <span style="color:#555;font-size:11px;">Full machine-readable JSON available at: </span>
+            <a href="/api/v1/site-data.json" style="color:#ffcd11;font-size:11px;">/api/v1/site-data.json</a>
+            <span style="color:#555;font-size:11px;"> · robots.txt: </span>
+            <a href="/robots.txt" style="color:#ffcd11;font-size:11px;">/robots.txt</a>
+            <span style="color:#555;font-size:11px;"> · sitemap: </span>
+            <a href="/sitemap.xml" style="color:#ffcd11;font-size:11px;">/sitemap.xml</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI / AGENT CAPABILITIES -->
+      <div class="agent-section">
+        <div class="agent-section-title">🤖 AI &amp; Agent Capabilities</div>
+        <div class="agent-section-body">
+          <div class="agent-kv"><span class="agent-key">llm_txt</span><span class="agent-val"><a href="/llms.txt">/llms.txt</a> — plain-text summary for LLMs</span></div>
+          <div class="agent-kv"><span class="agent-key">api_endpoint</span><span class="agent-val"><a href="/api/v1/">/api/v1/</a> — RESTful structured data</span></div>
+          <div class="agent-kv"><span class="agent-key">json_ld</span><span class="agent-val">Embedded in &lt;head&gt; (schema.org/Corporation)</span></div>
+          <div class="agent-kv"><span class="agent-key">open_graph</span><span class="agent-val">Enabled — og:title, og:description</span></div>
+          <div class="agent-kv"><span class="agent-key">sitemap</span><span class="agent-val"><a href="/sitemap.xml">/sitemap.xml</a></span></div>
+          <div class="agent-kv"><span class="agent-key">robots</span><span class="agent-val"><a href="/robots.txt">/robots.txt</a></span></div>
+          <div class="agent-kv"><span class="agent-key">agent_mode_toggle</span><span class="agent-val">?view=agent — query param for programmatic access</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== FLOATING TOGGLE BUTTON ===== -->
+  <button class="agent-toggle-btn" onclick="toggleAgentMode()" id="agent-toggle-btn" title="Switch to machine-readable agent view">
+    <span class="toggle-icon">🤖</span>
+    AGENT VIEW
+    <div class="toggle-pill" id="toggle-pill"></div>
+  </button>
+
+
+  <script>
+    let agentModeOn = false;
+
+    // Support ?view=agent URL param for programmatic access
+    if (new URLSearchParams(window.location.search).get('view') === 'agent') {
+      document.addEventListener('DOMContentLoaded', () => enableAgentMode());
+    }
+
+    function toggleAgentMode() {
+      agentModeOn = !agentModeOn;
+      const panel = document.getElementById('agent-view');
+      const pill = document.getElementById('toggle-pill');
+      if (agentModeOn) {
+        panel.classList.add('visible');
+        pill.classList.add('on');
+        document.body.style.overflow = 'hidden';
+      } else {
+        panel.classList.remove('visible');
+        pill.classList.remove('on');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function enableAgentMode() {
+      agentModeOn = false;
+      toggleAgentMode();
+    }
+
+    // ESC key to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && agentModeOn) toggleAgentMode();
+    });
+  </script>
+
+
+<!-- ===== AI ASSISTANT ===== -->
+
+<!-- Theme toast notification -->
+<div id="theme-toast">✓ Theme applied!</div>
+
+<!-- Feedback Modal -->
+<div id="feedback-modal" role="dialog" aria-modal="true" aria-label="Feedback">
+  <div class="feedback-card">
+    <h3>💬 Share Your Feedback</h3>
+    <p>How was your experience on the Caterpillar website today?</p>
+    <div class="feedback-stars" id="star-row">
+      <span data-v="1">⭐</span><span data-v="2">⭐</span><span data-v="3">⭐</span>
+      <span data-v="4">⭐</span><span data-v="5">⭐</span>
+    </div>
+    <div class="feedback-tags" id="feedback-tags">
+      <span class="feedback-tag" data-t="Great design">Great design</span>
+      <span class="feedback-tag" data-t="Easy to navigate">Easy to navigate</span>
+      <span class="feedback-tag" data-t="Helpful info">Helpful info</span>
+      <span class="feedback-tag" data-t="Need more products">Need more products</span>
+      <span class="feedback-tag" data-t="Slow loading">Slow loading</span>
+      <span class="feedback-tag" data-t="Loved the AI">Loved the AI 🤖</span>
+    </div>
+    <textarea class="feedback-textarea" id="feedback-text" rows="3" placeholder="Tell us more (optional)..."></textarea>
+    <div class="feedback-actions">
+      <button class="feedback-cancel" onclick="closeFeedback()">Cancel</button>
+      <button class="feedback-submit" onclick="submitFeedback()">Send Feedback 🚀</button>
+    </div>
+  </div>
+</div>
+
+<!-- AI Chat Launcher -->
+<button id="ai-launcher" onclick="toggleChat()" title="Chat with CAT AI Assistant" aria-label="Open AI Chat">
+  🤖
+  <div class="ai-badge">AI</div>
+</button>
+
+<!-- Chat Window -->
+<div id="ai-chat-window" role="dialog" aria-label="CAT AI Assistant">
+  <div class="ai-chat-header">
+    <div class="ai-avatar">🐱</div>
+    <div class="ai-chat-header-info">
+      <strong>CAT Assistant</strong>
+      <span><span class="ai-online-dot"></span>Online · AI-Powered</span>
+    </div>
+    <button class="ai-chat-close" onclick="toggleChat()" aria-label="Close chat">✕</button>
+  </div>
+
+  <div class="ai-quick-bar">
+    <button class="ai-quick-btn" onclick="quickMsg('What equipment do you sell?')">🏗 Equipment</button>
+    <button class="ai-quick-btn" onclick="quickMsg('Switch to dark theme')">🌙 Dark Mode</button>
+    <button class="ai-quick-btn" onclick="quickMsg('Latest news')">📰 News</button>
+    <button class="ai-quick-btn" onclick="quickMsg('I want to give feedback')">💬 Feedback</button>
+    <button class="ai-quick-btn" onclick="quickMsg('Find a dealer near me')">📍 Dealer</button>
+  </div>
+
+  <div id="ai-messages" aria-live="polite"></div>
+
+  <div class="ai-input-area">
+    <input id="ai-input" type="text" placeholder="Ask me anything about CAT…" autocomplete="off"
+           onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendMsg();}" />
+    <button id="ai-send-btn" onclick="sendMsg()" aria-label="Send">➤</button>
+  </div>
+</div>
+
+
+
+<script>
+// ── State ──
+var chatOpen = false;
+var starRating = 0;
+var selectedTags = [];
+
+// ── Knowledge base ──
+var KB = {
+  greetings: ['hello','hi','hey','howdy','good morning','good afternoon','good evening','sup','yo'],
+  equipment: ['equipment','excavator','bulldozer','dozer','power','mining','machine','cat','product','sell','buy','loader','dump truck'],
+  news: ['news','update','latest','recent','announcement','acquisition','rpmglobal','conexpo','q4','revenue','financial','earnings'],
+  theme: ['theme','dark','light','mode','color','night','contrast','appearance','switch','change','high contrast','warm','reset'],
+  dealer: ['dealer','find','near','locate','location','store','service','distributor','contact'],
+  sustainability: ['sustainability','esg','environment','green','emission','carbon','fuel','renewable','energy'],
+  technology: ['technology','ai','autonomous','automation','ces','innovation','smart','digital','connectivity'],
+  feedback: ['feedback','review','rate','rating','survey','opinion','suggest','improve','complaint','compliment'],
+  finance: ['revenue','billion','financial','stock','nyse','investor','quarter','earnings','profit'],
+  careers: ['career','job','work','hire','hiring','apply','position','employment','internship'],
+  about: ['about','history','founded','ceo','joe creed','headquarters','company','who','caterpillar','employees']
+};
+
+var THEMES = {
+  dark: ['dark','dark mode','dark theme','switch dark','go dark','night mode'],
+  light: ['light','default','normal','reset theme','light mode','light theme','original'],
+  hc: ['contrast','high contrast','accessibility','accessible'],
+  night: ['night','warm','cozy','sepia','evening','amber']
+};
+
+// ── Response engine ──
+function getResponse(msg) {
+  var m = msg.toLowerCase().trim();
+
+  // Greetings
+  if (KB.greetings.some(function(g){ return m.includes(g); }))
+    return 'Hey there! 👋 I\'m CAT Assistant, your AI guide to Caterpillar. Ask me about equipment, news, themes, feedback, or dealers!';
+
+  // Theme
+  var themeKeys = Object.keys(THEMES);
+  for (var ti = 0; ti < themeKeys.length; ti++) {
+    var t = themeKeys[ti];
+    if (THEMES[t].some(function(k){ return m.includes(k); })) {
+      applyTheme(t);
+      var labels = {dark:'🌙 Dark', light:'☀️ Light (Default)', hc:'⚡ High Contrast', night:'🌕 Night Warm'};
+      return 'Done! Switched to <strong>' + labels[t] + '</strong> theme. Try: "dark", "light", "high contrast", or "night warm". 🎨';
+    }
+  }
+
+  // Feedback
+  if (KB.feedback.some(function(k){ return m.includes(k); })) {
+    setTimeout(function(){ openFeedback(); }, 600);
+    return 'Opening the feedback form now! 📝 Your opinion helps us improve.';
+  }
+
+  // Equipment
+  if (KB.equipment.some(function(k){ return m.includes(k); })) {
+    if (m.includes('excavat')) return '🏗 <strong>Cat Excavators</strong> range from compact mini excavators to massive mining shovels — delivering power, precision, and durability on any job site. <a href="#">Browse Excavators →</a>';
+    if (m.includes('bulldoz') || m.includes('dozer')) return '🚜 <strong>Cat Bulldozers</strong> set the benchmark for pushing, leveling, and grading on any terrain. <a href="#">Browse Bulldozers →</a>';
+    if (m.includes('power') || m.includes('generator') || m.includes('engine')) return '⚡ <strong>Cat Power Systems</strong> include diesel/gas generators, offshore drilling engines, and industrial power solutions. <a href="#">View Power Systems →</a>';
+    if (m.includes('min')) return '⛏ <strong>Cat Mining Equipment</strong> covers surface & underground machines with autonomous haulage systems. <a href="#">View Mining →</a>';
+    return '🏗 Caterpillar equipment lineup:<br><br>• <strong>Excavators</strong> — compact to large mining shovels<br>• <strong>Bulldozers</strong> — any terrain, best-in-class<br>• <strong>Power Systems</strong> — generators & engines<br>• <strong>Mining Equipment</strong> — autonomous haulage<br><br>Which category interests you?';
+  }
+
+  // News
+  if (KB.news.some(function(k){ return m.includes(k); }))
+    return '📰 <strong>Latest from Caterpillar:</strong><br><br>• 🗣 CEO Joe Creed at <strong>CONEXPO</strong> fireside chat, Las Vegas<br>• 🤝 CAT acquired <strong>RPMGlobal</strong> (Australian mining software)<br>• 💰 Q4 2025: <strong>$19.1B</strong> · FY2025: <strong>$67.6B</strong>';
+
+  // Finance
+  if (KB.finance.some(function(k){ return m.includes(k); }))
+    return '📊 <strong>CAT FY2025 Financials:</strong><br><br>• Full-year revenue: <strong>$67.6 Billion</strong><br>• Q4 2025: <strong>$19.1 Billion</strong><br>• Ticker: <strong>NYSE: CAT</strong><br><br><a href="#">Investor Relations →</a>';
+
+  // Dealer
+  if (KB.dealer.some(function(k){ return m.includes(k); }))
+    return '📍 Caterpillar has one of the world\'s largest dealer networks — <strong>160+ countries</strong>. <a href="#">Find a Dealer →</a>';
+
+  // Sustainability
+  if (KB.sustainability.some(function(k){ return m.includes(k); }))
+    return '🌱 <strong>Sustainability at CAT:</strong><br><br>Reducing emissions, improving fuel efficiency, and investing in renewables. Every machine reflects our ESG goals. <a href="#">Learn About ESG →</a>';
+
+  // Technology
+  if (KB.technology.some(function(k){ return m.includes(k); }))
+    return '🤖 <strong>CAT Technology:</strong><br><br>• Autonomous haulage systems<br>• AI-powered diagnostics<br>• Remote machine monitoring<br>• Connected job site platforms<br><br>Showcased at CES 2025.';
+
+  // Careers
+  if (KB.careers.some(function(k){ return m.includes(k); }))
+    return '💼 CAT employs ~107,700 people worldwide across engineering, technology, and operations. <a href="#">Explore Careers →</a>';
+
+  // About
+  if (KB.about.some(function(k){ return m.includes(k); }))
+    return '🏭 <strong>About Caterpillar Inc.:</strong><br><br>• Founded: <strong>1925</strong><br>• HQ: <strong>Deerfield, IL, USA</strong><br>• CEO: <strong>Joe Creed</strong><br>• Employees: <strong>~107,700</strong><br>• Ticker: <strong>NYSE: CAT</strong><br>• <strong>160+ countries</strong>';
+
+  // Thanks / bye
+  if (m.includes('thank') || m.includes('great') || m.includes('awesome'))
+    return 'You\'re very welcome! 😊 Anything else I can help with?';
+  if (m.includes('bye') || m.includes('goodbye'))
+    return 'Goodbye! 👋 Built tough. Built by CAT. 🐱⚙️';
+
+  // Fallback
+  return 'I\'m not sure about that one! 🤔 I can help with:<br><br>• 🏗 Equipment catalog<br>• 🌙 Theme changes (say "dark mode"!)<br>• 📰 Latest news & updates<br>• 📍 Find a dealer<br>• 💬 Leave feedback<br>• 🌱 Sustainability';
+}
+
+// ── Theme engine ──
+function applyTheme(theme) {
+  document.body.classList.remove('theme-dark','theme-hc','theme-night');
+  if (theme !== 'light') document.body.classList.add('theme-' + theme);
+  var msgs = {dark:'🌙 Dark theme ON', light:'☀️ Default theme restored', hc:'⚡ High Contrast ON', night:'🌕 Night Warm ON'};
+  showToast(msgs[theme]);
+}
+function showToast(msg) {
+  var t = document.getElementById('theme-toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2800);
+}
+
+// ── Chat engine ──
+function toggleChat() {
+  chatOpen = !chatOpen;
+  var win = document.getElementById('ai-chat-window');
+  win.classList.toggle('open', chatOpen);
+  if (chatOpen && document.getElementById('ai-messages').children.length === 0) {
+    setTimeout(function(){
+      addBotMsg('Hi! I\'m <strong>CAT Assistant</strong> 🐱⚙️<br><br>I can help you:<br>• Explore CAT equipment<br>• <strong>Change the page theme</strong> (try: "dark mode")<br>• Get latest news & financials<br>• Leave feedback<br>• Find a dealer<br><br>What can I do for you today?');
+    }, 300);
+  }
+  if (chatOpen) document.getElementById('ai-input').focus();
+}
+
+function quickMsg(text) {
+  document.getElementById('ai-input').value = text;
+  sendMsg();
+}
+
+function sendMsg() {
+  var input = document.getElementById('ai-input');
+  var text = input.value.trim();
+  if (!text) return;
+  addUserMsg(text);
+  input.value = '';
+  showTyping();
+  var delay = 500 + Math.random() * 500;
+  setTimeout(function(){ removeTyping(); addBotMsg(getResponse(text)); }, delay);
+}
+
+function addUserMsg(text) {
+  var box = document.getElementById('ai-messages');
+  box.innerHTML += '<div class="ai-msg user"><div class="ai-msg-avatar">👤</div><div class="ai-msg-bubble">' + escHtml(text) + '</div></div>';
+  box.scrollTop = box.scrollHeight;
+}
+function addBotMsg(html) {
+  var box = document.getElementById('ai-messages');
+  box.innerHTML += '<div class="ai-msg bot"><div class="ai-msg-avatar">🐱</div><div class="ai-msg-bubble">' + html + '</div></div>';
+  box.scrollTop = box.scrollHeight;
+}
+function showTyping() {
+  var box = document.getElementById('ai-messages');
+  box.innerHTML += '<div class="ai-msg bot" id="typing-ind"><div class="ai-msg-avatar">🐱</div><div class="ai-msg-bubble"><div class="ai-typing"><span></span><span></span><span></span></div></div></div>';
+  box.scrollTop = box.scrollHeight;
+}
+function removeTyping() {
+  var t = document.getElementById('typing-ind');
+  if (t) t.remove();
+}
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── Feedback engine ──
+function openFeedback() {
+  document.getElementById('feedback-modal').classList.add('open');
+}
+function closeFeedback() {
+  document.getElementById('feedback-modal').classList.remove('open');
+  starRating = 0; selectedTags = [];
+  document.querySelectorAll('.feedback-stars span').forEach(function(s){ s.classList.remove('active'); });
+  document.querySelectorAll('.feedback-tag').forEach(function(t){ t.classList.remove('sel'); });
+  document.getElementById('feedback-text').value = '';
+}
+function submitFeedback() {
+  var stars = starRating ? starRating + ' stars ' : '';
+  closeFeedback();
+  showToast('Thanks for your ' + stars + 'feedback! ✅');
+  if (chatOpen) addBotMsg('Thank you for your feedback! 🙏 ' + (starRating ? '⭐'.repeat(starRating) + '<br>' : '') + 'We appreciate you taking the time. Anything else I can help with?');
+}
+
+// ── Init event listeners ──
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.feedback-stars span').forEach(function(star) {
+    star.addEventListener('click', function() {
+      starRating = parseInt(star.dataset.v);
+      document.querySelectorAll('.feedback-stars span').forEach(function(s, i){
+        s.classList.toggle('active', i < starRating);
+      });
+    });
+  });
+  document.querySelectorAll('.feedback-tag').forEach(function(tag) {
+    tag.addEventListener('click', function() {
+      tag.classList.toggle('sel');
+      var t = tag.dataset.t;
+      var idx = selectedTags.indexOf(t);
+      if (idx > -1) selectedTags.splice(idx,1); else selectedTags.push(t);
+    });
+  });
+  document.getElementById('feedback-modal').addEventListener('click', function(e) {
+    if (e.target === document.getElementById('feedback-modal')) closeFeedback();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && chatOpen) toggleChat();
+  });
+});
+</script>
+
+</body>
+</html>
