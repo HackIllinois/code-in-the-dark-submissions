@@ -1,1428 +1,1672 @@
 <!--Name: Bharath Raahul Murugesan--><!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Caterpillar — Built for Machines. Now Built for Agents.</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
-<style>
-  :root {
-    --cat-yellow: #FFCD11;
-    --cat-black: #0A0A0A;
-    --cat-dark: #111111;
-    --cat-mid: #1C1C1C;
-    --cat-border: rgba(255,205,17,0.15);
-    --cat-text: #E8E8E0;
-    --cat-muted: #6B6B60;
-    --cat-green: #39FF14;
-    --cat-mono: 'Space Mono', monospace;
-    --cat-sans: 'Syne', sans-serif;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--cat-black);
-    color: var(--cat-text);
-    font-family: var(--cat-sans);
-    overflow-x: hidden;
-    cursor: crosshair;
-  }
-
-  /* ── NOISE OVERLAY ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.4;
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 40px;
-    height: 64px;
-    border-bottom: 1px solid var(--cat-border);
-    background: rgba(10,10,10,0.85);
-    backdrop-filter: blur(16px);
-  }
-
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .logo-mark {
-    width: 36px;
-    height: 28px;
-    background: var(--cat-yellow);
-    clip-path: polygon(0 0, 100% 0, 100% 60%, 60% 100%, 0 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--cat-mono);
-    font-size: 11px;
-    font-weight: 700;
-    color: #000;
-    letter-spacing: -0.5px;
-    padding-bottom: 4px;
-  }
-
-  .logo-text {
-    font-family: var(--cat-sans);
-    font-weight: 800;
-    font-size: 15px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--cat-text);
-  }
-
-  .logo-text span {
-    color: var(--cat-yellow);
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 32px;
-    list-style: none;
-  }
-
-  .nav-links a {
-    color: var(--cat-muted);
-    text-decoration: none;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-family: var(--cat-mono);
-    transition: color 0.2s;
-  }
-
-  .nav-links a:hover { color: var(--cat-yellow); }
-
-  .nav-cta {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .btn-ghost {
-    padding: 8px 18px;
-    border: 1px solid var(--cat-border);
-    background: transparent;
-    color: var(--cat-text);
-    font-family: var(--cat-mono);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-  }
-
-  .btn-ghost:hover {
-    border-color: var(--cat-yellow);
-    color: var(--cat-yellow);
-  }
-
-  .btn-primary {
-    padding: 8px 18px;
-    background: var(--cat-yellow);
-    color: #000;
-    font-family: var(--cat-mono);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    cursor: pointer;
-    border: none;
-    transition: all 0.2s;
-    text-decoration: none;
-    display: inline-block;
-  }
-
-  .btn-primary:hover {
-    background: #fff;
-    transform: translateY(-1px);
-  }
-
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    padding: 120px 40px 80px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -200px; right: -200px;
-    width: 700px; height: 700px;
-    background: radial-gradient(circle, rgba(255,205,17,0.07) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .hero-grid-bg {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,205,17,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,205,17,0.04) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
-    pointer-events: none;
-  }
-
-  .hero-tag {
-    font-family: var(--cat-mono);
-    font-size: 11px;
-    color: var(--cat-yellow);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .hero-tag::before {
-    content: '';
-    width: 24px;
-    height: 1px;
-    background: var(--cat-yellow);
-  }
-
-  h1 {
-    font-size: clamp(48px, 6vw, 88px);
-    font-weight: 800;
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    margin-bottom: 28px;
-  }
-
-  h1 .accent {
-    color: var(--cat-yellow);
-    display: block;
-  }
-
-  h1 .outline {
-    -webkit-text-stroke: 1px rgba(255,255,255,0.25);
-    color: transparent;
-  }
-
-  .hero-sub {
-    font-size: 17px;
-    color: var(--cat-muted);
-    line-height: 1.6;
-    max-width: 480px;
-    margin-bottom: 36px;
-  }
-
-  .hero-actions {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .hero-actions .btn-primary {
-    padding: 14px 28px;
-    font-size: 12px;
-  }
-
-  .hero-actions .btn-ghost {
-    padding: 14px 28px;
-    font-size: 12px;
-  }
-
-  /* ── LIVE TERMINAL ── */
-  .terminal-card {
-    background: var(--cat-dark);
-    border: 1px solid var(--cat-border);
-    border-radius: 2px;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .terminal-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--cat-border);
-    background: var(--cat-mid);
-  }
-
-  .terminal-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-  }
-
-  .terminal-dot.red { background: #FF5F57; }
-  .terminal-dot.yellow { background: #FEBC2E; }
-  .terminal-dot.green { background: #28C840; }
-
-  .terminal-title {
-    font-family: var(--cat-mono);
-    font-size: 11px;
-    color: var(--cat-muted);
-    margin-left: 8px;
-  }
-
-  .terminal-badge {
-    margin-left: auto;
-    font-family: var(--cat-mono);
-    font-size: 10px;
-    color: var(--cat-green);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .terminal-badge::before {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--cat-green);
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  .terminal-body {
-    padding: 20px;
-    font-family: var(--cat-mono);
-    font-size: 12px;
-    line-height: 1.8;
-    min-height: 280px;
-  }
-
-  .t-line { display: flex; gap: 8px; }
-  .t-prompt { color: var(--cat-yellow); }
-  .t-cmd { color: var(--cat-text); }
-  .t-out { color: var(--cat-muted); padding-left: 16px; }
-  .t-key { color: #7DC8E0; }
-  .t-val { color: #C3E88D; }
-  .t-num { color: #F78C6C; }
-  .t-cursor {
-    display: inline-block;
-    width: 8px; height: 14px;
-    background: var(--cat-yellow);
-    animation: blink 1s step-end infinite;
-    vertical-align: middle;
-  }
-
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-
-  /* ── TICKER ── */
-  .ticker-bar {
-    border-top: 1px solid var(--cat-border);
-    border-bottom: 1px solid var(--cat-border);
-    overflow: hidden;
-    background: var(--cat-mid);
-    height: 40px;
-    display: flex;
-    align-items: center;
-  }
-
-  .ticker-label {
-    font-family: var(--cat-mono);
-    font-size: 10px;
-    color: var(--cat-yellow);
-    padding: 0 20px;
-    white-space: nowrap;
-    border-right: 1px solid var(--cat-border);
-    height: 100%;
-    display: flex;
-    align-items: center;
-    letter-spacing: 0.1em;
-    background: rgba(255,205,17,0.05);
-    flex-shrink: 0;
-  }
-
-  .ticker-track {
-    display: flex;
-    gap: 40px;
-    animation: ticker 30s linear infinite;
-    white-space: nowrap;
-    padding: 0 40px;
-  }
-
-  @keyframes ticker {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-
-  .ticker-item {
-    font-family: var(--cat-mono);
-    font-size: 11px;
-    color: var(--cat-muted);
-    display: flex;
-    gap: 8px;
-  }
-
-  .ticker-item .tag { color: var(--cat-yellow); }
-  .ticker-item .up { color: var(--cat-green); }
-  .ticker-item .dn { color: #FF6B6B; }
-
-  /* ── SECTION BASE ── */
-  section {
-    padding: 100px 40px;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .section-label {
-    font-family: var(--cat-mono);
-    font-size: 10px;
-    color: var(--cat-yellow);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .section-label::before {
-    content: attr(data-index);
-    opacity: 0.4;
-  }
-
-  h2 {
-    font-size: clamp(32px, 4vw, 56px);
-    font-weight: 800;
-    line-height: 1.05;
-    letter-spacing: -0.025em;
-    margin-bottom: 16px;
-  }
-
-  .section-sub {
-    color: var(--cat-muted);
-    font-size: 16px;
-    max-width: 560px;
-    line-height: 1.7;
-    margin-bottom: 60px;
-  }
-
-  /* ── AGENT FEATURES ── */
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--cat-border);
-    border: 1px solid var(--cat-border);
-  }
-
-  .feature-card {
-    background: var(--cat-dark);
-    padding: 36px;
-    position: relative;
-    overflow: hidden;
-    transition: background 0.3s;
-  }
-
-  .feature-card:hover {
-    background: var(--cat-mid);
-  }
-
-  .feature-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    height: 2px;
-    width: 0;
-    background: var(--cat-yellow);
-    transition: width 0.4s;
-  }
-
-  .feature-card:hover::after {
-    width: 100%;
-  }
-
-  .feature-icon {
-    font-size: 28px;
-    margin-bottom: 20px;
-    display: block;
-  }
-
-  .feature-num {
-    font-family: var(--cat-mono);
-    font-size: 10px;
-    color: var(--cat-muted);
-    letter-spacing: 0.1em;
-    margin-bottom: 12px;
-  }
-
-  .feature-title {
-    font-size: 19px;
-    font-weight: 700;
-    margin-bottom: 10px;
-    letter-spacing: -0.01em;
-  }
-
-  .feature-desc {
-    font-size: 13px;
-    color: var(--cat-muted);
-    line-height: 1.7;
-  }
-
-  .feature-tag {
-    display: inline-block;
-    margin-top: 16px;
-    font-family: var(--cat-mono);
-    font-size: 10px;
-    color: var(--cat-yellow);
-    border: 1px solid rgba(255,205,17,0.3);
-    padding: 3px 8px;
-    letter-spacing: 0.08em;
-  }
-
-  /* ── EQUIPMENT GRID ── */
-  .equipment-section {
-    padding: 100px 40px;
-    background: var(--cat-dark);
-    border-top: 1px solid var(--cat-border);
-    border-bottom: 1px solid var(--cat-border);
-  }
-
-  .equipment-section > * {
-    max-width: 1400px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .equipment-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .equipment-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--cat-border);
-    border: 1px solid var(--cat-border);
-    margin-top: 60px;
-  }
-
-  .equip-card {
-    background: var(--cat-dark);
-    padding: 28px;
-    cursor: pointer;
-    transition: background 0.25s;
-    position: relative;
-  }
-
-  .equip-card:hover { background: #1A1A12; }
-
-  .equip-emoji { font-size: 36px; margin-bottom: 16px; display: block; }
-
-  .equip-name {
-    font-weight: 700;
-    font-size: 15px;
-    margin-bottom: 6px;
-    letter-spacing: -0.01em;
-  }
-
-  .equip-meta {
-    font-family: var(--cat-mono);
-    font-size: 10px;
-    color: var(--cat-muted);
-    letter-spacing: 0.05em;
-  }
-
-  .equip-api {
-    margin-top: 14px;
-    font-family: var(--cat-mono);
-    font-size: 10px;
-    color: var(--cat-yellow);
-    opacity: 0;
-    transition: opacity 0.25s;
-  }
-
-  .equip-card:hover .equip-api { opacity: 1; }
-
-  /* ── API ENDPOINTS PANEL ── */
-  .api-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: start;
-  }
-
-  .endpoint-list {
-    border: 1px solid var(--cat-border);
-    overflow: hidden;
-  }
-
-  .endpoint-header {
-    background: var(--cat-mid);
-    padding: 14px 20px;
-    font-family: var(--cat-mono);
-    font-size: 11px;
-    color: var(--cat-muted);
-    border-bottom: 1px solid var(--cat-border);
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .endpoint-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--cat-border);
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  .endpoint-item:hover { background: var(--cat-mid); }
-  .endpoint-item:last-child { border-bottom: none; }
-
-  .method {
-    font-family: var(--cat-mono);
-    font-size: 10px;
-    font-weight: 700;
-    padding: 3px 7px;
-    border-radius: 1px;
-    min-width: 42px;
-    text-align: center;
-  }
-
-  .method.get { background: rgba(57,255,20,0.15); color: var(--cat-green); }
-  .method.post { background: rgba(255,205,17,0.15); color: var(--cat-yellow); }
-  .method.ws { background: rgba(125,200,224,0.15); color: #7DC8E0; }
-
-  .endpoint-path {
-    font-family: var(--cat-mono);
-    font-size: 12px;
-    color: var(--cat-text);
-    flex: 1;
-  }
-
-  .endpoint-desc {
-    font-family: var(--cat-mono);
-    font-size: 10px;
-    color: var(--cat-muted);
-    text-align: right;
-  }
-
-  /* ── STATS ── */
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--cat-border);
-    border: 1px solid var(--cat-border);
-  }
-
-  .stat-box {
-    background: var(--cat-dark);
-    padding: 40px 32px;
-    text-align: center;
-  }
-
-  .stat-num {
-    font-size: 56px;
-    font-weight: 800;
-    letter-spacing: -0.04em;
-    color: var(--cat-yellow);
-    display: block;
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-
-  .stat-label {
-    font-family: var(--cat-mono);
-    font-size: 11px;
-    color: var(--cat-muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  /* ── INDUSTRIES ── */
-  .industries-list {
-    border-top: 1px solid var(--cat-border);
-  }
-
-  .industry-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24px 0;
-    border-bottom: 1px solid var(--cat-border);
-    cursor: pointer;
-    transition: padding-left 0.2s;
-  }
-
-  .industry-row:hover { padding-left: 8px; }
-
-  .ind-left {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .ind-num {
-    font-family: var(--cat-mono);
-    font-size: 11px;
-    color: var(--cat-muted);
-    width: 28px;
-  }
-
-  .ind-name {
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-
-  .ind-right {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .ind-tag {
-    font-family: var(--cat-mono);
-    font-size: 10px;
-    color: var(--cat-yellow);
-    border: 1px solid rgba(255,205,17,0.25);
-    padding: 4px 10px;
-  }
-
-  .ind-arrow {
-    color: var(--cat-muted);
-    font-size: 18px;
-    transition: transform 0.2s, color 0.2s;
-  }
-
-  .industry-row:hover .ind-arrow {
-    transform: translateX(4px);
-    color: var(--cat-yellow);
-  }
-
-  /* ── AGENT CTA ── */
-  .agent-cta {
-    background: var(--cat-yellow);
-    color: #000;
-    padding: 80px 40px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .agent-cta::before {
-    content: 'CAT';
-    position: absolute;
-    font-size: 300px;
-    font-weight: 800;
-    opacity: 0.06;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    letter-spacing: -0.05em;
-    font-family: var(--cat-sans);
-  }
-
-  .cta-inner {
-    position: relative;
-    z-index: 1;
-    max-width: 680px;
-    margin: 0 auto;
-  }
-
-  .cta-tag {
-    font-family: var(--cat-mono);
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    opacity: 0.6;
-    margin-bottom: 20px;
-  }
-
-  .agent-cta h2 {
-    font-size: clamp(36px, 5vw, 64px);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    margin-bottom: 20px;
-    color: #000;
-  }
-
-  .agent-cta p {
-    font-size: 17px;
-    opacity: 0.7;
-    margin-bottom: 36px;
-    line-height: 1.6;
-  }
-
-  .cta-btns {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .btn-dark {
-    padding: 14px 28px;
-    background: #000;
-    color: var(--cat-yellow);
-    font-family: var(--cat-mono);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    cursor: pointer;
-    border: none;
-    transition: all 0.2s;
-    text-decoration: none;
-    display: inline-block;
-  }
-
-  .btn-dark:hover { background: #1a1a1a; }
-
-  .btn-outline-dark {
-    padding: 14px 28px;
-    background: transparent;
-    color: #000;
-    font-family: var(--cat-mono);
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    cursor: pointer;
-    border: 1.5px solid rgba(0,0,0,0.4);
-    transition: all 0.2s;
-    text-decoration: none;
-    display: inline-block;
-  }
-
-  .btn-outline-dark:hover {
-    border-color: #000;
-    background: rgba(0,0,0,0.08);
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    background: var(--cat-dark);
-    border-top: 1px solid var(--cat-border);
-    padding: 60px 40px 40px;
-  }
-
-  .footer-grid {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-    gap: 40px;
-    padding-bottom: 40px;
-    border-bottom: 1px solid var(--cat-border);
-    margin-bottom: 30px;
-  }
-
-  .footer-brand p {
-    font-size: 13px;
-    color: var(--cat-muted);
-    line-height: 1.7;
-    margin-top: 16px;
-    max-width: 280px;
-  }
-
-  .footer-col h4 {
-    font-family: var(--cat-mono);
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--cat-yellow);
-    margin-bottom: 16px;
-  }
-
-  .footer-col a {
-    display: block;
-    color: var(--cat-muted);
-    text-decoration: none;
-    font-size: 13px;
-    margin-bottom: 10px;
-    transition: color 0.2s;
-  }
-
-  .footer-col a:hover { color: var(--cat-text); }
-
-  .footer-bottom {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .footer-copy {
-    font-family: var(--cat-mono);
-    font-size: 10px;
-    color: var(--cat-muted);
-    letter-spacing: 0.05em;
-  }
-
-  .footer-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--cat-mono);
-    font-size: 10px;
-    color: var(--cat-green);
-  }
-
-  .footer-status::before {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--cat-green);
-    animation: pulse 2s infinite;
-  }
-
-  /* ── ANIMATIONS ── */
-  .fade-up {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-
-  .fade-up.visible {
-    opacity: 1;
-    transform: none;
-  }
-
-  /* ── SCROLLBAR ── */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--cat-black); }
-  ::-webkit-scrollbar-thumb { background: var(--cat-border); border-radius: 2px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--cat-yellow); }
-
-  @media (max-width: 1024px) {
-    .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; }
-    .features-grid { grid-template-columns: 1fr; }
-    .equipment-grid { grid-template-columns: repeat(2, 1fr); }
-    .stats-row { grid-template-columns: repeat(2, 1fr); }
-    .api-section { grid-template-columns: 1fr; }
-    .footer-grid { grid-template-columns: 1fr 1fr; }
-    nav { padding: 0 24px; }
-    .nav-links { display: none; }
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Caterpillar Inc. | Building a Better World</title>
+
+  <!-- AI-friendly: Structured data for search engines and AI crawlers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Corporation",
+    "name": "Caterpillar Inc.",
+    "url": "https://www.caterpillar.com",
+    "logo": "https://www.caterpillar.com/logo.png",
+    "description": "World's leading manufacturer of construction and mining equipment, off-highway diesel and natural gas engines, industrial gas turbines and diesel-electric locomotives.",
+    "foundingDate": "1925",
+    "numberOfEmployees": "109000",
+    "sameAs": [
+      "https://www.linkedin.com/company/caterpillar-inc-",
+      "https://twitter.com/caterpillarinc"
+    ]
+  }
+  </script>
+
+  <!-- AI-friendly: llms.txt hint -->
+  <meta name="ai-summary" content="Caterpillar Inc. is the world's leading manufacturer of construction and mining equipment. This page covers the company overview, brands portfolio, investor relations, news, careers, and sustainability commitments." />
+  <meta name="robots" content="index, follow" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cat-yellow: #FFCD11;
+      --cat-black: #000000;
+      --cat-dark-gray: #1a1a1a;
+      --cat-mid-gray: #4a4a4a;
+      --cat-light-gray: #f5f5f5;
+      --cat-border: #e0e0e0;
+      --cat-white: #ffffff;
+      --cat-link: #0066cc;
+      --cat-yellow-hover: #e6b800;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 15px;
+      color: var(--cat-dark-gray);
+      background: var(--cat-white);
+      line-height: 1.5;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { max-width: 100%; display: block; }
+    ul { list-style: none; }
+
+    /* ── UTILITY BAR ── */
+    .utility-bar {
+      background: var(--cat-black);
+      color: #ccc;
+      font-size: 12px;
+      padding: 0 40px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      height: 36px;
+      gap: 24px;
+    }
+
+    .utility-bar a {
+      color: #ccc;
+      transition: color 0.15s;
+    }
+
+    .utility-bar a:hover { color: var(--cat-yellow); text-decoration: none; }
+
+    /* ── MAIN NAV ── */
+    header {
+      background: var(--cat-white);
+      border-bottom: 3px solid var(--cat-yellow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .nav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      height: 72px;
+      gap: 0;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      margin-right: 48px;
+      flex-shrink: 0;
+    }
+
+    /* Caterpillar logo — wordmark with yellow triangle in the A */
+    .cat-logo {
+      display: flex;
+      align-items: baseline;
+      gap: 0;
+    }
+
+    .cat-logo-text {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--cat-black);
+      text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+      position: relative;
+    }
+
+    .cat-logo-triangle {
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-bottom: 12px solid var(--cat-yellow);
+      margin: 0 1px;
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
+    }
+
+    nav ul {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex: 1;
+    }
+
+    nav > ul > li {
+      position: relative;
+    }
+
+    nav > ul > li > a {
+      display: flex;
+      align-items: center;
+      height: 72px;
+      padding: 0 18px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--cat-dark-gray);
+      border-bottom: 3px solid transparent;
+      margin-bottom: -3px;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+
+    nav > ul > li > a:hover,
+    nav > ul > li:hover > a {
+      color: var(--cat-black);
+      border-bottom-color: var(--cat-yellow);
+      text-decoration: none;
+    }
+
+    /* Dropdown */
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--cat-white);
+      border-top: 3px solid var(--cat-yellow);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      min-width: 220px;
+      z-index: 200;
+      padding: 8px 0;
+    }
+
+    nav > ul > li:hover .dropdown { display: block; }
+
+    .dropdown a {
+      display: block;
+      padding: 10px 20px;
+      font-size: 13px;
+      color: var(--cat-dark-gray);
+      border-left: 3px solid transparent;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .dropdown a:hover {
+      background: var(--cat-light-gray);
+      border-left-color: var(--cat-yellow);
+      text-decoration: none;
+    }
+
+    .nav-search {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .search-form {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--cat-border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .search-form input {
+      border: none;
+      outline: none;
+      padding: 7px 12px;
+      font-size: 13px;
+      width: 180px;
+      font-family: inherit;
+    }
+
+    .search-form button {
+      background: var(--cat-yellow);
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.15s;
+    }
+
+    .search-form button:hover { background: var(--cat-yellow-hover); }
+
+    /* AI Assistant button — subtle addition */
+    .ai-assist-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--cat-black);
+      color: var(--cat-white);
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 2px;
+      cursor: pointer;
+      border: none;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+
+    .ai-assist-btn:hover { background: #333; }
+    .ai-assist-btn svg { width: 14px; height: 14px; }
+
+    /* ── HERO CAROUSEL ── */
+    .hero {
+      position: relative;
+      background: #1a1a1a;
+      overflow: hidden;
+      height: 520px;
+    }
+
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1s ease;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .hero-slide.active { opacity: 1; }
+
+    /* SVG background scenes (no external images needed) */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .slide-1 .hero-bg { background: linear-gradient(135deg, #1a2a3a 0%, #2a3f52 50%, #3a5568 100%); }
+    .slide-2 .hero-bg { background: linear-gradient(135deg, #2a1a0a 0%, #3f2a10 50%, #5a3c18 100%); }
+    .slide-3 .hero-bg { background: linear-gradient(135deg, #0a1a0a 0%, #1a2e1a 50%, #243c24 100%); }
+
+    .hero-machine {
+      position: absolute;
+      right: 0; bottom: 0;
+      width: 55%;
+      opacity: 0.85;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 40px 60px;
+      max-width: 560px;
+    }
+
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cat-yellow);
+      margin-bottom: 12px;
+    }
+
+    .hero-title {
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--cat-white);
+      line-height: 1.1;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .btn-yellow {
+      display: inline-block;
+      background: var(--cat-yellow);
+      color: var(--cat-black);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      padding: 13px 28px;
+      text-transform: uppercase;
+      transition: background 0.15s;
+    }
+
+    .btn-yellow:hover { background: var(--cat-yellow-hover); text-decoration: none; }
+
+    .btn-outline-white {
+      display: inline-block;
+      border: 2px solid rgba(255,255,255,0.5);
+      color: var(--cat-white);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      padding: 11px 24px;
+      text-transform: uppercase;
+      transition: border-color 0.15s;
+      margin-left: 12px;
+    }
+
+    .btn-outline-white:hover { border-color: var(--cat-white); text-decoration: none; }
+
+    /* Hero dots */
+    .hero-dots {
+      position: absolute;
+      bottom: 20px;
+      right: 40px;
+      display: flex;
+      gap: 8px;
+      z-index: 3;
+    }
+
+    .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.5);
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .dot.active {
+      background: var(--cat-yellow);
+      border-color: var(--cat-yellow);
+    }
+
+    /* ── QUICK LINKS BAR ── */
+    .quick-links {
+      background: var(--cat-light-gray);
+      border-bottom: 1px solid var(--cat-border);
+    }
+
+    .quick-links-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      gap: 0;
+    }
+
+    .quick-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 18px 24px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--cat-dark-gray);
+      border-right: 1px solid var(--cat-border);
+      transition: background 0.15s, color 0.15s;
+      cursor: pointer;
+    }
+
+    .quick-link:first-child { border-left: 1px solid var(--cat-border); }
+
+    .quick-link:hover {
+      background: var(--cat-white);
+      color: var(--cat-black);
+      text-decoration: none;
+    }
+
+    .quick-link .ql-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .quick-link .ql-arrow {
+      margin-left: auto;
+      color: var(--cat-mid-gray);
+      font-size: 16px;
+    }
+
+    /* ── MAIN CONTENT WRAPPER ── */
+    .content-wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* ── BRANDS SECTION ── */
+    .section {
+      padding: 60px 0;
+    }
+
+    .section-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--cat-black);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .section-desc {
+      font-size: 15px;
+      color: var(--cat-mid-gray);
+      margin-bottom: 36px;
+      max-width: 680px;
+      line-height: 1.65;
+    }
+
+    .section-border-top {
+      border-top: 1px solid var(--cat-border);
+    }
+
+    .brands-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--cat-border);
+      border: 1px solid var(--cat-border);
+    }
+
+    .brand-card {
+      background: var(--cat-white);
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+
+    .brand-card:hover { background: var(--cat-light-gray); }
+
+    .brand-logo-mock {
+      height: 44px;
+      display: flex;
+      align-items: center;
+    }
+
+    .brand-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--cat-black);
+    }
+
+    .brand-desc {
+      font-size: 12px;
+      color: var(--cat-mid-gray);
+      line-height: 1.55;
+      flex: 1;
+    }
+
+    .brand-link {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--cat-black);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .brand-link:hover { text-decoration: none; color: #555; }
+
+    /* ── AI ASSISTANT PANEL (tasteful, tucked in) ── */
+    .ai-panel {
+      background: #f8f9fa;
+      border: 1px solid var(--cat-border);
+      border-left: 4px solid var(--cat-yellow);
+      padding: 24px 28px;
+      margin: 0 0 40px;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .ai-panel-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--cat-yellow);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 18px;
+    }
+
+    .ai-panel-content h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--cat-black);
+    }
+
+    .ai-panel-content p {
+      font-size: 13px;
+      color: var(--cat-mid-gray);
+      margin-bottom: 14px;
+      line-height: 1.55;
+    }
+
+    .ai-input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .ai-input-row input {
+      flex: 1;
+      border: 1px solid var(--cat-border);
+      border-radius: 2px;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .ai-input-row input:focus { border-color: var(--cat-yellow); }
+
+    .ai-input-row button {
+      background: var(--cat-yellow);
+      border: none;
+      padding: 9px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+
+    .ai-input-row button:hover { background: var(--cat-yellow-hover); }
+
+    /* ── NEWS GRID ── */
+    .news-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 28px;
+    }
+
+    .news-card {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--cat-border);
+      transition: box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .news-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    }
+
+    .news-img {
+      height: 180px;
+      overflow: hidden;
+      background: var(--cat-light-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .news-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+    }
+
+    .n1 .news-img-placeholder { background: linear-gradient(135deg, #dde8f0, #b8cfe0); }
+    .n2 .news-img-placeholder { background: linear-gradient(135deg, #f0e6cc, #e0c88a); }
+    .n3 .news-img-placeholder { background: linear-gradient(135deg, #ddf0e0, #a8d4b0); }
+
+    .news-body {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .news-date {
+      font-size: 11px;
+      color: var(--cat-mid-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .news-headline {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--cat-black);
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+
+    .news-excerpt {
+      font-size: 13px;
+      color: var(--cat-mid-gray);
+      line-height: 1.6;
+      flex: 1;
+      margin-bottom: 16px;
+    }
+
+    .news-readmore {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--cat-black);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ── SEGMENTS ── */
+    .segments-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--cat-border);
+      border: 1px solid var(--cat-border);
+    }
+
+    .segment-card {
+      background: var(--cat-white);
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      cursor: pointer;
+      transition: background 0.15s;
+      position: relative;
+    }
+
+    .segment-card:hover { background: #fffdf0; }
+
+    .segment-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 3px;
+      background: var(--cat-yellow);
+      transition: width 0.3s;
+    }
+
+    .segment-card:hover::after { width: 100%; }
+
+    .seg-icon { font-size: 36px; }
+
+    .seg-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--cat-black);
+    }
+
+    .seg-desc {
+      font-size: 13px;
+      color: var(--cat-mid-gray);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .seg-link {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--cat-black);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── SUSTAINABILITY BAND ── */
+    .sustain-band {
+      background: var(--cat-black);
+      color: var(--cat-white);
+      padding: 60px 0;
+    }
+
+    .sustain-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .sustain-inner h2 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .sustain-inner h2 span { color: var(--cat-yellow); }
+
+    .sustain-inner p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .sustain-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .sustain-stat {
+      border-left: 3px solid var(--cat-yellow);
+      padding-left: 16px;
+    }
+
+    .sustain-stat .num {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--cat-yellow);
+      display: block;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .sustain-stat .label {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ── INVESTORS STRIP ── */
+    .investors-strip {
+      background: var(--cat-light-gray);
+      border-top: 1px solid var(--cat-border);
+      border-bottom: 1px solid var(--cat-border);
+      padding: 40px 0;
+    }
+
+    .investors-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      gap: 60px;
+    }
+
+    .investors-inner h3 {
+      font-size: 20px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .investor-stats {
+      display: flex;
+      gap: 40px;
+      flex: 1;
+    }
+
+    .inv-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .inv-stat .val {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--cat-black);
+    }
+
+    .inv-stat .lbl {
+      font-size: 11px;
+      color: var(--cat-mid-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .inv-divider {
+      width: 1px;
+      height: 48px;
+      background: var(--cat-border);
+    }
+
+    .investors-inner .btn-yellow {
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--cat-dark-gray);
+      color: #ccc;
+      padding: 48px 0 0;
+    }
+
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px 40px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      gap: 40px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 40px;
+      margin-bottom: 0;
+    }
+
+    .footer-brand-col .footer-logo {
+      margin-bottom: 16px;
+    }
+
+    .footer-logo-text {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--cat-white);
+    }
+
+    .footer-logo-tri {
+      display: inline-block;
+      width: 0; height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 10px solid var(--cat-yellow);
+      margin: 0 1px;
+      vertical-align: middle;
+      position: relative; top: -1px;
+    }
+
+    .footer-brand-col p {
+      font-size: 12px;
+      line-height: 1.7;
+      color: #999;
+      max-width: 240px;
+    }
+
+    .footer-col h4 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--cat-white);
+      margin-bottom: 16px;
+    }
+
+    .footer-col a {
+      display: block;
+      font-size: 13px;
+      color: #999;
+      margin-bottom: 10px;
+      transition: color 0.15s;
+    }
+
+    .footer-col a:hover { color: var(--cat-yellow); text-decoration: none; }
+
+    .footer-bottom {
+      background: var(--cat-black);
+      padding: 16px 40px;
+      max-width: 100%;
+    }
+
+    .footer-bottom-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-bottom p {
+      font-size: 11px;
+      color: #666;
+    }
+
+    .footer-legal {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-legal a {
+      font-size: 11px;
+      color: #666;
+      transition: color 0.15s;
+    }
+
+    .footer-legal a:hover { color: #999; text-decoration: none; }
+
+    /* ── AI CHAT MODAL ── */
+    .ai-modal {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 24px;
+      width: 360px;
+      background: var(--cat-white);
+      border: 1px solid var(--cat-border);
+      border-radius: 4px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+      z-index: 9000;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .ai-modal.open { display: flex; }
+
+    .ai-modal-header {
+      background: var(--cat-black);
+      color: var(--cat-white);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    .ai-modal-header h4 {
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ai-modal-header h4::before {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--cat-yellow);
+    }
+
+    .ai-modal-close {
+      background: none;
+      border: none;
+      color: #999;
+      font-size: 18px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .ai-modal-close:hover { color: white; }
+
+    .ai-modal-msgs {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      min-height: 200px;
+      max-height: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .msg {
+      font-size: 13px;
+      line-height: 1.55;
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 2px;
+    }
+
+    .msg.bot {
+      background: var(--cat-light-gray);
+      color: var(--cat-dark-gray);
+      align-self: flex-start;
+      border-left: 3px solid var(--cat-yellow);
+    }
+
+    .msg.user {
+      background: var(--cat-black);
+      color: var(--cat-white);
+      align-self: flex-end;
+    }
+
+    .ai-modal-input {
+      display: flex;
+      border-top: 1px solid var(--cat-border);
+    }
+
+    .ai-modal-input input {
+      flex: 1;
+      border: none;
+      padding: 12px 16px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .ai-modal-input button {
+      background: var(--cat-yellow);
+      border: none;
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+
+    .ai-modal-input button:hover { background: var(--cat-yellow-hover); }
+
+    /* Floating AI button */
+    .ai-float-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--cat-yellow);
+      color: var(--cat-black);
+      border: none;
+      border-radius: 50%;
+      width: 52px;
+      height: 52px;
+      font-size: 22px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      z-index: 9000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .ai-float-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .brands-grid { grid-template-columns: repeat(2, 1fr); }
+      .news-grid { grid-template-columns: 1fr 1fr; }
+      .segments-grid { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .sustain-inner { grid-template-columns: 1fr; }
+      .investors-inner { flex-wrap: wrap; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 20px; }
+      nav ul { display: none; }
+      .hero { height: 400px; }
+      .hero-title { font-size: 28px; }
+      .content-wrap { padding: 0 20px; }
+      .utility-bar { padding: 0 20px; }
+      .brands-grid { grid-template-columns: 1fr; }
+      .news-grid { grid-template-columns: 1fr; }
+      .quick-links-inner { overflow-x: auto; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">
-    <div class="logo-mark">CAT</div>
-    <div class="logo-text">Caterpillar <span>∕ Agent</span></div>
-  </div>
-  <ul class="nav-links">
-    <li><a href="#">Equipment</a></li>
-    <li><a href="#">Industries</a></li>
-    <li><a href="#">Services</a></li>
-    <li><a href="#">Dealers</a></li>
-    <li><a href="#">Agent API</a></li>
-    <li><a href="#">Docs</a></li>
-  </ul>
-  <div class="nav-cta">
-    <a href="#" class="btn-ghost">Sign In</a>
-    <a href="#" class="btn-primary">Get API Key →</a>
-  </div>
-</nav>
+<!-- AI-friendly: Skip nav for screen readers and AI parsers -->
+<a href="#main-content" style="position:absolute;left:-9999px;top:0;z-index:999;" tabindex="0">Skip to main content</a>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-grid-bg"></div>
-  <div class="hero-content">
-    <div class="hero-tag">Now Agent-Compatible</div>
-    <h1>
-      Built for<br/>
-      <span class="accent">Machines.</span>
-      <span class="outline">Built for</span>
-      <span class="accent">Agents.</span>
-    </h1>
-    <p class="hero-sub">
-      The world's leading heavy equipment manufacturer — now with a complete API layer for AI agents. Query fleet telemetry, schedule maintenance, order parts, and automate procurement at machine speed.
-    </p>
-    <div class="hero-actions">
-      <a href="#" class="btn-primary">Explore Agent API →</a>
-      <a href="#" class="btn-ghost">View Equipment</a>
+<!-- ── UTILITY BAR ── -->
+<div class="utility-bar" role="navigation" aria-label="Utility navigation">
+  <a href="/en/contact.html">Contact Us</a>
+  <a href="/en/careers.html">Careers</a>
+  <a href="/en/news/media-resources.html">Media</a>
+  <a href="/en.html">English ▾</a>
+</div>
+
+<!-- ── HEADER / NAV ── -->
+<header role="banner">
+  <div class="nav-inner">
+    <div class="logo-wrap">
+      <a href="/en.html" aria-label="Caterpillar Inc. — Home">
+        <div class="cat-logo">
+          <span class="cat-logo-text">C<span class="cat-logo-triangle" aria-hidden="true"></span>TERPILLAR</span>
+        </div>
+      </a>
+    </div>
+
+    <nav role="navigation" aria-label="Main navigation">
+      <ul>
+        <li>
+          <a href="/en/company.html">Company ▾</a>
+          <div class="dropdown" role="menu">
+            <a href="/en/company/strategy-purpose.html">Strategy &amp; Purpose</a>
+            <a href="/en/company/about-caterpillar.html">About Caterpillar</a>
+            <a href="/en/company/governance.html">Governance</a>
+            <a href="/en/company/history.html">History</a>
+            <a href="/en/company/sustainability.html">Sustainability</a>
+            <a href="/en/company/culture.html">Culture</a>
+            <a href="/en/company/innovation.html">Innovation</a>
+            <a href="/en/company/global-footprint.html">Global Locations</a>
+            <a href="/en/company/caterpillar-foundation.html">Caterpillar Foundation</a>
+          </div>
+        </li>
+        <li>
+          <a href="/en/brands.html">Brands ▾</a>
+          <div class="dropdown" role="menu">
+            <a href="/en/brands/cat.html">Cat</a>
+            <a href="/en/brands/cat-financial.html">Cat Financial</a>
+            <a href="/en/brands/cat-reman.html">Cat Reman</a>
+            <a href="/en/brands/perkins.html">Perkins</a>
+            <a href="/en/brands/solar-turbines.html">Solar Turbines</a>
+            <a href="/en/brands/progress-rail.html">Progress Rail</a>
+            <a href="/en/brands/fg-wilson.html">FG Wilson</a>
+            <a href="/en/brands.html">All Brands →</a>
+          </div>
+        </li>
+        <li>
+          <a href="/en/investors.html">Investors ▾</a>
+          <div class="dropdown" role="menu">
+            <a href="/en/investors/stock-information.html">Stock Information</a>
+            <a href="/en/investors/financial-information.html">Financial Information</a>
+            <a href="/en/investors/quarterly-results.html">Quarterly Results</a>
+            <a href="/en/investors/reports.html">Annual Reports</a>
+            <a href="/en/investors/sec-filings.html">SEC Filings</a>
+            <a href="/en/investors/events-presentations.html">Events &amp; Presentations</a>
+          </div>
+        </li>
+        <li>
+          <a href="/en/news.html">News ▾</a>
+          <div class="dropdown" role="menu">
+            <a href="/en/news/corporate-press-releases.html">Corporate Press Releases</a>
+            <a href="/en/news/media-resources.html">Media Resources</a>
+            <a href="/en/news/caterpillar-faq.html">FAQs</a>
+          </div>
+        </li>
+        <li>
+          <a href="/en/careers.html">Careers</a>
+        </li>
+        <li>
+          <a href="/en/company/sustainability.html">Sustainability</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="nav-search">
+      <form class="search-form" role="search" aria-label="Site search">
+        <input type="search" placeholder="Search Caterpillar.com" aria-label="Search" />
+        <button type="submit" aria-label="Submit search">🔍</button>
+      </form>
+      <!-- AI Assistant — tasteful addition -->
+      <button class="ai-assist-btn" onclick="toggleAI()" aria-label="Open AI Assistant" title="Ask our AI assistant a question about Caterpillar">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+        Ask AI
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<section class="hero" aria-label="Featured content" id="main-content">
+  <div class="hero-slide slide-1 active">
+    <div class="hero-bg">
+      <svg width="100%" height="100%" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <!-- Construction scene -->
+        <rect width="1200" height="520" fill="#1e3346"/>
+        <rect x="600" y="200" width="600" height="320" fill="#152535" opacity="0.5"/>
+        <!-- Sky gradient -->
+        <defs><linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a3a5c"/><stop offset="100%" stop-color="#2d5a7a"/></linearGradient></defs>
+        <rect width="1200" height="260" fill="url(#sky1)"/>
+        <!-- Ground -->
+        <rect y="400" width="1200" height="120" fill="#4a3820"/>
+        <!-- Simple dozer silhouette -->
+        <g transform="translate(680,320)" fill="#FFCD11" opacity="0.9">
+          <rect x="0" y="60" width="200" height="30" rx="4"/>
+          <rect x="20" y="20" width="140" height="50" rx="3"/>
+          <rect x="160" y="40" width="40" height="20" rx="2"/>
+          <circle cx="30" cy="95" r="18" fill="#222"/>
+          <circle cx="170" cy="95" r="18" fill="#222"/>
+          <circle cx="30" cy="95" r="10" fill="#FFCD11"/>
+          <circle cx="170" cy="95" r="10" fill="#FFCD11"/>
+        </g>
+        <!-- Sun/glow -->
+        <circle cx="200" cy="120" r="60" fill="#FFCD11" opacity="0.15"/>
+        <circle cx="200" cy="120" r="30" fill="#FFCD11" opacity="0.2"/>
+      </svg>
+    </div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Building a Better World</p>
+      <h1 class="hero-title">The World's Leading Construction &amp; Mining Equipment Manufacturer</h1>
+      <p class="hero-sub">For over 100 years, Caterpillar has helped customers build a better, more sustainable world.</p>
+      <a href="/en/company/about-caterpillar.html" class="btn-yellow">Learn More</a>
+      <a href="/en/company/strategy-purpose.html" class="btn-outline-white">Our Strategy</a>
     </div>
   </div>
 
-  <div class="terminal-card">
-    <div class="terminal-header">
-      <div class="terminal-dot red"></div>
-      <div class="terminal-dot yellow"></div>
-      <div class="terminal-dot green"></div>
-      <span class="terminal-title">cat-agent-sdk v3.2.1</span>
-      <div class="terminal-badge">LIVE API</div>
+  <div class="hero-slide slide-2">
+    <div class="hero-bg">
+      <svg width="100%" height="100%" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs><linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3a2210"/><stop offset="100%" stop-color="#5a3818"/></linearGradient></defs>
+        <rect width="1200" height="520" fill="url(#sky2)"/>
+        <rect y="380" width="1200" height="140" fill="#6b4c22"/>
+        <!-- Mining truck silhouette -->
+        <g transform="translate(700,270)" fill="#FFCD11" opacity="0.85">
+          <rect x="0" y="0" width="280" height="120" rx="6"/>
+          <rect x="10" y="-40" width="120" height="50" rx="4" fill="#eeb800"/>
+          <circle cx="50" cy="128" r="28" fill="#333"/>
+          <circle cx="230" cy="128" r="28" fill="#333"/>
+          <circle cx="50" cy="128" r="14" fill="#FFCD11"/>
+          <circle cx="230" cy="128" r="14" fill="#FFCD11"/>
+        </g>
+      </svg>
     </div>
-    <div class="terminal-body">
-      <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd"> cat fleet.query --id="D10T2"</span></div>
-      <div class="t-line"><span class="t-out">Fetching machine data...</span></div>
-      <br/>
-      <div class="t-line"><span class="t-out">{</span></div>
-      <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"machine"</span>: <span class="t-val">"Cat D10T2 Dozer"</span>,</span></div>
-      <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"serial"</span>: <span class="t-val">"EML00423"</span>,</span></div>
-      <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"engine_hours"</span>: <span class="t-num">14,823</span>,</span></div>
-      <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"fuel_level"</span>: <span class="t-num">78%</span>,</span></div>
-      <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"location"</span>: <span class="t-val">"Site 7 — Nevada"</span>,</span></div>
-      <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"next_service"</span>: <span class="t-val">"2026-03-14"</span>,</span></div>
-      <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"alerts"</span>: <span class="t-num">0</span>,</span></div>
-      <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"status"</span>: <span class="t-val">"OPERATIONAL"</span></span></div>
-      <div class="t-line"><span class="t-out">}</span></div>
-      <br/>
-      <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd"> _<span class="t-cursor"></span></span></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Resource Industries</p>
+      <h1 class="hero-title">Powering Mining Operations Around the World</h1>
+      <p class="hero-sub">Autonomous and semi-autonomous solutions delivering unmatched productivity in the toughest conditions.</p>
+      <a href="/en/brands/cat.html" class="btn-yellow">Explore Cat Equipment</a>
     </div>
+  </div>
+
+  <div class="hero-slide slide-3">
+    <div class="hero-bg">
+      <svg width="100%" height="100%" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs><linearGradient id="sky3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0f1f0f"/><stop offset="100%" stop-color="#1a3020"/></linearGradient></defs>
+        <rect width="1200" height="520" fill="url(#sky3)"/>
+        <!-- Power plant / turbine silhouette -->
+        <rect y="300" width="1200" height="220" fill="#203020"/>
+        <g transform="translate(680,160)" stroke="#FFCD11" stroke-width="3" fill="none" opacity="0.7">
+          <circle cx="100" cy="100" r="80"/>
+          <circle cx="100" cy="100" r="50"/>
+          <line x1="100" y1="20" x2="100" y2="180"/>
+          <line x1="20" y1="100" x2="180" y2="100"/>
+          <line x1="43" y1="43" x2="157" y2="157"/>
+          <line x1="157" y1="43" x2="43" y2="157"/>
+        </g>
+      </svg>
+    </div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Energy &amp; Transportation</p>
+      <h1 class="hero-title">Powering the Future with Reliable Energy Solutions</h1>
+      <p class="hero-sub">Cat engines, turbines, and generators keep the world's most critical operations running.</p>
+      <a href="/en/company/sustainability.html" class="btn-yellow">Sustainability Commitment</a>
+    </div>
+  </div>
+
+  <div class="hero-dots" role="tablist" aria-label="Hero carousel controls">
+    <button class="dot active" onclick="goSlide(0)" aria-label="Slide 1" role="tab"></button>
+    <button class="dot" onclick="goSlide(1)" aria-label="Slide 2" role="tab"></button>
+    <button class="dot" onclick="goSlide(2)" aria-label="Slide 3" role="tab"></button>
   </div>
 </section>
 
-<!-- TICKER -->
-<div class="ticker-bar">
-  <div class="ticker-label">LIVE FLEET DATA</div>
-  <div class="ticker-track">
-    <div class="ticker-item"><span class="tag">EXCAVATORS</span><span>4,821 units online</span><span class="up">↑ 2.3%</span></div>
-    <div class="ticker-item"><span class="tag">DOZERS</span><span>3,204 units online</span><span class="up">↑ 0.8%</span></div>
-    <div class="ticker-item"><span class="tag">WHEEL LOADERS</span><span>6,130 units online</span><span class="up">↑ 1.1%</span></div>
-    <div class="ticker-item"><span class="tag">HAUL TRUCKS</span><span>2,901 units online</span><span class="dn">↓ 0.4%</span></div>
-    <div class="ticker-item"><span class="tag">API UPTIME</span><span>99.98%</span><span class="up">↑ NOMINAL</span></div>
-    <div class="ticker-item"><span class="tag">PARTS ORDERS</span><span>12,440 processed today</span><span class="up">↑ 4.7%</span></div>
-    <div class="ticker-item"><span class="tag">ACTIVE DEALERS</span><span>3,800+ worldwide</span></div>
-    <div class="ticker-item"><span class="tag">AGENT QUERIES/S</span><span>48,200</span><span class="up">↑ LIVE</span></div>
-    <!-- dupe for loop -->
-    <div class="ticker-item"><span class="tag">EXCAVATORS</span><span>4,821 units online</span><span class="up">↑ 2.3%</span></div>
-    <div class="ticker-item"><span class="tag">DOZERS</span><span>3,204 units online</span><span class="up">↑ 0.8%</span></div>
-    <div class="ticker-item"><span class="tag">WHEEL LOADERS</span><span>6,130 units online</span><span class="up">↑ 1.1%</span></div>
-    <div class="ticker-item"><span class="tag">HAUL TRUCKS</span><span>2,901 units online</span><span class="dn">↓ 0.4%</span></div>
-    <div class="ticker-item"><span class="tag">API UPTIME</span><span>99.98%</span><span class="up">↑ NOMINAL</span></div>
-    <div class="ticker-item"><span class="tag">PARTS ORDERS</span><span>12,440 processed today</span><span class="up">↑ 4.7%</span></div>
-    <div class="ticker-item"><span class="tag">ACTIVE DEALERS</span><span>3,800+ worldwide</span></div>
-    <div class="ticker-item"><span class="tag">AGENT QUERIES/S</span><span>48,200</span><span class="up">↑ LIVE</span></div>
+<!-- ── QUICK LINKS ── -->
+<div class="quick-links" role="navigation" aria-label="Quick links">
+  <div class="quick-links-inner">
+    <a href="/en/company/about-caterpillar.html" class="quick-link">
+      <span class="ql-icon">🏭</span>
+      <span>About Caterpillar</span>
+      <span class="ql-arrow">›</span>
+    </a>
+    <a href="/en/brands.html" class="quick-link">
+      <span class="ql-icon">🏷️</span>
+      <span>Our Brands</span>
+      <span class="ql-arrow">›</span>
+    </a>
+    <a href="/en/investors.html" class="quick-link">
+      <span class="ql-icon">📈</span>
+      <span>Investor Relations</span>
+      <span class="ql-arrow">›</span>
+    </a>
+    <a href="/en/news/corporate-press-releases.html" class="quick-link">
+      <span class="ql-icon">📰</span>
+      <span>Press Releases</span>
+      <span class="ql-arrow">›</span>
+    </a>
+    <a href="/en/careers.html" class="quick-link">
+      <span class="ql-icon">💼</span>
+      <span>Careers</span>
+      <span class="ql-arrow">›</span>
+    </a>
+    <a href="/en/company/sustainability.html" class="quick-link">
+      <span class="ql-icon">🌱</span>
+      <span>Sustainability</span>
+      <span class="ql-arrow">›</span>
+    </a>
   </div>
 </div>
 
-<!-- AGENT FEATURES -->
-<section>
-  <div class="section-label" data-index="01">Agent Capabilities</div>
-  <h2>Everything an agent needs<br/>to operate heavy iron.</h2>
-  <p class="section-sub">Built on Cat's 98-year equipment legacy — reimagined as structured, machine-readable APIs your agents can call directly.</p>
+<!-- ── MAIN CONTENT ── -->
+<main id="content" role="main">
 
-  <div class="features-grid">
-    <div class="feature-card">
-      <span class="feature-icon">⚡</span>
-      <div class="feature-num">CAPABILITY — 001</div>
-      <div class="feature-title">Real-Time Telemetry</div>
-      <p class="feature-desc">Stream live engine data, fuel levels, GPS location, fault codes, and utilization metrics from any Cat machine in your fleet.</p>
-      <span class="feature-tag">GET /fleet/{id}/telemetry</span>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">🔧</span>
-      <div class="feature-num">CAPABILITY — 002</div>
-      <div class="feature-title">Predictive Maintenance</div>
-      <p class="feature-desc">AI-powered service predictions based on engine hours, operating conditions, and historical failure patterns across 1.4M machines.</p>
-      <span class="feature-tag">POST /maintenance/predict</span>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">📦</span>
-      <div class="feature-num">CAPABILITY — 003</div>
-      <div class="feature-title">Parts Procurement</div>
-      <p class="feature-desc">Query parts availability, pricing, and lead times. Place orders programmatically across Cat's global dealer network — no human in the loop.</p>
-      <span class="feature-tag">POST /parts/order</span>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">📍</span>
-      <div class="feature-num">CAPABILITY — 004</div>
-      <div class="feature-title">Fleet Geofencing</div>
-      <p class="feature-desc">Create and monitor virtual boundaries. Receive structured alerts when equipment enters or exits defined zones, with full audit trails.</p>
-      <span class="feature-tag">WS /fleet/geofence/stream</span>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">💰</span>
-      <div class="feature-num">CAPABILITY — 005</div>
-      <div class="feature-title">Cat Financial Integration</div>
-      <p class="feature-desc">Query financing options, lease structures, and payment schedules. Agents can model total cost of ownership for any equipment configuration.</p>
-      <span class="feature-tag">GET /financial/options</span>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">🤖</span>
-      <div class="feature-num">CAPABILITY — 006</div>
-      <div class="feature-title">MCP Server Ready</div>
-      <p class="feature-desc">Native Model Context Protocol integration. Drop the Cat MCP server into your agent stack and start querying fleet data in under 5 minutes.</p>
-      <span class="feature-tag">MCP://cat.tools/fleet</span>
-    </div>
-  </div>
-</section>
-
-<!-- STATS -->
-<div style="background: var(--cat-dark); border-top: 1px solid var(--cat-border); border-bottom: 1px solid var(--cat-border); padding: 0 40px;">
-  <div style="max-width: 1400px; margin: 0 auto;">
-    <div class="stats-row">
-      <div class="stat-box">
-        <span class="stat-num">1.4M+</span>
-        <div class="stat-label">Connected Machines</div>
-      </div>
-      <div class="stat-box">
-        <span class="stat-num">190+</span>
-        <div class="stat-label">Countries Served</div>
-      </div>
-      <div class="stat-box">
-        <span class="stat-num">99.98%</span>
-        <div class="stat-label">API Uptime SLA</div>
-      </div>
-      <div class="stat-box">
-        <span class="stat-num">&lt;80ms</span>
-        <div class="stat-label">Avg. API Response</div>
+  <!-- AI ASSISTANT PANEL -->
+  <div class="content-wrap">
+    <div class="section">
+      <div class="ai-panel" role="complementary" aria-label="AI Assistant">
+        <div class="ai-panel-icon" aria-hidden="true">✦</div>
+        <div class="ai-panel-content">
+          <h3>Ask about Caterpillar</h3>
+          <p>Get instant answers about our products, investor relations, sustainability goals, dealer locations, and more.</p>
+          <div class="ai-input-row">
+            <input type="text" id="ai-inline-input" placeholder="e.g. What are Caterpillar's 2030 sustainability goals?" aria-label="Ask a question about Caterpillar" />
+            <button onclick="sendAIMsg(document.getElementById('ai-inline-input').value)">Ask →</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- EQUIPMENT CATALOG -->
-<div class="equipment-section">
-  <div class="equipment-inner">
-    <div class="section-label" data-index="02">Machine Catalog</div>
-    <h2>Query any machine.<br/>Every asset. Fully structured.</h2>
-    <p class="section-sub" style="margin-bottom:0;">All equipment classes are available as API resources with full spec sheets, part numbers, and telemetry schemas.</p>
+  <!-- BRANDS -->
+  <div class="content-wrap">
+    <section class="section section-border-top" aria-labelledby="brands-heading">
+      <h2 class="section-title" id="brands-heading">Our Portfolio of Brands</h2>
+      <p class="section-desc">The Caterpillar brand represents the whole corporation and our people. Our full portfolio of brands offer machines, engines, components, services and solutions to meet the unique needs of industries and customers worldwide.</p>
+      <a href="/en/brands.html" style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;display:inline-block;margin-bottom:28px;color:var(--cat-black);">View All Brands →</a>
+      <div class="brands-grid">
+        <article class="brand-card">
+          <div class="brand-logo-mock">
+            <span style="font-size:26px;font-weight:900;letter-spacing:-0.02em;color:#000;">C<span style="display:inline-block;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:12px solid var(--cat-yellow);margin:0 1px;vertical-align:middle;position:relative;top:-1px;"></span>T</span>
+          </div>
+          <div class="brand-name">Cat</div>
+          <p class="brand-desc">The flagship brand in the Caterpillar portfolio. Machines, engines, services and solutions engineered to perform and designed to last, backed by the world's largest dealer network.</p>
+          <a href="/en/brands/cat.html" class="brand-link">Visit Cat.com →</a>
+        </article>
+        <article class="brand-card">
+          <div class="brand-logo-mock"><span style="font-size:20px;font-weight:700;color:#005baa;">Cat Financial</span></div>
+          <div class="brand-name">Cat Financial</div>
+          <p class="brand-desc">Financing solutions for Cat equipment and related services. Cat Financial provides retail and wholesale financing, leasing and insurance products to customers and Cat dealers worldwide.</p>
+          <a href="/en/brands/cat-financial.html" class="brand-link">Learn More →</a>
+        </article>
+        <article class="brand-card">
+          <div class="brand-logo-mock"><span style="font-size:20px;font-weight:700;color:#e04000;">Perkins</span></div>
+          <div class="brand-name">Perkins</div>
+          <p class="brand-desc">A leading global manufacturer of off-highway diesel and gas engines. Perkins provides engines for power generation, industrial, agricultural, and construction applications.</p>
+          <a href="/en/brands/perkins.html" class="brand-link">Learn More →</a>
+        </article>
+        <article class="brand-card">
+          <div class="brand-logo-mock"><span style="font-size:16px;font-weight:700;color:#003366;">Solar Turbines</span></div>
+          <div class="brand-name">Solar Turbines</div>
+          <p class="brand-desc">A world leader in the design, manufacture, and service of industrial gas turbine systems for power generation and gas compression in the oil and gas industry.</p>
+          <a href="/en/brands/solar-turbines.html" class="brand-link">Learn More →</a>
+        </article>
+        <article class="brand-card">
+          <div class="brand-logo-mock"><span style="font-size:18px;font-weight:700;color:#1a6b2e;">Progress Rail</span></div>
+          <div class="brand-name">Progress Rail</div>
+          <p class="brand-desc">A leading provider of integrated solutions for the railroad industry, including locomotive systems, freight cars, transit vehicles, track materials, and maintenance-of-way equipment.</p>
+          <a href="/en/brands/progress-rail.html" class="brand-link">Learn More →</a>
+        </article>
+        <article class="brand-card">
+          <div class="brand-logo-mock"><span style="font-size:18px;font-weight:700;color:#333;">Cat Reman</span></div>
+          <div class="brand-name">Cat Reman</div>
+          <p class="brand-desc">Remanufactured Cat components restored to original specifications. Cat Reman extends the life of your equipment with genuine quality at reduced cost — and keeps components out of landfills.</p>
+          <a href="/en/brands/cat-reman.html" class="brand-link">Learn More →</a>
+        </article>
+        <article class="brand-card">
+          <div class="brand-logo-mock"><span style="font-size:18px;font-weight:700;color:#004a99;">FG Wilson</span></div>
+          <div class="brand-name">FG Wilson</div>
+          <p class="brand-desc">Manufacturer of Perkins-powered diesel and gas generator sets. FG Wilson provides distributed power generation solutions globally with a network of more than 300 dealers.</p>
+          <a href="/en/brands/fg-wilson.html" class="brand-link">Learn More →</a>
+        </article>
+        <article class="brand-card">
+          <div class="brand-logo-mock"><span style="font-size:18px;font-weight:700;color:#7a0000;">Cat Rentals</span></div>
+          <div class="brand-name">Cat Rental Store</div>
+          <p class="brand-desc">Access to the world's best-built construction equipment, including the full Cat product line and other leading brands, available through your local Cat dealer's rental fleet.</p>
+          <a href="/en/brands/cat-rental-store.html" class="brand-link">Learn More →</a>
+        </article>
+      </div>
+    </section>
+  </div>
 
-    <div class="equipment-grid">
-      <div class="equip-card">
-        <span class="equip-emoji">🏗️</span>
-        <div class="equip-name">Excavators</div>
-        <div class="equip-meta">42 MODELS · 7–500 METRIC TONS</div>
-        <div class="equip-api">GET /catalog/excavators →</div>
-      </div>
-      <div class="equip-card">
-        <span class="equip-emoji">🚧</span>
-        <div class="equip-name">Bulldozers</div>
-        <div class="equip-meta">12 MODELS · D3–D11</div>
-        <div class="equip-api">GET /catalog/dozers →</div>
-      </div>
-      <div class="equip-card">
-        <span class="equip-emoji">🚚</span>
-        <div class="equip-name">Haul Trucks</div>
-        <div class="equip-meta">18 MODELS · 40–400T PAYLOAD</div>
-        <div class="equip-api">GET /catalog/haul-trucks →</div>
-      </div>
-      <div class="equip-card">
-        <span class="equip-emoji">🔄</span>
-        <div class="equip-name">Wheel Loaders</div>
-        <div class="equip-meta">30 MODELS · 1–26 M³ BUCKET</div>
-        <div class="equip-api">GET /catalog/wheel-loaders →</div>
-      </div>
-      <div class="equip-card">
-        <span class="equip-emoji">🛣️</span>
-        <div class="equip-name">Motor Graders</div>
-        <div class="equip-meta">8 MODELS · 120–24M SERIES</div>
-        <div class="equip-api">GET /catalog/graders →</div>
-      </div>
-      <div class="equip-card">
-        <span class="equip-emoji">⚙️</span>
-        <div class="equip-name">Generators</div>
-        <div class="equip-meta">200+ SKUs · 20–16,000 KVA</div>
-        <div class="equip-api">GET /catalog/generators →</div>
-      </div>
-      <div class="equip-card">
-        <span class="equip-emoji">🔥</span>
-        <div class="equip-name">Engines</div>
-        <div class="equip-meta">INDUSTRIAL · MARINE · OIL &amp; GAS</div>
-        <div class="equip-api">GET /catalog/engines →</div>
-      </div>
-      <div class="equip-card">
-        <span class="equip-emoji">🏔️</span>
-        <div class="equip-name">Mining Equipment</div>
-        <div class="equip-meta">SURFACE · UNDERGROUND · BLASTHOLE</div>
-        <div class="equip-api">GET /catalog/mining →</div>
+  <!-- BUSINESS SEGMENTS -->
+  <div style="background:var(--cat-light-gray);border-top:1px solid var(--cat-border);border-bottom:1px solid var(--cat-border);padding:60px 0;">
+    <div class="content-wrap">
+      <h2 class="section-title" id="segments-heading">Business Segments</h2>
+      <p class="section-desc">Caterpillar operates through three primary business segments, each solving unique challenges for customers across the globe.</p>
+      <div class="segments-grid" role="list" aria-labelledby="segments-heading">
+        <article class="segment-card" role="listitem">
+          <span class="seg-icon" aria-hidden="true">🏗️</span>
+          <h3 class="seg-title">Construction Industries</h3>
+          <p class="seg-desc">Supports customers using machinery in infrastructure and building construction. Committed to delivering an easy-to-buy, easy-to-own customer experience through innovative products, services and technology.</p>
+          <a href="/en/company/strategy-purpose/industries.html" class="seg-link">Learn More →</a>
+        </article>
+        <article class="segment-card" role="listitem">
+          <span class="seg-icon" aria-hidden="true">⛏️</span>
+          <h3 class="seg-title">Resource Industries</h3>
+          <p class="seg-desc">Supports customers in mining, heavy construction and quarry and aggregates with holistic site solutions, leadership in semi-autonomous and autonomous technology, and innovative energy solutions.</p>
+          <a href="/en/company/strategy-purpose/industries.html" class="seg-link">Learn More →</a>
+        </article>
+        <article class="segment-card" role="listitem">
+          <span class="seg-icon" aria-hidden="true">⚡</span>
+          <h3 class="seg-title">Energy &amp; Transportation</h3>
+          <p class="seg-desc">Supports customers in oil and gas, power generation, marine, rail and industrial applications. Well-positioned to power the future in an evolving energy landscape through distributed and renewable solutions.</p>
+          <a href="/en/company/strategy-purpose/industries.html" class="seg-link">Learn More →</a>
+        </article>
       </div>
     </div>
   </div>
-</div>
 
-<!-- API DOCS SECTION -->
-<section>
-  <div class="section-label" data-index="03">API Reference</div>
-  <h2>Structured endpoints.<br/>Predictable outputs.</h2>
-  <p class="section-sub">Every Cat data domain is available over REST or WebSocket with OpenAPI 3.1 schemas, built for agents that need deterministic, verifiable outputs.</p>
+  <!-- NEWS -->
+  <div class="content-wrap">
+    <section class="section section-border-top" aria-labelledby="news-heading">
+      <h2 class="section-title" id="news-heading">Latest News</h2>
+      <p class="section-desc">Stay up to date with Caterpillar's latest press releases, corporate announcements, and company news.</p>
+      <a href="/en/news/corporate-press-releases.html" style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;display:inline-block;margin-bottom:28px;color:var(--cat-black);">All Press Releases →</a>
+      <div class="news-grid">
+        <article class="news-card n1">
+          <div class="news-img"><div class="news-img-placeholder">🏗️</div></div>
+          <div class="news-body">
+            <time class="news-date" datetime="2026-02-19">February 19, 2026</time>
+            <h3 class="news-headline">Caterpillar CEO to Participate in Fireside Chat at CONEXPO</h3>
+            <p class="news-excerpt">CEO Joe Creed and Group President Rod Shurman are expected to participate in a fireside chat during CONEXPO in Las Vegas, the world's largest construction trade show.</p>
+            <a href="/en/news/corporate-press-releases.html" class="news-readmore">View Release →</a>
+          </div>
+        </article>
+        <article class="news-card n2">
+          <div class="news-img"><div class="news-img-placeholder">💻</div></div>
+          <div class="news-body">
+            <time class="news-date" datetime="2026-02-14">February 14, 2026</time>
+            <h3 class="news-headline">Caterpillar Acquires Australian Mining Software Company RPMGlobal</h3>
+            <p class="news-excerpt">Caterpillar has completed the acquisition of RPMGlobal Holdings Limited, an Australian-based mining software company, expanding its digital and technology capabilities.</p>
+            <a href="/en/news/corporate-press-releases.html" class="news-readmore">View Release →</a>
+          </div>
+        </article>
+        <article class="news-card n3">
+          <div class="news-img"><div class="news-img-placeholder">⚡</div></div>
+          <div class="news-body">
+            <time class="news-date" datetime="2026-02-05">February 5, 2026</time>
+            <h3 class="news-headline">AIP Corp, Caterpillar and Boyd CAT Announce Strategic Compute Campus Alliance</h3>
+            <p class="news-excerpt">Strategic alliance announced to support development of AIP Corp's flagship site, the Monarch Compute Campus, powered by Cat generator technology.</p>
+            <a href="/en/news/corporate-press-releases.html" class="news-readmore">View Release →</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
 
-  <div class="api-section">
-    <div class="endpoint-list">
-      <div class="endpoint-header">
-        <span>ENDPOINT</span>
-        <span>DESCRIPTION</span>
+  <!-- SUSTAINABILITY BAND -->
+  <div class="sustain-band">
+    <div class="sustain-inner">
+      <div>
+        <p style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--cat-yellow);margin-bottom:12px;">Sustainability</p>
+        <h2>Building a <span>Better World</span> — for Everyone</h2>
+        <p>Caterpillar's sustainability efforts aim to reduce greenhouse gas emissions, help customers meet climate-related goals, and create lasting positive impact in communities around the world.</p>
+        <a href="/en/company/sustainability.html" class="btn-yellow">Explore Our Commitment</a>
       </div>
-
-      <div class="endpoint-item">
-        <span class="method get">GET</span>
-        <span class="endpoint-path">/fleet</span>
-        <span class="endpoint-desc">List all assets</span>
-      </div>
-      <div class="endpoint-item">
-        <span class="method get">GET</span>
-        <span class="endpoint-path">/fleet/{id}/telemetry</span>
-        <span class="endpoint-desc">Live sensor data</span>
-      </div>
-      <div class="endpoint-item">
-        <span class="method post">POST</span>
-        <span class="endpoint-path">/maintenance/schedule</span>
-        <span class="endpoint-desc">Book service</span>
-      </div>
-      <div class="endpoint-item">
-        <span class="method get">GET</span>
-        <span class="endpoint-path">/parts/search</span>
-        <span class="endpoint-desc">Part availability</span>
-      </div>
-      <div class="endpoint-item">
-        <span class="method post">POST</span>
-        <span class="endpoint-path">/parts/order</span>
-        <span class="endpoint-desc">Place parts order</span>
-      </div>
-      <div class="endpoint-item">
-        <span class="method get">GET</span>
-        <span class="endpoint-path">/dealers/nearest</span>
-        <span class="endpoint-desc">Find dealer by geo</span>
-      </div>
-      <div class="endpoint-item">
-        <span class="method post">POST</span>
-        <span class="endpoint-path">/fleet/geofence</span>
-        <span class="endpoint-desc">Create boundary</span>
-      </div>
-      <div class="endpoint-item">
-        <span class="method ws">WS</span>
-        <span class="endpoint-path">/fleet/stream</span>
-        <span class="endpoint-desc">Real-time events</span>
-      </div>
-      <div class="endpoint-item">
-        <span class="method get">GET</span>
-        <span class="endpoint-path">/catalog/{category}</span>
-        <span class="endpoint-desc">Equipment specs</span>
-      </div>
-      <div class="endpoint-item">
-        <span class="method get">GET</span>
-        <span class="endpoint-path">/financial/options</span>
-        <span class="endpoint-desc">Financing models</span>
-      </div>
-    </div>
-
-    <div>
-      <div class="terminal-card">
-        <div class="terminal-header">
-          <div class="terminal-dot red"></div>
-          <div class="terminal-dot yellow"></div>
-          <div class="terminal-dot green"></div>
-          <span class="terminal-title">SDK Quick Start</span>
+      <div class="sustain-stats">
+        <div class="sustain-stat">
+          <span class="num">2030</span>
+          <span class="label">Sustainability Goals Target Year</span>
         </div>
-        <div class="terminal-body" style="font-size:11px; line-height:2;">
-          <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd"> npm install @caterpillar/agent-sdk</span></div>
-          <br/>
-          <div class="t-line" style="color:#7DC8E0;">// Initialize client</div>
-          <div class="t-line"><span class="t-key">const</span><span class="t-cmd"> cat = </span><span class="t-key">new</span><span class="t-cmd"> CatAgent({</span></div>
-          <div class="t-line"><span class="t-cmd">&nbsp;&nbsp;apiKey: </span><span class="t-val">'cat_live_...'</span><span class="t-cmd">,</span></div>
-          <div class="t-line"><span class="t-cmd">&nbsp;&nbsp;fleet: </span><span class="t-val">'fleet_a9f3k'</span></div>
-          <div class="t-line"><span class="t-cmd">});</span></div>
-          <br/>
-          <div class="t-line" style="color:#7DC8E0;">// Query machine state</div>
-          <div class="t-line"><span class="t-key">const</span><span class="t-cmd"> data = </span><span class="t-key">await</span><span class="t-cmd"> cat</span></div>
-          <div class="t-line"><span class="t-cmd">&nbsp;&nbsp;.fleet(<span class="t-val">'EML00423'</span>)</span></div>
-          <div class="t-line"><span class="t-cmd">&nbsp;&nbsp;.telemetry();</span></div>
-          <br/>
-          <div class="t-line"><span class="t-out">// → { engine_hours: 14823, ... }</span></div>
+        <div class="sustain-stat">
+          <span class="num">190+</span>
+          <span class="label">Countries Where We Operate</span>
         </div>
-      </div>
-
-      <div style="margin-top: 16px; display: flex; gap: 12px;">
-        <a href="#" class="btn-primary" style="flex:1; text-align:center; padding: 14px 0;">Read Docs →</a>
-        <a href="#" class="btn-ghost" style="flex:1; text-align:center; padding: 14px 0;">OpenAPI Spec</a>
+        <div class="sustain-stat">
+          <span class="num">100</span>
+          <span class="label">Years in Business</span>
+        </div>
+        <div class="sustain-stat">
+          <span class="num">109k</span>
+          <span class="label">Employees Worldwide</span>
+        </div>
       </div>
     </div>
   </div>
-</section>
 
-<!-- INDUSTRIES -->
-<div style="background: var(--cat-dark); border-top: 1px solid var(--cat-border); border-bottom: 1px solid var(--cat-border);">
-  <section style="padding: 100px 40px;">
-    <div class="section-label" data-index="04">Industries</div>
-    <h2>Every industry.<br/>One unified API.</h2>
-    <p class="section-sub">Cat equipment spans dozens of verticals. Agent integrations are pre-configured for each industry's unique data vocabulary and workflows.</p>
-
-    <div class="industries-list">
-      <div class="industry-row">
-        <div class="ind-left">
-          <span class="ind-num">01</span>
-          <span class="ind-name">Construction</span>
+  <!-- INVESTORS -->
+  <div class="investors-strip">
+    <div class="investors-inner">
+      <h3>Investor Relations</h3>
+      <div class="investor-stats">
+        <div class="inv-stat">
+          <span class="val">$64.8B</span>
+          <span class="lbl">2024 Revenue</span>
         </div>
-        <div class="ind-right">
-          <span class="ind-tag">42 ENDPOINTS</span>
-          <span class="ind-arrow">→</span>
+        <div class="inv-divider"></div>
+        <div class="inv-stat">
+          <span class="val">CAT</span>
+          <span class="lbl">NYSE Ticker</span>
         </div>
-      </div>
-      <div class="industry-row">
-        <div class="ind-left">
-          <span class="ind-num">02</span>
-          <span class="ind-name">Mining &amp; Quarrying</span>
+        <div class="inv-divider"></div>
+        <div class="inv-stat">
+          <span class="val">S&amp;P 100</span>
+          <span class="lbl">Index Membership</span>
         </div>
-        <div class="ind-right">
-          <span class="ind-tag">38 ENDPOINTS</span>
-          <span class="ind-arrow">→</span>
+        <div class="inv-divider"></div>
+        <div class="inv-stat">
+          <span class="val">31 yrs</span>
+          <span class="lbl">Dividend Growth Streak</span>
         </div>
       </div>
-      <div class="industry-row">
-        <div class="ind-left">
-          <span class="ind-num">03</span>
-          <span class="ind-name">Oil, Gas &amp; Marine</span>
-        </div>
-        <div class="ind-right">
-          <span class="ind-tag">31 ENDPOINTS</span>
-          <span class="ind-arrow">→</span>
-        </div>
-      </div>
-      <div class="industry-row">
-        <div class="ind-left">
-          <span class="ind-num">04</span>
-          <span class="ind-name">Electric Power</span>
-        </div>
-        <div class="ind-right">
-          <span class="ind-tag">28 ENDPOINTS</span>
-          <span class="ind-arrow">→</span>
-        </div>
-      </div>
-      <div class="industry-row">
-        <div class="ind-left">
-          <span class="ind-num">05</span>
-          <span class="ind-name">Agriculture</span>
-        </div>
-        <div class="ind-right">
-          <span class="ind-tag">19 ENDPOINTS</span>
-          <span class="ind-arrow">→</span>
-        </div>
-      </div>
-      <div class="industry-row">
-        <div class="ind-left">
-          <span class="ind-num">06</span>
-          <span class="ind-name">Forestry &amp; Landscaping</span>
-        </div>
-        <div class="ind-right">
-          <span class="ind-tag">16 ENDPOINTS</span>
-          <span class="ind-arrow">→</span>
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- CTA -->
-<div class="agent-cta">
-  <div class="cta-inner">
-    <div class="cta-tag">Start Building Today</div>
-    <h2>Your agent. Our machines.<br/>Infinite leverage.</h2>
-    <p>Join the fleet operators, procurement teams, and AI builders connecting their agents to the Cat ecosystem. Start with 10,000 free API calls.</p>
-    <div class="cta-btns">
-      <a href="#" class="btn-dark">Get Your API Key →</a>
-      <a href="#" class="btn-outline-dark">Talk to Sales</a>
+      <a href="/en/investors.html" class="btn-yellow">Investor Center</a>
     </div>
   </div>
-</div>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <div class="nav-logo">
-        <div class="logo-mark">CAT</div>
-        <div class="logo-text">Caterpillar <span>∕ Agent</span></div>
+</main>
+
+<!-- ── FOOTER ── -->
+<footer role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand-col">
+      <div class="footer-logo">
+        <span class="footer-logo-text">C<span class="footer-logo-tri" aria-hidden="true"></span>TERPILLAR</span>
       </div>
-      <p>The world's largest heavy equipment manufacturer — now fully API-accessible for AI agents, autonomous systems, and the builders of tomorrow's industrial stack.</p>
-    </div>
-    <div class="footer-col">
-      <h4>Equipment</h4>
-      <a href="#">Excavators</a>
-      <a href="#">Dozers</a>
-      <a href="#">Trucks</a>
-      <a href="#">Loaders</a>
-      <a href="#">Generators</a>
-    </div>
-    <div class="footer-col">
-      <h4>Agent API</h4>
-      <a href="#">Documentation</a>
-      <a href="#">OpenAPI Spec</a>
-      <a href="#">SDK Libraries</a>
-      <a href="#">MCP Server</a>
-      <a href="#">Changelog</a>
-    </div>
-    <div class="footer-col">
-      <h4>Services</h4>
-      <a href="#">Cat Financial</a>
-      <a href="#">SIS Parts</a>
-      <a href="#">Dealer Network</a>
-      <a href="#">Product Link</a>
-      <a href="#">VisionLink</a>
+      <p>Building a better, more sustainable world for over 100 years. Caterpillar Inc. is the world's leading manufacturer of construction and mining equipment, off-highway diesel and natural gas engines, industrial gas turbines and diesel-electric locomotives.</p>
     </div>
     <div class="footer-col">
       <h4>Company</h4>
-      <a href="#">About Cat</a>
-      <a href="#">Investors</a>
-      <a href="#">Sustainability</a>
-      <a href="#">Careers</a>
-      <a href="#">Contact</a>
+      <a href="/en/company/about-caterpillar.html">About Caterpillar</a>
+      <a href="/en/company/strategy-purpose.html">Strategy</a>
+      <a href="/en/company/governance.html">Governance</a>
+      <a href="/en/company/history.html">History</a>
+      <a href="/en/company/culture.html">Culture</a>
+      <a href="/en/company/innovation.html">Innovation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Brands</h4>
+      <a href="/en/brands/cat.html">Cat</a>
+      <a href="/en/brands/cat-financial.html">Cat Financial</a>
+      <a href="/en/brands/perkins.html">Perkins</a>
+      <a href="/en/brands/solar-turbines.html">Solar Turbines</a>
+      <a href="/en/brands/progress-rail.html">Progress Rail</a>
+      <a href="/en/brands.html">All Brands</a>
+    </div>
+    <div class="footer-col">
+      <h4>Investors</h4>
+      <a href="/en/investors/stock-information.html">Stock Information</a>
+      <a href="/en/investors/financial-information.html">Financial Information</a>
+      <a href="/en/investors/quarterly-results.html">Quarterly Results</a>
+      <a href="/en/investors/reports.html">Annual Reports</a>
+      <a href="/en/investors/sec-filings.html">SEC Filings</a>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <a href="/en/news/corporate-press-releases.html">Press Releases</a>
+      <a href="/en/news/media-resources.html">Media Resources</a>
+      <a href="/en/careers.html">Careers</a>
+      <a href="/en/company/sustainability.html">Sustainability</a>
+      <a href="/en/company/caterpillar-foundation.html">Foundation</a>
+      <a href="/en/contact.html">Contact Us</a>
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© 2026 Caterpillar Inc. All rights reserved. CAT, CATERPILLAR, and related marks are trademarks.</div>
-    <div class="footer-status">ALL SYSTEMS OPERATIONAL</div>
+    <div class="footer-bottom-inner">
+      <p>© 2026 Caterpillar Inc. All Rights Reserved. CAT, CATERPILLAR, their respective logos and "Caterpillar Yellow" are trademarks of Caterpillar Inc.</p>
+      <div class="footer-legal">
+        <a href="/en/legal.html">Legal</a>
+        <a href="/en/privacy.html">Privacy</a>
+        <a href="/en/cookies.html">Cookie Settings</a>
+        <a href="/en/accessibility.html">Accessibility</a>
+        <a href="/llms.txt">llms.txt</a>
+      </div>
+    </div>
   </div>
 </footer>
 
+<!-- ── AI CHAT WIDGET ── -->
+<div class="ai-modal" id="ai-modal" role="dialog" aria-label="Caterpillar AI Assistant" aria-modal="true">
+  <div class="ai-modal-header">
+    <h4>Caterpillar AI Assistant</h4>
+    <button class="ai-modal-close" onclick="toggleAI()" aria-label="Close AI Assistant">✕</button>
+  </div>
+  <div class="ai-modal-msgs" id="ai-msgs" aria-live="polite">
+    <div class="msg bot">Hi! I can help you find information about Caterpillar — our brands, products, investor data, sustainability commitments, and more. What would you like to know?</div>
+  </div>
+  <div class="ai-modal-input">
+    <input type="text" id="ai-chat-input" placeholder="Ask a question..." aria-label="Ask a question about Caterpillar" onkeydown="if(event.key==='Enter') sendChatMsg()" />
+    <button onclick="sendChatMsg()">Send</button>
+  </div>
+</div>
+
+<button class="ai-float-btn" onclick="toggleAI()" aria-label="Open AI Assistant" title="Ask our AI assistant">✦</button>
+
 <script>
-  // Intersection Observer for fade-up
-  const els = document.querySelectorAll('.feature-card, .equip-card, .stat-box, .industry-row');
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        e.target.style.transitionDelay = (i % 4) * 80 + 'ms';
-        e.target.style.opacity = '1';
-        e.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.1 });
+  // ── HERO CAROUSEL ──
+  let current = 0;
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.dot');
 
-  els.forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    obs.observe(el);
-  });
+  function goSlide(n) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = n;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
 
-  // Terminal typing effect
-  const cursor = document.querySelector('.t-cursor');
-  let cmds = [
-    '$ cat fleet.query --id="D10T2"',
-    '$ cat maintenance.predict --fleet="nevada_7"',
-    '$ cat parts.order --sku="1R-0756" --qty=4',
-    '$ cat dealers.find --geo="37.7749,-122.4194"',
-  ];
-  let ci = 0;
-  setInterval(() => {
-    ci = (ci + 1) % cmds.length;
-  }, 5000);
+  setInterval(() => goSlide((current + 1) % slides.length), 6000);
+
+  // ── AI TOGGLE ──
+  function toggleAI() {
+    const modal = document.getElementById('ai-modal');
+    modal.classList.toggle('open');
+    if (modal.classList.contains('open')) {
+      document.getElementById('ai-chat-input').focus();
+    }
+  }
+
+  // ── AI RESPONSES (static for demo) ──
+  const responses = {
+    'sustainability': 'Caterpillar\'s 2030 Sustainability Goals include reducing absolute Scope 1 and 2 GHG emissions by 30%, helping customers avoid 1 billion metric tons of Scope 3 emissions by 2030, and reaching $10B in sustainable finance commitments through Cat Financial. Learn more at caterpillar.com/en/company/sustainability.',
+    'revenue': 'Caterpillar reported $64.8 billion in total revenue for 2024. The company operates through three segments: Construction Industries, Resource Industries, and Energy & Transportation. View the full financial report at caterpillar.com/en/investors.',
+    'brands': 'Caterpillar\'s brand portfolio includes: Cat (flagship), Cat Financial, Cat Reman, Cat Rentals, Perkins, Solar Turbines, Progress Rail, FG Wilson, MaK, MWM, Cat Lift Trucks, and more. Visit caterpillar.com/en/brands for the full list.',
+    'default': 'I can help with questions about Caterpillar\'s brands, products, financials, sustainability commitments, investor relations, and careers. For the most detailed information, I recommend visiting the relevant section of caterpillar.com.'
+  };
+
+  function getResponse(q) {
+    q = q.toLowerCase();
+    if (q.includes('sustain') || q.includes('green') || q.includes('emission') || q.includes('2030')) return responses.sustainability;
+    if (q.includes('revenue') || q.includes('financial') || q.includes('stock') || q.includes('earnings')) return responses.revenue;
+    if (q.includes('brand') || q.includes('perkins') || q.includes('solar') || q.includes('progress')) return responses.brands;
+    return responses.default;
+  }
+
+  function addMsg(text, type) {
+    const container = document.getElementById('ai-msgs');
+    const msg = document.createElement('div');
+    msg.className = 'msg ' + type;
+    msg.textContent = text;
+    container.appendChild(msg);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function sendChatMsg() {
+    const input = document.getElementById('ai-chat-input');
+    const val = input.value.trim();
+    if (!val) return;
+    addMsg(val, 'user');
+    input.value = '';
+    setTimeout(() => addMsg(getResponse(val), 'bot'), 600);
+  }
+
+  function sendAIMsg(val) {
+    if (!val || !val.trim()) return;
+    document.getElementById('ai-modal').classList.add('open');
+    addMsg(val.trim(), 'user');
+    document.getElementById('ai-inline-input').value = '';
+    setTimeout(() => addMsg(getResponse(val), 'bot'), 600);
+  }
 </script>
 
 </body>
