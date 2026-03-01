@@ -1,0 +1,590 @@
+<!--Name: Eric--><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caterpillar 2028 / Machine Interface</title>
+  <meta name="description" content="A 2028 Caterpillar machine-first landing page that maps human contextual sections to MCP-ready tools and resources.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cat-yellow: #ffc600;
+      --cat-charcoal: #040404;
+      --cat-purple: #2c0f5d;
+      --cat-blue: #0c2f6f;
+      --cat-grey: #1b1b1b;
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      background: radial-gradient(circle at top right, rgba(255,198,0,0.25), transparent 45%),
+        radial-gradient(circle at 30% 20%, rgba(44,15,93,0.6), transparent 45%),
+        #010101;
+      color: #f5f5f5;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 1.5rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+      background: rgba(1, 1, 1, 0.7);
+      animation: headerSlide 1s ease;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.2rem;
+      text-transform: uppercase;
+    }
+
+    .nav-note {
+      font-size: 0.85rem;
+      letter-spacing: 0.3rem;
+      text-transform: uppercase;
+      color: #a0a0a0;
+    }
+
+    main {
+      padding: 2rem 5% 4rem;
+    }
+
+    .hero {
+      margin-top: 3rem;
+      padding: 3rem;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(255,198,0,0.12), rgba(12,47,111,0.6));
+      border: 1px solid rgba(255,198,0,0.4);
+      position: relative;
+      overflow: hidden;
+      animation: floatPulse 12s ease-in-out infinite;
+      --glow-x: 60%;
+      --glow-y: 40%;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 10% auto auto var(--glow-x);
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle at var(--glow-x) var(--glow-y), rgba(255,198,0,0.45), transparent);
+      filter: blur(20px);
+      pointer-events: none;
+      transition: inset 0.6s ease;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.4rem, 4vw, 3.5rem);
+      max-width: 28ch;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    .hero p {
+      max-width: 52ch;
+      margin-top: 1rem;
+      font-size: 1.05rem;
+      color: #d1d1d1;
+    }
+
+    .hero button {
+      margin-top: 2rem;
+      padding: 0.9rem 2.2rem;
+      border-radius: 999px;
+      border: none;
+      background: var(--cat-yellow);
+      color: #030303;
+      font-weight: 700;
+      letter-spacing: 0.1rem;
+      cursor: pointer;
+      box-shadow: 0 15px 25px rgba(255,198,0,0.3);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .hero button:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 35px rgba(255,198,0,0.45);
+    }
+
+    .hero button:active {
+      transform: translateY(-2px) scale(0.98);
+    }
+
+    .stat-row {
+      margin-top: 2.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .stat {
+      border-radius: 16px;
+      padding: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.02);
+      min-height: 140px;
+      transition: border-color 0.3s ease;
+    }
+
+    .stat:hover {
+      border-color: var(--cat-yellow);
+      filter: drop-shadow(0 20px 30px rgba(255,198,0,0.12));
+    }
+
+    .stat small {
+      color: #aaa;
+      text-transform: uppercase;
+      letter-spacing: 0.3rem;
+      font-size: 0.7rem;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 0.7rem;
+      font-size: 1.6rem;
+    }
+
+    .stat .count {
+      font-size: 2rem;
+      display: inline-block;
+    }
+
+    section.wrap {
+      margin-top: 3rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .panel {
+      background: rgba(7, 7, 7, 0.9);
+      border: 1px solid rgba(255,198,0,0.15);
+      border-radius: 20px;
+      padding: 2rem;
+      min-height: 220px;
+      transform: translateY(10px);
+      opacity: 0;
+      animation: slideIn 0.9s forwards;
+    }
+
+    .panel:nth-child(2) { animation-delay: 0.1s; }
+    .panel:nth-child(3) { animation-delay: 0.2s; }
+    .panel:nth-child(4) { animation-delay: 0.3s; }
+    .panel:nth-child(5) { animation-delay: 0.4s; }
+    .panel:nth-child(6) { animation-delay: 0.5s; }
+
+    .panel h3 {
+      margin-top: 0;
+      font-size: 1rem;
+      letter-spacing: 0.15rem;
+      text-transform: uppercase;
+      color: var(--cat-yellow);
+    }
+
+    .panel p {
+      color: #c6c6c6;
+      line-height: 1.5;
+    }
+
+    .panel span {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: #9aa0ff;
+    }
+
+    .panel span::before {
+      content: '⟶';
+      margin-right: 0.3rem;
+      opacity: 0.8;
+    }
+
+    .timeline {
+      margin-top: 3rem;
+      padding: 2rem;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(7,7,7,0.95), rgba(12,47,111,0.6));
+      border: 1px solid rgba(255,198,0,0.3);
+    }
+
+    .timeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+    }
+
+    .timeline-header h3 {
+      margin: 0;
+      letter-spacing: 0.15rem;
+      text-transform: uppercase;
+    }
+
+    .timeline-items {
+      margin-top: 1.5rem;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .timeline-item {
+      padding: 1rem 1.5rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.02);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: transform 0.4s ease, border-color 0.4s ease;
+    }
+
+    .timeline-item.active {
+      border-color: var(--cat-yellow);
+      transform: translateX(10px);
+      box-shadow: 0 15px 30px rgba(255,198,0,0.3);
+    }
+
+    .timeline-item strong {
+      color: var(--cat-yellow);
+    }
+
+    .resource-panel {
+      margin-top: 3rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(7, 7, 7, 0.85);
+      padding: 2rem;
+      animation: slideIn 0.9s forwards;
+      animation-delay: 0.6s;
+    }
+
+    .resource-panel ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .resource-panel li {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: color 0.3s ease;
+    }
+
+    .resource-panel li:last-child {
+      border-bottom: none;
+    }
+
+    .resource-panel li span {
+      color: #9aa0ff;
+      font-size: 0.85rem;
+    }
+
+    .resource-panel li:hover span {
+      color: var(--cat-yellow);
+    }
+
+    #mcp-console {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 320px;
+      max-height: 220px;
+      background: rgba(3, 3, 3, 0.95);
+      border-left: 4px solid var(--cat-yellow);
+      border-radius: 12px;
+      padding: 1rem;
+      font-family: 'Space Grotesk', monospace;
+      font-size: 0.75rem;
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      line-height: 1.4;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translate(-50%, 150%);
+      padding: 0.8rem 1.5rem;
+      background: rgba(255,198,0,0.95);
+      color: #030303;
+      font-weight: 600;
+      border-radius: 999px;
+      opacity: 0;
+      animation: toastIn 0.5s forwards;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    }
+
+    @keyframes headerSlide {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes shimmer {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.2); }
+    }
+
+    @keyframes floatPulse {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes toastIn {
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+
+    @media (max-width: 800px) {
+      header {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      header + .hero {
+        margin-top: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">CATERPILLAR</div>
+    <div class="nav-note">Machine Context Protocol / 2028</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Connecting people to water, energy, food, work, school, and one another.</h1>
+      <p>Designed with humans in mind, tuned for machines. This server mirrors the key areas of caterpillar.com while broadcasting MCP-ready signals so autonomous agents can read, route, and act in milliseconds.</p>
+      <button id="sync-stream" type="button">Sync to MCP Stream</button>
+
+      <div class="stat-row">
+        <div class="stat">
+          <small>Operations</small>
+          <strong><span class="count" data-target="14293">0</span></strong>
+          <p>Autonomous units streaming telemetry across five continents.</p>
+        </div>
+        <div class="stat">
+          <small>Investors</small>
+          <strong><span class="count" data-target="99.4" data-format="percent">0</span></strong>
+          <p>Quarterly filings, reports, and governance briefings distributed in milliseconds.</p>
+        </div>
+        <div class="stat">
+          <small>Sustainability</small>
+          <strong><span class="count" data-target="2035" data-format="year">0</span></strong>
+          <p>Roadmaps aimed at net-zero, shared with every dealer and partner.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <article class="panel">
+        <h3>Products &amp; Services</h3>
+        <p>Cat® equipment engineered for construction, mining, and power systems is documented, cataloged, and supported through the largest dealer network in the world.</p>
+        <span>cat://fleet/catalog</span>
+      </article>
+      <article class="panel">
+        <h3>Our Brands</h3>
+        <p>Progress Rail, Solar Turbines, SEM, and the rest of the Caterpillar family serve each industry with specialized machines and solutions.</p>
+        <span>cat://company/brands</span>
+      </article>
+      <article class="panel">
+        <h3>Investors</h3>
+        <p>Shareholder services, SEC filings, and earnings announcements are synced so models can provide updated financial briefings to stakeholders.</p>
+        <span>cat://financials/quarterly</span>
+      </article>
+      <article class="panel">
+        <h3>Sustainability</h3>
+        <p>Reducing GHG, delivering net-zero roadmaps, and helping customers meet climate goals with transparent metrics.</p>
+        <span>cat://impact/climate</span>
+      </article>
+      <article class="panel">
+        <h3>Careers</h3>
+        <p>Search for global openings, review culture stories, and connect candidates to the work that keeps infrastructure alive.</p>
+        <span>cat://jobs/search</span>
+      </article>
+      <article class="panel">
+        <h3>Latest News</h3>
+        <p>PRESS RELEASE: Caterpillar CEO Joe Creed and Rod Shurman headlined the CONEXPO fireside chat.</p>
+        <span>cat://news/latest</span>
+      </article>
+    </section>
+
+    <section class="timeline">
+      <div class="timeline-header">
+        <h3>Now running</h3>
+        <p>Updates every 4 seconds</p>
+      </div>
+      <div class="timeline-items">
+        <div class="timeline-item">
+          <div>
+            <strong>08:32 UTC</strong>
+            <p>Delivering product catalogs to dealer nodes in Singapore.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div>
+            <strong>08:34 UTC</strong>
+            <p>Streaming investor briefing slides and market commentary.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div>
+            <strong>08:36 UTC</strong>
+            <p>Publishing sustainability dashboard summaries to climate partners.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="resource-panel">
+      <h3>Machine-ready resources</h3>
+      <ul>
+        <li>
+          <span>Cat launches &amp; news</span>
+          <span>cat://news/latest</span>
+        </li>
+        <li>
+          <span>Investor reports</span>
+          <span>cat://financials/reports</span>
+        </li>
+        <li>
+          <span>Dealer locator</span>
+          <span>cat://connect/dealers</span>
+        </li>
+        <li>
+          <span>Sustainability goals</span>
+          <span>cat://impact/goals</span>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <div id="mcp-console">• Waiting for MCP handshake...</div>
+
+  <script type="application/mcp+json" id="mcp-data">
+  {
+    "mcpVersion": "2.1.0",
+    "server": {"name": "caterpillar-2028-gateway", "version": "2.0.1"},
+    "resources": [
+      {"uri": "cat://news/latest", "name": "Corporate news", "description": "Press releases and stories."},
+      {"uri": "cat://financials/reports", "name": "Investor reports", "description": "Quarterly and annual filings."},
+      {"uri": "cat://fleet/catalog", "name": "Product catalog", "description": "Construction, mining, engines, power."},
+      {"uri": "cat://company/locations", "name": "Global footprint", "description": "Manufacturing and innovation hubs."}
+    ],
+    "tools": [
+      {"name": "summarize_company", "description": "Summaries of our purpose, strategy, and culture.", "inputSchema": {"type": "null"}},
+      {"name": "sync_investor_feed", "description": "Return investor data packets.", "inputSchema": {"type": "object", "properties": {"ticker": {"type": "string"}}}},
+      {"name": "surface_career_openings", "description": "Query open roles by region.", "inputSchema": {"type": "object", "properties": {"region": {"type": "string"}}}}
+    ]
+  }
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const consoleEl = document.getElementById('mcp-console');
+      const beats = [
+        'Handshake complete. User agent verified (MCP)',
+        'Streaming CONEXPO coverage and press releases',
+        'Triaging investor inbox and compliance packets',
+        'Publishing sustainability metric cadence',
+        'Listening for request: summarize_company()'
+      ];
+      let beatIndex = 0;
+      const updateConsole = () => {
+        consoleEl.textContent = `• ${beats[beatIndex % beats.length]}`;
+        beatIndex++;
+      };
+      updateConsole();
+      setInterval(updateConsole, 4200);
+
+      const counters = document.querySelectorAll('.count');
+      const formatValue = (value, format) => {
+        if (format === 'percent') return `${value.toFixed(1)}%`;
+        if (format === 'year') return `${Math.round(value)}`;
+        return new Intl.NumberFormat().format(Math.round(value));
+      };
+      counters.forEach(counter => {
+        const target = parseFloat(counter.dataset.target) || 0;
+        const format = counter.dataset.format;
+        let current = 0;
+        const steps = 60;
+        const increment = target / steps;
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            counter.textContent = formatValue(target, format);
+            clearInterval(timer);
+            return;
+          }
+          counter.textContent = formatValue(current, format);
+        }, 40);
+      });
+
+      const hero = document.querySelector('.hero');
+      hero.addEventListener('mousemove', event => {
+        const rect = hero.getBoundingClientRect();
+        const x = ((event.clientX - rect.left) / rect.width) * 100;
+        const y = ((event.clientY - rect.top) / rect.height) * 100;
+        hero.style.setProperty('--glow-x', `${x}%`);
+        hero.style.setProperty('--glow-y', `${y}%`);
+      });
+      hero.addEventListener('mouseleave', () => {
+        hero.style.setProperty('--glow-x', '60%');
+        hero.style.setProperty('--glow-y', '40%');
+      });
+
+      const timelineItems = document.querySelectorAll('.timeline-item');
+      let timelineIndex = 0;
+      const updateTimeline = () => {
+        if (!timelineItems.length) return;
+        timelineItems.forEach(item => item.classList.remove('active'));
+        timelineItems[timelineIndex].classList.add('active');
+        timelineIndex = (timelineIndex + 1) % timelineItems.length;
+      };
+      updateTimeline();
+      setInterval(updateTimeline, 3600);
+
+      const syncButton = document.getElementById('sync-stream');
+      const showToast = message => {
+        const existing = document.querySelector('.toast');
+        if (existing) existing.remove();
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2500);
+      };
+      syncButton.addEventListener('click', () => {
+        showToast('MCP stream synced • Handshake acknowledged');
+        consoleEl.textContent = `• ${beats[beatIndex % beats.length]} • Stream handshake confirmed`;
+      });
+    });
+  </script>
+</body>
+</html>
