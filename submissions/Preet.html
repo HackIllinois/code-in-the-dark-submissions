@@ -1,0 +1,507 @@
+<!--Name: Preet Patel--><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAT // GLOBAL INFRASTRUCTURE OS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;600;700&family=Fira+Code:wght@300;400;500;700&display=swap');
+
+        :root {
+            --cat-gold: #FFCD11;
+            --cat-gold-dim: rgba(255, 205, 17, 0.15);
+            --sys-blue: #00F0FF;
+            --sys-red: #FF003C;
+            --sys-green: #00FF41;
+            --bg-base: #050506;
+            --panel-bg: rgba(12, 12, 14, 0.75);
+            --border-dim: rgba(255, 255, 255, 0.1);
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100vh;
+            background-color: var(--bg-base); color: #E2E2E2;
+            font-family: 'Rajdhani', sans-serif; overflow: hidden;
+            user-select: none;
+        }
+
+        .mono { font-family: 'Fira Code', monospace; }
+
+        /* Complex Grid Background */
+        .cyber-grid {
+            position: fixed; inset: 0; z-index: -2;
+            background-image: 
+                linear-gradient(rgba(255, 205, 17, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 205, 17, 0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Glass HUD Panels */
+        .hud-panel {
+            background: var(--panel-bg); backdrop-filter: blur(12px);
+            border: 1px solid var(--border-dim); position: relative;
+        }
+        
+        .hud-panel-corner::before {
+            content: ''; position: absolute; top: -1px; left: -1px; width: 8px; height: 8px;
+            border-top: 2px solid var(--cat-gold); border-left: 2px solid var(--cat-gold);
+        }
+        .hud-panel-corner::after {
+            content: ''; position: absolute; bottom: -1px; right: -1px; width: 8px; height: 8px;
+            border-bottom: 2px solid var(--cat-gold); border-right: 2px solid var(--cat-gold);
+        }
+
+        /* Scanlines & CRT Effects */
+        .scanlines {
+            position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.25) 51%);
+            background-size: 100% 4px; opacity: 0.4;
+        }
+        .crt-flicker { animation: flicker 0.15s infinite; }
+        @keyframes flicker { 0% { opacity: 0.98; } 100% { opacity: 1; } }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 3px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 205, 17, 0.5); }
+
+        /* Interactive Menu Logic */
+        .nav-item { transition: all 0.2s; border-left: 2px solid transparent; }
+        .nav-item:hover, .nav-item.active { border-left-color: var(--cat-gold); background: rgba(255,255,255,0.03); color: var(--cat-gold); }
+        .sub-menu { display: none; padding-left: 1rem; border-left: 1px dashed var(--border-dim); margin-left: 0.5rem; margin-top: 0.5rem;}
+        .nav-item.open .sub-menu { display: block; }
+
+        /* Glitch Button */
+        .btn-glitch {
+            position: relative; overflow: hidden;
+            background: var(--cat-gold); color: black;
+            text-transform: uppercase; font-weight: 700;
+        }
+        .btn-glitch:hover { background: white; }
+
+        #canvas-container { position: absolute; inset: 0; z-index: -1; }
+        
+        .toggle-checkbox:checked { right: 0; border-color: #68D391; }
+        .toggle-checkbox:checked + .toggle-label { background-color: var(--sys-green); }
+        .toggle-checkbox:checked + .toggle-label:after { transform: translateX(100%); border-color: white; }
+    </style>
+</head>
+<body class="crt-flicker">
+    <div class="cyber-grid"></div>
+    <div class="scanlines"></div>
+    <!-- visualization area will be injected here -->
+    <div id="viz-container" class="absolute inset-0 z-0 flex items-center justify-center pointer-events-none"></div>
+
+    <div class="h-screen w-screen flex flex-col p-3 z-10 relative box-border">
+        
+        <header class="hud-panel hud-panel-corner p-3 mb-3 flex justify-between items-center shrink-0">
+            <div class="flex items-center gap-6">
+                <div class="flex flex-col cursor-pointer group" onclick="location.reload()">
+                    <span class="text-3xl font-bold tracking-widest text-[var(--cat-gold)] leading-none group-hover:text-white transition">CAT<span class="text-white group-hover:text-[var(--cat-gold)] transition">OS</span></span>
+                    <span class="mono text-[8px] text-zinc-500 uppercase tracking-widest">Global Infrastructure</span>
+                </div>
+                <div class="h-8 w-px bg-zinc-800"></div>
+                <div class="flex gap-4 mono text-[9px] uppercase tracking-wider overflow-hidden">
+                    <div class="flex flex-col"><span class="text-zinc-500">SYS_UPTIME</span><span class="text-[var(--sys-green)]">99.998%</span></div>
+                    <div class="flex flex-col"><span class="text-zinc-500">GLOBAL_NODES</span><span class="text-white" id="node-count">4,201,899</span></div>
+                    <div class="flex flex-col"><span class="text-zinc-500">FINANCIAL_API</span><span class="text-[var(--cat-gold)]">SYNCED</span></div>
+                    <div class="flex flex-col hidden md:flex"><span class="text-zinc-500">REGEN_STATUS</span><span class="text-[var(--sys-blue)]">NET-ZERO</span></div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 bg-black/60 p-2 border border-zinc-800 rounded">
+                <span class="mono text-[9px] text-zinc-400">INTERFACE:</span>
+                <div class="flex items-center">
+                    <span class="mono text-[9px] mr-2 text-white font-bold" id="lbl-human">HUMAN</span>
+                    <div class="relative inline-block w-8 mr-2 align-middle select-none transition duration-200 ease-in">
+                        <input type="checkbox" id="view-toggle" class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-4 appearance-none cursor-pointer z-10"/>
+                        <label for="view-toggle" class="toggle-label block overflow-hidden h-4 rounded-full bg-zinc-700 cursor-pointer"></label>
+                    </div>
+                    <span class="mono text-[9px] text-zinc-600" id="lbl-machine">AGENT</span>
+                </div>
+            </div>
+        </header>
+
+        <main id="human-view" class="flex-1 grid grid-cols-12 gap-3 overflow-hidden transition-opacity duration-300">
+            
+            <nav class="col-span-3 lg:col-span-2 hud-panel flex flex-col overflow-hidden">
+                <div class="p-2 border-b border-white/5 bg-black/40 text-[10px] mono text-[var(--cat-gold)] uppercase tracking-widest flex justify-between items-center">
+                    <span>// Root Directory</span>
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </div>
+                <div class="flex-1 overflow-y-auto p-2 text-sm mono font-medium text-zinc-400 space-y-1" id="nav-container">
+                    </div>
+            </nav>
+
+            <div class="col-span-6 lg:col-span-7 relative flex flex-col justify-between items-center py-4 pointer-events-none">
+                <div class="w-full flex justify-between px-4 pointer-events-auto">
+                    <div class="bg-black/50 p-3 border border-[var(--border-dim)] rounded backdrop-blur max-w-xs">
+                        <div class="mono text-[9px] text-[var(--sys-blue)] mb-1 uppercase" id="display-category">CAT // GLOBAL</div>
+                        <div class="text-xl font-bold uppercase leading-tight mb-2 text-white" id="display-title">Infrastructure Matrix</div>
+                        <p class="text-[11px] text-zinc-400 leading-snug" id="display-desc">Select a node from the root directory to query specific hardware capabilities, sector deployments, or subsystem metrics.</p>
+                    </div>
+                    
+                    <div class="hidden xl:flex flex-col gap-2">
+                        <div class="bg-black/50 px-3 py-1 border border-zinc-800 rounded mono text-[10px] text-zinc-400 flex justify-between w-40">
+                            <span>GRID_LOAD</span><span class="text-white">84.2%</span>
+                        </div>
+                        <div class="bg-black/50 px-3 py-1 border border-zinc-800 rounded mono text-[10px] text-zinc-400 flex justify-between w-40">
+                            <span>LATENCY</span><span class="text-[var(--sys-green)]">12ms</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40">
+                    <div class="w-[450px] h-[450px] border border-[var(--cat-gold-dim)] rounded-full border-dashed animate-[spin_80s_linear_infinite]"></div>
+                    <div class="absolute w-[350px] h-[350px] border border-[var(--sys-blue)] rounded-full opacity-10 animate-[spin_50s_reverse_linear_infinite]"></div>
+                    <div class="absolute w-[200px] h-[200px] border border-white/10 rounded-full"></div>
+                </div>
+
+                <div class="pointer-events-auto w-full max-w-lg hud-panel hud-panel-corner p-2 flex justify-between items-center bg-black/80">
+                    <div class="flex gap-4 px-2">
+                        <div class="mono text-[9px]">
+                            <span class="text-zinc-500 block">STATUS</span>
+                            <span class="text-[var(--sys-green)]" id="status-indicator">NOMINAL</span>
+                        </div>
+                        <div class="mono text-[9px]">
+                            <span class="text-zinc-500 block">DATA_STREAM</span>
+                            <span class="text-[var(--cat-gold)]">ENCRYPTED</span>
+                        </div>
+                    </div>
+                    <button class="btn-glitch px-6 py-2 text-[10px]">Execute Protocol</button>
+                </div>
+            </div>
+
+            <div class="col-span-3 flex flex-col gap-3 overflow-y-auto pl-1 pb-2">
+                
+                <div class="hud-panel p-3">
+                    <h3 class="mono text-[9px] text-[var(--cat-gold)] border-b border-zinc-800 pb-1 mb-2">// NODE_METRICS</h3>
+                    <div id="dynamic-metrics" class="space-y-3">
+                        </div>
+                </div>
+
+                <div class="hud-panel p-3 flex-1 flex flex-col min-h-[200px]">
+                    <div class="flex justify-between items-center border-b border-zinc-800 pb-1 mb-2">
+                        <h3 class="mono text-[9px] text-[var(--sys-green)] border-b border-zinc-800 pb-1 mb-2">// Autonomous_Log</h3>
+                        <div class="w-1.5 h-1.5 rounded-full bg-[var(--sys-blue)] animate-ping"></div>
+                    </div>
+                    <div class="flex-1 overflow-y-auto space-y-2 mono text-[9px]" id="reasoning-logs"></div>
+                </div>
+
+                <div class="hud-panel p-3">
+                    <h3 class="mono text-[9px] text-[var(--sys-green)] border-b border-zinc-800 pb-1 mb-2">// CAT_FINANCIAL_API</h3>
+                    <div class="flex justify-between items-end mb-1">
+                        <span class="text-2xl font-bold">NYSE: CAT</span>
+                        <span class="text-[var(--sys-green)] mono text-[10px] font-bold">+1.24% ▲</span>
+                    </div>
+                    <div class="text-[10px] text-zinc-400 mono">Global financing & capital allocation matrix active.</div>
+                </div>
+            </div>
+        </main>
+
+        <main id="machine-view" class="hidden flex-1 p-4 bg-[#020202] border border-zinc-900 overflow-hidden relative font-mono">
+            <div class="absolute top-4 right-6 text-[10px] text-[var(--sys-green)] animate-pulse border border-[var(--sys-green)] px-2 py-1 rounded bg-green-900/20">AGENT_MODE_ACTIVE // JSON_UPLINK</div>
+            <pre class="text-[11px] text-zinc-300 w-full h-full overflow-y-auto whitespace-pre-wrap leading-relaxed" id="json-stream"></pre>
+        </main>
+
+    </div>
+
+    <script>
+        /* =========================================
+           1. CATERPILLAR DATA STRUCTURE (The "Website")
+           ========================================= */
+        const catDatabase = {
+            "equipment": {
+                label: "Kinetic Assets (Products)",
+                desc: "Autonomous and manned hardware arrays for planetary scale kinetic operations.",
+                metrics: { "Active Units": "1.2M+", "Avg Uptime": "98.4%", "Power Draw": "12.4 TW" },
+                items: {
+                    "excavators": { label: "Excavators", desc: "Hydraulic earth-moving nodes. Next-gen load-sensing hydraulics." },
+                    "dozers": { label: "Dozers", desc: "Track-type tractors equipped with GRADE with 3D autonomy." },
+                    "generators": { label: "Power Systems", desc: "Microgrids, diesel, and gas generator sets for remote power." },
+                    "trucks": { label: "Off-Highway Trucks", desc: "Autonomous 797F haul arrays moving 400-ton payloads." }
+                }
+            },
+            "industries": {
+                label: "Deployment Sectors (Industries)",
+                desc: "Vertical integration vectors for global infrastructure challenges.",
+                metrics: { "Sectors Active": "14", "Global Reach": "192 Countries", "Efficiency Gain": "+22%" },
+                items: {
+                    "mining": { label: "Resource Extraction", desc: "Surface and underground mining command networks." },
+                    "construction": { label: "Urban Kinetics", desc: "Heavy and general construction protocols." },
+                    "energy": { label: "Energy & Transportation", desc: "Oil, gas, marine, and rail power matrices." }
+                }
+            },
+            "services": {
+                label: "Lifecycle Protocols (Services)",
+                desc: "Software, financing, and maintenance APIs to sustain hardware nodes.",
+                metrics: { "API Requests": "4.2B/day", "Predictive Alerts": "94% Accuracy", "Capital Deployed": "$34B" },
+                items: {
+                    "financing": { label: "Cat Financial", desc: "Algorithmic capital allocation and hardware leasing." },
+                    "parts": { label: "Global Parts Routing", desc: "AI-driven supply chain delivering parts in < 24h globally." },
+                    "autonomy": { label: "Cat Command (Autonomy)", desc: "Remote control and fully autonomous fleet management software." }
+                }
+            },
+            "company": {
+                label: "Core Directives (Company)",
+                desc: "The structural foundation, sustainability goals, and neural-net of human operators.",
+                metrics: { "Carbon Sink": "-4.2 Megatons", "Human Operators": "109,000", "R&D Spend": "$2.1B" },
+                items: {
+                    "sustainability": { label: "Regen / Sustainability", desc: "Achieving net-zero biosphere impact by 2050 via circular economy." },
+                    "careers": { label: "Human+ Synergy (Careers)", desc: "Integrating top-tier biological engineers with machine networks." },
+                    "brands": { label: "Sub-Routines (Brands)", desc: "Perkins, Solar Turbines, Progress Rail integrated systems." }
+                }
+            },
+            "news": {
+                label: "Latest News",
+                desc: "Corporate press releases, features, and media resources.",
+                metrics: { "Articles": "1,234", "Media Hits": "56K/day" },
+                items: {
+                    "press": { label: "Press Releases", desc: "Official corporate announcements and financial reports." },
+                    "features": { label: "News & Features", desc: "Stories from across the Caterpillar enterprise." },
+                    "media": { label: "Media Contacts", desc: "Reach out for visual assets and statements." }
+                }
+            },
+            "careers": {
+                label: "Careers",
+                desc: "Explore job openings and culture at Caterpillar.",
+                metrics: { "Open Roles": "879", "Employees": "109,000" },
+                items: {
+                    "search": { label: "Search & Apply", desc: "Find your next opportunity." },
+                    "culture": { label: "Our Culture", desc: "Diversity & inclusion at Caterpillar." },
+                    "why": { label: "Why Caterpillar?", desc: "Benefits and values." }
+                }
+            },
+            "investors": {
+                label: "Investors",
+                desc: "Financial information and shareholder resources.",
+                metrics: { "Stock": "CAT", "Market Cap": "$98B" },
+                items: {
+                    "stock": { label: "Stock Information", desc: "Real-time financial data." },
+                    "reports": { label: "Reports", desc: "Annual and sustainability reports." },
+                    "events": { label: "Events & Presentations", desc: "Upcoming investor events." }
+                }
+            },
+            "working": {
+                label: "Working Together",
+                desc: "Resources for employees, suppliers, and retirees.",
+                metrics: { "Employees": "109K", "Suppliers": "22K" },
+                items: {
+                    "employees": { label: "Employees", desc: "Internal resources portal." },
+                    "suppliers": { label: "Suppliers", desc: "Supplier and vendor information." },
+                    "retirees": { label: "Retirees & Alumni", desc: "Community and benefits." }
+                }
+            },
+            "brands": {
+                label: "Family of Brands",
+                desc: "All brands within the Caterpillar portfolio.",
+                metrics: { "Brands": "20+", "Regions": "Global" },
+                items: {
+                    "cat": { label: "Cat", desc: "Flagship brand of heavy equipment." },
+                    "perkins": { label: "Perkins", desc: "Power solutions and engines." },
+                    "solar": { label: "Solar Turbines", desc: "Industrial gas turbines." }
+                }
+            }
+        };
+
+        /* =========================================
+           2. UI RENDERING & INTERACTION LOGIC
+           ========================================= */
+        const navContainer = document.getElementById('nav-container');
+        const displayCat = document.getElementById('display-category');
+        const displayTitle = document.getElementById('display-title');
+        const displayDesc = document.getElementById('display-desc');
+        const dynamicMetrics = document.getElementById('dynamic-metrics');
+        const statusInd = document.getElementById('status-indicator');
+        let lastMetrics = null; // track most recent metrics for chart redraw
+
+        // Build Sidebar Nav
+        for (const [key, category] of Object.entries(catDatabase)) {
+            const wrapper = document.createElement('div');
+            
+            // Parent Category
+            const parent = document.createElement('div');
+            parent.className = 'nav-item cursor-pointer p-2 rounded flex justify-between items-center';
+            parent.innerHTML = `<span class="truncate pr-2">${category.label}</span><span class="text-[8px] opacity-50">▼</span>`;
+            
+            // Sub-menu
+            const subMenu = document.createElement('div');
+            subMenu.className = 'sub-menu space-y-1';
+            
+            for (const [subKey, item] of Object.entries(category.items)) {
+                const subItem = document.createElement('div');
+                subItem.className = 'nav-item cursor-pointer p-1 text-[11px] text-zinc-500 hover:text-white';
+                subItem.innerText = `> ${item.label}`;
+                
+                // Click event for sub-items
+                subItem.onclick = (e) => {
+                    e.stopPropagation(); // prevent parent toggle
+                    updateHUD(category.label, item.label, item.desc, category.metrics);
+                    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                    subItem.classList.add('active');
+                    statusInd.innerText = "UPLINK_ESTABLISHED";
+                    statusInd.style.color = "var(--sys-blue)";
+                    setTimeout(() => { statusInd.innerText = "NOMINAL"; statusInd.style.color = "var(--sys-green)"; }, 1500);
+                };
+                subMenu.appendChild(subItem);
+            }
+
+            // Parent click toggle
+            parent.onclick = () => {
+                const isOpen = wrapper.classList.contains('open');
+                document.querySelectorAll('.nav-item.open').forEach(el => el.classList.remove('open'));
+                if (!isOpen) {
+                    wrapper.classList.add('open');
+                    updateHUD("ROOT //", category.label, category.desc, category.metrics);
+                }
+            };
+
+            wrapper.appendChild(parent);
+            wrapper.appendChild(subMenu);
+            navContainer.appendChild(wrapper);
+        }
+
+        // Update Center and Right HUD Panels
+        function updateHUD(cat, title, desc, metrics) {
+            displayCat.innerText = cat;
+            displayTitle.innerText = title;
+            displayDesc.innerText = desc;
+
+            dynamicMetrics.innerHTML = '';
+            for (const [mKey, mVal] of Object.entries(metrics)) {
+                dynamicMetrics.innerHTML += `
+                    <div>
+                        <div class="flex justify-between text-[9px] mb-1">
+                            <span class="text-zinc-500 uppercase">${mKey}</span>
+                            <span class="text-white">${mVal}</span>
+                        </div>
+                        <div class="w-full bg-zinc-800 h-0.5"><div class="bg-[var(--cat-gold)] h-full" style="width: ${Math.random() * 60 + 40}%"></div></div>
+                    </div>
+                `;
+            }
+            // update visualization
+            lastMetrics = metrics;
+            drawCharts(metrics);
+        }
+
+        /* =========================================
+           3. INTERACTIVE VISUALIZATIONS (replacing 3D model)
+           ========================================= */
+        // we will create charts dynamically based on selected category metrics
+        const vizContainer = document.getElementById('viz-container');
+
+        function drawCharts(metrics) {
+            vizContainer.innerHTML = ''; // clear previous
+            // simple bar chart using inline SVG
+            const svgNS = 'http://www.w3.org/2000/svg';
+            const width = Math.min(window.innerWidth * 0.6, 600);
+            const height = 200;
+            const svg = document.createElementNS(svgNS, 'svg');
+            svg.setAttribute('width', width);
+            svg.setAttribute('height', height);
+            let x = 0;
+            const keys = Object.keys(metrics);
+            const maxVal = Math.max(...keys.map(k => parseFloat(metrics[k].toString().replace(/[^0-9\.]/g,''))));
+            const barWidth = width / keys.length - 20;
+            keys.forEach(key => {
+                const valStr = metrics[key].toString().replace(/[^0-9\.]/g,'');
+                const val = parseFloat(valStr) || 0;
+                const barHeight = (val / maxVal) * (height - 40);
+                const rect = document.createElementNS(svgNS, 'rect');
+                rect.setAttribute('x', x + 10);
+                rect.setAttribute('y', height - barHeight - 20);
+                rect.setAttribute('width', barWidth);
+                rect.setAttribute('height', barHeight);
+                rect.setAttribute('fill', 'var(--cat-gold)');
+                svg.appendChild(rect);
+
+                const text = document.createElementNS(svgNS, 'text');
+                text.setAttribute('x', x + 10 + barWidth / 2);
+                text.setAttribute('y', height - 5);
+                text.setAttribute('fill', '#E2E2E2');
+                text.setAttribute('font-size', '10');
+                text.setAttribute('text-anchor', 'middle');
+                text.textContent = key;
+                svg.appendChild(text);
+                x += barWidth + 20;
+            });
+            vizContainer.appendChild(svg);
+        }
+
+        // redraw on window resize to keep chart size
+        window.addEventListener('resize', () => {
+            const currMetrics = lastMetrics || catDatabase.equipment.metrics;
+            drawCharts(currMetrics);
+        });
+
+        // initialize default view after charts defined
+        updateHUD("CAT // GLOBAL", "Infrastructure Matrix", catDatabase.equipment.desc, catDatabase.equipment.metrics);
+
+        /* =========================================
+           4. AGENT LOGS & VIEW TOGGLE
+           ========================================= */
+        
+        // Simulating Autonomous Reasoning
+        const reasoningLogs = document.getElementById('reasoning-logs');
+        const actions = [
+            "Querying Product Catalog: Payload capacity 797F.",
+            "Analyzing Service API: Parts logistics, Region NA.",
+            "Optimizing Industry Sector: Mining operations.",
+            "Verifying Sustainability Metrics: Net-Zero path.",
+            "Pinging Subsidiaries: Solar Turbines active.",
+            "Calculating Cat Financial leasing parameters."
+        ];
+
+        setInterval(() => {
+            const div = document.createElement('div');
+            const time = new Date().toISOString().substring(11, 23);
+            const msg = actions[Math.floor(Math.random() * actions.length)];
+            div.innerHTML = `<span class="text-zinc-600">[${time}]</span> <span class="text-zinc-400">${msg}</span>`;
+            reasoningLogs.appendChild(div);
+            if (reasoningLogs.children.length > 8) reasoningLogs.removeChild(reasoningLogs.firstChild);
+            reasoningLogs.scrollTop = reasoningLogs.scrollHeight;
+        }, 2000);
+
+        // Toggle Logic (Human Dashboard vs Agent JSON)
+        const toggle = document.getElementById('view-toggle');
+        const humanView = document.getElementById('human-view');
+        const machineView = document.getElementById('machine-view');
+        const jsonStream = document.getElementById('json-stream');
+        
+        // Inject the actual JS object as JSON string to simulate the Machine API view
+        const apiResponseFormat = {
+            "status": 200,
+            "agent": "Parallel_Indexer_v9",
+            "timestamp": new Date().toISOString(),
+            "target_url": "https://www.caterpillar.com",
+            "extracted_schema": catDatabase
+        };
+        
+        // Colorize JSON output manually for the "terminal" feel
+        const rawJson = JSON.stringify(apiResponseFormat, null, 4);
+        const coloredJson = rawJson
+            .replace(/"(.*?)":/g, '<span class="text-[var(--sys-blue)]">"$1"</span>:') // Keys blue
+            .replace(/: "(.*?)"/g, ': <span class="text-[var(--cat-gold)]">"$1"</span>'); // Strings gold
+
+        jsonStream.innerHTML = coloredJson;
+
+        toggle.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                humanView.classList.add('hidden');
+                machineView.classList.remove('hidden');
+                document.getElementById('lbl-human').classList.replace('text-white', 'text-zinc-600');
+                document.getElementById('lbl-machine').classList.replace('text-zinc-600', 'text-white');
+                container.style.opacity = '0.05'; // Darken 3D
+            } else {
+                humanView.classList.remove('hidden');
+                machineView.classList.add('hidden');
+                document.getElementById('lbl-human').classList.replace('text-zinc-600', 'text-white');
+                document.getElementById('lbl-machine').classList.replace('text-white', 'text-zinc-600');
+                container.style.opacity = '1';
+            }
+        });
+
+    </script>
+</body>
+</html>
