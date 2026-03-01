@@ -1,0 +1,1033 @@
+<!--Name: Pranav Kota--><!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Caterpillar Digital — 2028 Experience</title>
+  <meta name="description" content="A modern Caterpillar Digital experience with an agent-first layer and adaptive interfaces." />
+  <style>
+    :root{
+      --bg:#0b0e10;
+      --bg2:#0f1418;
+      --card:#12181d;
+      --card2:#0f151a;
+      --text:#e9eef2;
+      --muted:#a8b3bd;
+      --line:rgba(255,255,255,.10);
+      --yellow:#f6c21a;
+      --yellow2:#ffd24a;
+      --good:#4ade80;
+      --warn:#fbbf24;
+      --bad:#fb7185;
+      --shadow: 0 18px 50px rgba(0,0,0,.55);
+      --radius: 18px;
+      --radius2: 26px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    [data-theme="light"]{
+      --bg:#f6f7f9;
+      --bg2:#ffffff;
+      --card:#ffffff;
+      --card2:#ffffff;
+      --text:#0b0e10;
+      --muted:#4b5563;
+      --line:rgba(0,0,0,.12);
+      --shadow: 0 18px 50px rgba(0,0,0,.12);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(1100px 800px at 10% -10%, rgba(246,194,26,.18), transparent 60%),
+        radial-gradient(900px 600px at 90% 0%, rgba(255,210,74,.10), transparent 55%),
+        radial-gradient(800px 600px at 70% 80%, rgba(120,210,255,.08), transparent 60%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      overflow-x:hidden;
+    }
+    body:before{
+      content:"";
+      position:fixed; inset:-200px;
+      background:
+        radial-gradient(circle at 25px 25px, rgba(255,255,255,.05) 2px, transparent 2px) 0 0/50px 50px,
+        radial-gradient(circle at 0 0, rgba(255,255,255,.03) 2px, transparent 2px) 0 0/50px 50px;
+      mix-blend-mode:overlay;
+      opacity:.35;
+      pointer-events:none;
+      transform:rotate(-2deg);
+    }
+
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:1180px; margin:0 auto; padding:22px 18px 60px}
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter:saturate(1.2) blur(10px);
+      background:linear-gradient(180deg, rgba(15,20,24,.82), rgba(15,20,24,.55));
+      border-bottom:1px solid var(--line);
+    }
+    [data-theme="light"] .topbar{
+      background:linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.66));
+    }
+    .nav{
+      max-width:1180px; margin:0 auto; padding:12px 18px;
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.2px;
+    }
+    .logo{
+      width:40px; height:40px; border-radius:12px;
+      background:linear-gradient(135deg, var(--yellow), var(--yellow2));
+      box-shadow:0 10px 22px rgba(246,194,26,.25);
+      position:relative; overflow:hidden;
+    }
+    .logo:after{
+      content:"";
+      position:absolute; inset:-10px;
+      background:linear-gradient(60deg, rgba(0,0,0,.22), transparent 60%);
+      transform:skewX(-12deg);
+    }
+    .brand small{display:block; font-weight:600; color:var(--muted); margin-top:1px; letter-spacing:.4px}
+    .links{display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    .pill{
+      padding:9px 12px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(255,255,255,.03);
+      transition:.18s transform,.18s background,.18s border-color;
+      font-weight:650; font-size:13px;
+    }
+    .pill:hover{transform:translateY(-1px); border-color:rgba(246,194,26,.35); background:rgba(246,194,26,.08)}
+    .pill.primary{
+      border-color:rgba(246,194,26,.45);
+      background:linear-gradient(180deg, rgba(246,194,26,.22), rgba(246,194,26,.08));
+      cursor:pointer;
+    }
+
+    .hero{
+      padding:34px 0 18px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    @media (max-width: 960px){
+      .hero{grid-template-columns:1fr; }
+    }
+    .hcard{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border-radius:var(--radius2);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .hcard .pad{padding:26px 24px}
+    .kicker{
+      display:inline-flex; align-items:center; gap:10px;
+      font-weight:750; letter-spacing:.3px;
+      color:var(--muted);
+    }
+    .dot{
+      width:10px; height:10px; border-radius:50%;
+      background:var(--yellow);
+      box-shadow:0 0 0 5px rgba(246,194,26,.14);
+    }
+    h1{
+      margin:12px 0 10px;
+      font-size:42px;
+      line-height:1.05;
+      letter-spacing:-.6px;
+    }
+    @media (max-width:560px){ h1{font-size:34px;} }
+    .sub{
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.55;
+      max-width:62ch;
+    }
+    .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
+    .btn{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:14px;
+      padding:11px 13px;
+      font-weight:750;
+      font-size:14px;
+      cursor:pointer;
+      transition:.18s transform,.18s background,.18s border-color;
+      display:inline-flex; align-items:center; gap:10px;
+      user-select:none;
+    }
+    .btn:hover{transform:translateY(-1px); border-color:rgba(246,194,26,.35); background:rgba(246,194,26,.08)}
+    .btn.primary{
+      border-color:rgba(246,194,26,.55);
+      background:linear-gradient(180deg, rgba(246,194,26,.24), rgba(246,194,26,.10));
+    }
+    .btn .ic{
+      width:22px; height:22px; border-radius:9px;
+      display:grid; place-items:center;
+      background:rgba(246,194,26,.18);
+      border:1px solid rgba(246,194,26,.25);
+      font-family:var(--mono);
+      font-size:12px;
+    }
+
+    .miniGrid{
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:18px;
+    }
+    @media (max-width: 960px){ .miniGrid{grid-template-columns:1fr;} }
+    .mini{
+      padding:14px 14px;
+      border-radius:var(--radius);
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+    }
+    .mini b{display:block; font-size:13px}
+    .mini span{display:block; margin-top:6px; color:var(--muted); font-size:13px; line-height:1.4}
+    .mini .tag{
+      display:inline-flex; align-items:center; gap:8px;
+      margin-top:10px;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .tag i{
+      width:10px; height:10px; border-radius:50%;
+      background:rgba(255,255,255,.25);
+      display:inline-block;
+    }
+    .tag i.good{background:rgba(74,222,128,.9)}
+    .tag i.warn{background:rgba(251,191,36,.95)}
+    .tag i.bad{background:rgba(251,113,133,.95)}
+
+    .sectionTitle{
+      margin:24px 0 10px;
+      display:flex; align-items:end; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    .sectionTitle h2{
+      margin:0;
+      font-size:20px;
+      letter-spacing:-.2px;
+    }
+    .sectionTitle p{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:16px;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr;} }
+
+    .card{
+      border:1px solid var(--line);
+      border-radius:var(--radius2);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:14px 18px;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .card .hd b{font-size:14px}
+    .card .hd small{color:var(--muted)}
+    .card .bd{padding:16px 18px}
+    .searchRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    input, textarea, select{
+      font:inherit;
+      color:var(--text);
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      outline:none;
+      transition:border-color .18s, background .18s;
+    }
+    [data-theme="light"] input, [data-theme="light"] textarea, [data-theme="light"] select{
+      background:rgba(0,0,0,.03);
+    }
+    input:focus, textarea:focus, select:focus{
+      border-color:rgba(246,194,26,.45);
+      background:rgba(246,194,26,.06);
+    }
+    .grow{flex:1; min-width:240px}
+    .eqGrid{
+      display:grid; grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+      margin-top:12px;
+    }
+    @media (max-width: 980px){ .eqGrid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width: 560px){ .eqGrid{grid-template-columns:1fr}}
+    .eq{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(0,0,0,.12);
+      overflow:hidden;
+      position:relative;
+      min-height:140px;
+      display:flex; flex-direction:column;
+      cursor:pointer;
+    }
+    [data-theme="light"] .eq{background:rgba(0,0,0,.03)}
+    .eq .img{
+      height:78px;
+      background:
+        radial-gradient(420px 140px at 10% 30%, rgba(246,194,26,.25), transparent 55%),
+        radial-gradient(320px 120px at 90% 10%, rgba(120,210,255,.18), transparent 55%),
+        linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border-bottom:1px solid var(--line);
+      position:relative;
+    }
+    .eq .img:after{
+      content:"";
+      position:absolute; right:-40px; top:-40px;
+      width:120px; height:120px; border-radius:30px;
+      background:rgba(246,194,26,.10);
+      transform:rotate(18deg);
+      border:1px solid rgba(246,194,26,.18);
+    }
+    .eq .txt{padding:12px 12px 13px}
+    .eq h3{margin:0; font-size:14px; letter-spacing:-.2px}
+    .eq .meta{margin-top:6px; color:var(--muted); font-size:12px; line-height:1.45}
+    .chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px}
+    .chip{
+      font-size:11px;
+      padding:6px 8px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      color:var(--muted);
+      background:rgba(255,255,255,.03);
+    }
+    .chip.y{border-color:rgba(246,194,26,.35); color:var(--text); background:rgba(246,194,26,.10)}
+    .split{display:grid; grid-template-columns:1fr; gap:10px;}
+    .pane{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.03);
+      padding:12px;
+    }
+    .paneHead{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px}
+    .paneHead b{font-size:13px}
+    .paneHead small{color:var(--muted)}
+    .mono{
+      font-family:var(--mono);
+      font-size:12px;
+      line-height:1.5;
+      color:rgba(233,238,242,.92);
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+    [data-theme="light"] .mono{color:rgba(10,14,16,.90)}
+    .row{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      margin-top:10px;
+    }
+    .toast{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:18px;
+      z-index:60;
+      background:rgba(0,0,0,.70);
+      border:1px solid rgba(255,255,255,.12);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:14px;
+      box-shadow:var(--shadow);
+      display:none;
+      max-width:min(680px, 92vw);
+    }
+    [data-theme="light"] .toast{background:rgba(255,255,255,.92); color:var(--text)}
+    .footer{
+      margin-top:22px;
+      padding-top:16px;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      font-size:12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .kbd{
+      font-family:var(--mono);
+      font-size:11px;
+      padding:3px 7px;
+      border-radius:8px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+    }
+  </style>
+</head>
+
+<body data-theme="dark">
+  <div class="topbar">
+    <div class="nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div style="display:flex; align-items:baseline; gap:10px;">
+            <span style="font-size:15px;">CAT <span style="opacity:.9;">DIGITAL</span></span>
+            <span class="kbd">2028</span>
+          </div>
+          <small>Connected products • adaptive interfaces • agent-ready</small>
+        </div>
+      </div>
+
+      <div class="links">
+        <a class="pill" href="#equipment">Equipment</a>
+        <a class="pill" href="#agent">Agent</a>
+        <a class="pill" href="#interfaces">Interfaces</a>
+        <button class="pill primary" id="themeBtn" type="button">Toggle theme</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hcard">
+        <div class="pad">
+          <div class="kicker"><span class="dot"></span>Digital experience</div>
+          <h1>Build, operate, and optimize fleets with an <span style="color:var(--yellow)">agent-ready</span> layer.</h1>
+          <div class="sub">
+            A modern experience for exploring equipment, planning procurement, and interacting through structured interfaces.
+            Human-friendly UI on top, machine-readable systems underneath.
+          </div>
+
+          <div class="ctaRow">
+            <button class="btn primary" id="jumpEquipment" type="button"><span class="ic">⇣</span> Explore equipment</button>
+            <button class="btn" id="jumpAgent" type="button"><span class="ic">⌁</span> Agent workspace</button>
+            <button class="btn" id="jumpAI" type="button"><span class="ic">⌘</span> Interfaces</button>
+          </div>
+
+          <div class="miniGrid">
+            <div class="mini">
+              <b>Explore</b>
+              <span>Search and filter across categories, environments, and use cases.</span>
+              <div class="tag"><i class="good"></i> Fast discovery</div>
+            </div>
+            <div class="mini">
+              <b>Plan</b>
+              <span>Turn a goal into a procurement plan with traceable recommendations.</span>
+              <div class="tag"><i class="good"></i> Explainable outputs</div>
+            </div>
+            <div class="mini">
+              <b>Integrate</b>
+              <span>Agent-ready schema and structured results designed for automation.</span>
+              <div class="tag"><i class="warn"></i> Schema-driven</div>
+            </div>
+            <div class="mini">
+              <b>Adapt</b>
+              <span>Command interface for fast actions: search, quote, theme, and planning.</span>
+              <div class="tag"><i class="good"></i> Flexible workflows</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hcard">
+        <div class="pad">
+          <div class="kicker"><span class="dot"></span>Workspace</div>
+
+          <div class="mini" style="margin-top:10px;">
+            <b>Agent query</b>
+            <span><span style="color:var(--yellow); font-weight:800;">/agent/query</span> accepts goals and constraints, returns structured JSON.</span>
+            <div class="tag"><i class="good"></i> Deterministic responses</div>
+          </div>
+
+          <div class="mini" style="margin-top:12px;">
+            <b>Catalog</b>
+            <span>Structured equipment: category, use case, price band, power, environment fit, autonomy readiness.</span>
+            <div class="tag"><i class="good"></i> Consistent fields</div>
+          </div>
+
+          <div class="row">
+            <button class="btn" id="copyAgentExample" type="button"><span class="ic">{ }</span> Copy request</button>
+            <button class="btn" id="copySchema" type="button"><span class="ic">⧉</span> Copy schema</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EQUIPMENT -->
+    <div class="sectionTitle" id="equipment">
+      <h2>Equipment</h2>
+      <p>Search by use case, environment, or category. Click an item to load it into the agent workspace.</p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="hd">
+          <b>Browse</b>
+          <small>Search + filters</small>
+        </div>
+        <div class="bd">
+          <div class="searchRow">
+            <input id="q" class="grow" placeholder="Search equipment by name, category, tags, use case…" autocomplete="off" />
+            <select id="category">
+              <option value="all">All categories</option>
+              <option value="Excavator">Excavators</option>
+              <option value="Dozer">Dozers</option>
+              <option value="Loader">Loaders</option>
+              <option value="Truck">Off-highway trucks</option>
+              <option value="Generator">Power</option>
+              <option value="Compactor">Compactors</option>
+            </select>
+            <select id="env">
+              <option value="all">All environments</option>
+              <option value="Cold">Cold</option>
+              <option value="Hot">Hot</option>
+              <option value="Dusty">Dusty</option>
+              <option value="Urban">Urban</option>
+              <option value="Remote">Remote</option>
+            </select>
+          </div>
+
+          <div class="eqGrid" id="eqGrid" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- AGENT PANEL -->
+      <div class="card" id="agent">
+        <div class="hd">
+          <b>Agent workspace</b>
+          <small>Plan + trace</small>
+        </div>
+        <div class="bd">
+          <div class="split">
+            <div class="pane">
+              <div class="paneHead">
+                <b>Request</b>
+                <small>Goal → structured plan</small>
+              </div>
+              <textarea id="agentGoal" rows="4" style="width:100%; resize:vertical;"
+                placeholder="Example: Build a fleet for a 6-month highway project. Prioritize fuel efficiency, dusty environment, budget under $2M."></textarea>
+
+              <div class="row">
+                <button class="btn primary" id="runAgent" type="button"><span class="ic">▶</span> Run</button>
+                <button class="btn" id="agentToggle" type="button"><span class="ic">☰</span> Schema</button>
+              </div>
+            </div>
+
+            <div class="pane" id="schemaPane" style="display:none;">
+              <div class="paneHead">
+                <b>Schema</b>
+                <small>Inputs + outputs</small>
+              </div>
+              <div class="mono" id="schemaText"></div>
+            </div>
+
+            <div class="pane">
+              <div class="paneHead">
+                <b>Response</b>
+                <small>JSON + trace</small>
+              </div>
+              <div class="mono" id="agentOut"></div>
+              <div class="row">
+                <button class="btn" id="copyAgentOut" type="button"><span class="ic">⧉</span> Copy</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTERFACES -->
+    <div class="sectionTitle" id="interfaces">
+      <h2>Interfaces</h2>
+      <p>Command interface for quick actions: search, plan, quote, and theme.</p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="hd">
+          <b>Command interface</b>
+          <small>Search • plan • quote • theme</small>
+        </div>
+        <div class="bd">
+          <div class="pane" style="margin-bottom:10px;">
+            <div class="paneHead">
+              <b>Command</b>
+              <small>Try: <span class="kbd">find: mining cold</span> • <span class="kbd">theme: light</span> • <span class="kbd">quote: dozers</span></small>
+            </div>
+            <input id="consoleIn" class="grow" placeholder="Type a command…" autocomplete="off" style="width:100%;" />
+            <div class="row">
+              <button class="btn primary" id="consoleRun" type="button"><span class="ic">↵</span> Execute</button>
+              <button class="btn" id="consoleHelp" type="button"><span class="ic">?</span> Help</button>
+            </div>
+          </div>
+
+          <div class="pane">
+            <div class="paneHead">
+              <b>Output</b>
+              <small>Structured</small>
+            </div>
+            <div class="mono" id="consoleOut"></div>
+            <div class="row">
+              <button class="btn" id="copyConsoleOut" type="button"><span class="ic">⧉</span> Copy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="hd">
+          <b>Notes</b>
+          <small>Saved locally in-memory</small>
+        </div>
+        <div class="bd">
+          <div class="pane">
+            <div class="paneHead">
+              <b>Workspace notes</b>
+              <small>Capture requirements / follow-ups</small>
+            </div>
+            <textarea id="notesText" rows="6" style="width:100%; resize:vertical;"
+              placeholder="Example: Need pricing from dealer inventory; add lifecycle cost fields; integrate delivery schedule."></textarea>
+            <div class="row">
+              <button class="btn primary" id="saveNotes" type="button"><span class="ic">✓</span> Save</button>
+              <button class="btn" id="copyNotes" type="button"><span class="ic">⧉</span> Copy</button>
+            </div>
+          </div>
+
+          <div class="pane" style="margin-top:10px;">
+            <div class="paneHead">
+              <b>Saved</b>
+              <small>Latest snapshot</small>
+            </div>
+            <div class="mono" id="notesOut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>© Caterpillar Digital — concept experience</div>
+      <div>Hints: <span class="kbd">find: compact rental</span> • <span class="kbd">agent: dusty highway under 2m</span></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ---------------------------
+    // Catalog (structured)
+    // ---------------------------
+    const CATALOG = [
+      { id:"EX-320N", name:"320 NextGen Excavator", category:"Excavator", priceBand:"$$$", power:"Diesel / Hybrid-ready",
+        environments:["Dusty","Hot","Remote"], tags:["construction","earthmoving","fleet","efficiency","telematics"],
+        autonomy:"Assist+", summary:"Versatile excavator optimized for fuel efficiency, serviceability, and connected fleet ops." },
+      { id:"EX-310C", name:"310 Compact Excavator", category:"Excavator", priceBand:"$$", power:"Diesel",
+        environments:["Urban","Dusty"], tags:["compact","rental","urban","tight-spaces"],
+        autonomy:"Assist", summary:"Compact class for urban jobsites and rental fleets. Low footprint, quick transport." },
+      { id:"DZ-D6X", name:"D6 Dozer (Auto-Grade)", category:"Dozer", priceBand:"$$$", power:"Diesel",
+        environments:["Dusty","Remote","Hot"], tags:["grading","mining","dozing","automation"],
+        autonomy:"Semi-autonomous", summary:"Grade control + autonomy features that reduce rework and speed up earthmoving cycles." },
+      { id:"DZ-D8T", name:"D8 Dozer (Heavy Push)", category:"Dozer", priceBand:"$$$$", power:"Diesel",
+        environments:["Remote","Dusty","Cold"], tags:["heavy-duty","mining","cold-weather","reliability"],
+        autonomy:"Assist+", summary:"High-capacity push for mining and harsh environments with cold-weather packages." },
+      { id:"LD-950E", name:"950 Wheel Loader", category:"Loader", priceBand:"$$$", power:"Diesel / Electrified options",
+        environments:["Dusty","Hot","Remote"], tags:["loading","aggregate","mining-support","fleet"],
+        autonomy:"Assist", summary:"Fast load cycles with operator assist systems and fleet telematics integration." },
+      { id:"TR-797F", name:"797 Off-Highway Truck", category:"Truck", priceBand:"$$$$$", power:"Diesel-electric",
+        environments:["Remote","Dusty","Hot"], tags:["haul","mining","high-capacity","site-optimization"],
+        autonomy:"Autonomy-ready", summary:"Ultra-class hauling with electrified drive and autonomy readiness for optimized routes." },
+      { id:"PW-XR200", name:"XR200 Microgrid Power", category:"Generator", priceBand:"$$$", power:"Hybrid microgrid",
+        environments:["Remote","Cold","Hot"], tags:["power","microgrid","remote-sites","emissions"],
+        autonomy:"Automated", summary:"Microgrid-capable power system for remote sites with load balancing and hybrid support." },
+      { id:"CP-815", name:"815 Soil Compactor", category:"Compactor", priceBand:"$$", power:"Diesel",
+        environments:["Dusty","Urban","Hot"], tags:["compaction","roadwork","highway","productivity"],
+        autonomy:"Assist", summary:"Designed for roadwork compaction with productivity features and strong serviceability." }
+    ];
+
+    // ---------------------------
+    // Helpers
+    // ---------------------------
+    const $ = (sel) => document.querySelector(sel);
+    const toastEl = $("#toast");
+    function toast(msg){
+      toastEl.textContent = msg;
+      toastEl.style.display = "block";
+      clearTimeout(toastEl._t);
+      toastEl._t = setTimeout(()=> toastEl.style.display="none", 1600);
+    }
+    async function copyText(text){
+      try{ await navigator.clipboard.writeText(text); toast("Copied"); }
+      catch{ toast("Copy failed"); }
+    }
+    function pretty(obj){ return JSON.stringify(obj, null, 2); }
+
+    // Theme
+    $("#themeBtn").addEventListener("click", ()=>{
+      const body = document.body;
+      const next = body.getAttribute("data-theme")==="dark" ? "light" : "dark";
+      body.setAttribute("data-theme", next);
+      toast(`Theme: ${next}`);
+    });
+
+    // Nav buttons
+    $("#jumpEquipment").onclick = ()=> location.hash = "#equipment";
+    $("#jumpAgent").onclick = ()=> location.hash = "#agent";
+    $("#jumpAI").onclick = ()=> location.hash = "#interfaces";
+
+    // Catalog render
+    const q = $("#q"), category = $("#category"), env = $("#env"), grid = $("#eqGrid");
+    function matches(item, query, cat, environment){
+      const hay = [
+        item.id, item.name, item.category, item.priceBand, item.power,
+        item.summary, item.autonomy,
+        ...item.tags, ...item.environments
+      ].join(" ").toLowerCase();
+      const okQ = !query || hay.includes(query.toLowerCase());
+      const okC = (cat==="all") || item.category === cat;
+      const okE = (environment==="all") || item.environments.includes(environment);
+      return okQ && okC && okE;
+    }
+    function render(){
+      const query = q.value.trim();
+      const cat = category.value;
+      const environment = env.value;
+      const list = CATALOG.filter(it => matches(it, query, cat, environment));
+      grid.innerHTML = "";
+      list.forEach(it=>{
+        const el = document.createElement("div");
+        el.className = "eq";
+        el.innerHTML = `
+          <div class="img"></div>
+          <div class="txt">
+            <h3>${it.name}</h3>
+            <div class="meta">
+              <b>${it.category}</b> • ${it.id}<br/>
+              Power: ${it.power}<br/>
+              Autonomy: ${it.autonomy} • Price: ${it.priceBand}
+            </div>
+            <div class="chips">
+              ${it.tags.slice(0,4).map(t=>`<span class="chip">${t}</span>`).join("")}
+              <span class="chip y">${it.environments[0]}</span>
+            </div>
+          </div>
+        `;
+        el.addEventListener("click", ()=>{
+          const payload = agentRecommend({
+            goal: `Summarize ${it.name} for planning`,
+            constraints: { equipment_id: it.id }
+          });
+          $("#agentOut").textContent = pretty(payload);
+          location.hash="#agent";
+          toast("Loaded");
+        });
+        grid.appendChild(el);
+      });
+      if(list.length===0){
+        grid.innerHTML = `<div class="pane" style="grid-column:1/-1;">
+          <div class="paneHead"><b>No matches</b><small>Try a simpler query</small></div>
+          <div class="mono">Suggestions:\n- "mining cold"\n- "compact rental"\n- clear filters</div>
+        </div>`;
+      }
+    }
+    q.addEventListener("input", render);
+    category.addEventListener("change", render);
+    env.addEventListener("change", render);
+    render();
+
+    // Agent schema + logic
+    const SCHEMA = {
+      endpoint: "/agent/query",
+      method: "POST",
+      request: {
+        goal: "string",
+        constraints: {
+          budget_usd: "number (optional)",
+          environment: "string (Cold|Hot|Dusty|Urban|Remote) optional",
+          timeline_months: "number optional",
+          priorities: "array<string> optional"
+        }
+      },
+      response: {
+        recommendations: "array<{id,name,why,estimated_cost_usd}>",
+        plan: "array<string>",
+        trace: "array<{step,signal,result}>"
+      }
+    };
+    $("#schemaText").textContent = pretty(SCHEMA);
+
+    $("#agentToggle").onclick = ()=>{
+      const pane = $("#schemaPane");
+      pane.style.display = (pane.style.display === "none") ? "block" : "none";
+      toast("Updated");
+    };
+
+    function estimateCost(priceBand){
+      if(priceBand==="$$") return 250000;
+      if(priceBand==="$$$") return 650000;
+      if(priceBand==="$$$$") return 1250000;
+      if(priceBand==="$$$$$") return 4500000;
+      return 500000;
+    }
+
+    function inferEnv(text){
+      const t = (text||"").toLowerCase();
+      if(t.includes("cold")) return "Cold";
+      if(t.includes("hot")) return "Hot";
+      if(t.includes("dust")) return "Dusty";
+      if(t.includes("urban") || t.includes("city")) return "Urban";
+      if(t.includes("remote")) return "Remote";
+      return "";
+    }
+    function inferBudget(text){
+      const t = (text||"").toLowerCase();
+      const m = t.match(/\$?\s*([0-9]+(\.[0-9]+)?)\s*(m|million|k|thousand)?/);
+      if(!m) return undefined;
+      let n = Number(m[1]);
+      const suf = m[3];
+      if(suf==="m" || suf==="million") n *= 1_000_000;
+      if(suf==="k" || suf==="thousand") n *= 1_000;
+      if(n < 50_000) return undefined;
+      return Math.round(n);
+    }
+    function inferTimeline(text){
+      const t = (text||"").toLowerCase();
+      const m = t.match(/([0-9]+)\s*(month|months|mo)\b/);
+      return m ? Number(m[1]) : undefined;
+    }
+    function inferPriorities(text){
+      const t = (text||"").toLowerCase();
+      const p = [];
+      if(t.includes("fuel") || t.includes("efficien")) p.push("fuel_efficiency");
+      if(t.includes("emission") || t.includes("electric")) p.push("lower_emissions");
+      if(t.includes("autonom") || t.includes("automation")) p.push("autonomy");
+      if(t.includes("cost") || t.includes("budget")) p.push("cost_control");
+      if(t.includes("service") || t.includes("maintenance")) p.push("serviceability");
+      return p.length ? p : undefined;
+    }
+
+    function agentRecommend(req){
+      const goal = (req.goal||"").toLowerCase();
+      const c = req.constraints || {};
+      const env = (c.environment||"").trim();
+      const priorities = Array.isArray(c.priorities) ? c.priorities.join(" ").toLowerCase() : "";
+      const tokens = (goal + " " + priorities + " " + env).split(/[^a-z0-9]+/).filter(Boolean);
+
+      function score(item){
+        let s = 0;
+        const text = (item.name+" "+item.category+" "+item.summary+" "+item.tags.join(" ")+" "+item.environments.join(" ")+" "+item.power+" "+item.autonomy).toLowerCase();
+        tokens.forEach(t=>{ if(text.includes(t)) s += 2; });
+        if(env && item.environments.includes(env)) s += 6;
+        if(goal.includes("electric") && item.power.toLowerCase().includes("electric")) s += 5;
+        if(goal.includes("microgrid") && item.category==="Generator") s += 7;
+        if(goal.includes("mining") && item.tags.includes("mining")) s += 5;
+        if(goal.includes("highway") && (item.tags.includes("roadwork") || item.tags.includes("grading"))) s += 4;
+        if(goal.includes("compact") && item.tags.includes("compact")) s += 5;
+        if(goal.includes("rental") && item.tags.includes("rental")) s += 5;
+        return s;
+      }
+
+      let ranked = [...CATALOG].map(it=>({it, s:score(it)})).sort((a,b)=>b.s-a.s);
+
+      if(c.equipment_id){
+        const exact = CATALOG.find(x=>x.id===c.equipment_id);
+        ranked = exact ? [{it: exact, s: 999}] : ranked;
+      }
+
+      const top = ranked.slice(0, 3).map(({it})=>{
+        const base = estimateCost(it.priceBand);
+        return {
+          id: it.id,
+          name: it.name,
+          estimated_cost_usd: base,
+          why: [
+            `Environment: ${env || "any"}`,
+            `Autonomy: ${it.autonomy}`,
+            `Tags: ${it.tags.slice(0,3).join(", ")}`
+          ].join(" • ")
+        };
+      });
+
+      const plan = [
+        "Normalize goal + constraints.",
+        "Score catalog matches using schema fields.",
+        "Return top candidates with reasoning and estimates.",
+        "Optionally generate a quote and next-step checklist."
+      ];
+
+      const trace = [
+        { step: 1, signal: "goal", result: req.goal || "" },
+        { step: 2, signal: "constraints", result: c },
+        { step: 3, signal: "top_scores", result: ranked.slice(0,5).map(x=>({id:x.it.id, score:x.s})) },
+        { step: 4, signal: "selected", result: top.map(x=>x.id) }
+      ];
+
+      return { ok:true, recommendations: top, plan, trace };
+    }
+
+    $("#runAgent").onclick = ()=>{
+      const goal = $("#agentGoal").value.trim();
+      const req = {
+        goal: goal || "Plan equipment for a dusty highway project under $2M",
+        constraints: {
+          environment: inferEnv(goal),
+          budget_usd: inferBudget(goal),
+          timeline_months: inferTimeline(goal),
+          priorities: inferPriorities(goal)
+        }
+      };
+      $("#agentOut").textContent = pretty(agentRecommend(req));
+      toast("Ready");
+    };
+    $("#copyAgentOut").onclick = ()=> copyText($("#agentOut").textContent || "");
+
+    // Copy schema / example
+    $("#copySchema").onclick = ()=> copyText(pretty(SCHEMA));
+    $("#copyAgentExample").onclick = ()=> copyText(pretty({
+      goal: "Build a fleet for a 6-month highway project in a dusty environment under $2M. Prioritize fuel efficiency and serviceability.",
+      constraints: { environment:"Dusty", budget_usd:2000000, timeline_months:6, priorities:["fuel_efficiency","serviceability"] }
+    }));
+
+    // Seed output
+    $("#agentOut").textContent = pretty(agentRecommend({
+      goal: "Recommend equipment for a dusty highway project under $2M with strong serviceability.",
+      constraints: { environment:"Dusty", budget_usd: 2000000, priorities:["serviceability","fuel_efficiency"] }
+    }));
+
+    // Command interface
+    function consoleWrite(obj){
+      $("#consoleOut").textContent = (typeof obj === "string") ? obj : pretty(obj);
+    }
+    $("#consoleHelp").onclick = ()=>{
+      consoleWrite(
+`Commands:
+- find: <keywords>        search catalog
+- theme: light|dark       switch theme
+- quote: <keywords>       generate a structured quote packet
+- agent: <goal text>      run agent request
+
+Examples:
+- find: mining cold
+- theme: light
+- quote: dozers for dusty site
+- agent: highway dusty under 2m`
+      );
+      toast("Help");
+    };
+    $("#consoleRun").onclick = ()=>{
+      const raw = $("#consoleIn").value.trim();
+      if(!raw){ toast("Type a command"); return; }
+      const [cmd, ...rest] = raw.split(":");
+      const arg = (rest.join(":") || "").trim();
+      const c = cmd.trim().toLowerCase();
+
+      if(c==="theme"){
+        const want = arg.toLowerCase();
+        if(want==="light" || want==="dark"){
+          document.body.setAttribute("data-theme", want);
+          consoleWrite({ ok:true, theme: want });
+        } else consoleWrite({ ok:false, error:"Use theme: light or theme: dark" });
+        return;
+      }
+
+      if(c==="find"){
+        const query = arg.toLowerCase();
+        const results = CATALOG.filter(it=>{
+          const hay = (it.name+" "+it.category+" "+it.summary+" "+it.tags.join(" ")+" "+it.environments.join(" ")+" "+it.power).toLowerCase();
+          return !query || hay.includes(query);
+        }).slice(0,6).map(it=>({
+          id: it.id, name: it.name, category: it.category,
+          environments: it.environments, autonomy: it.autonomy
+        }));
+        consoleWrite({ ok:true, query: arg, results });
+        return;
+      }
+
+      if(c==="agent"){
+        const req = {
+          goal: arg || "Recommend equipment for a remote cold mining site",
+          constraints: {
+            environment: inferEnv(arg),
+            budget_usd: inferBudget(arg),
+            timeline_months: inferTimeline(arg),
+            priorities: inferPriorities(arg)
+          }
+        };
+        consoleWrite(agentRecommend(req));
+        return;
+      }
+
+      if(c==="quote"){
+        const goal = arg || "Quote: excavator + loader";
+        const rec = agentRecommend({ goal, constraints:{} }).recommendations;
+        const subtotal = rec.reduce((sum,r)=>sum+r.estimated_cost_usd,0);
+        const packet = {
+          ok:true,
+          request: goal,
+          items: rec.map(r=>({
+            id:r.id, name:r.name, qty:1,
+            unit_estimate_usd:r.estimated_cost_usd,
+            line_estimate_usd:r.estimated_cost_usd
+          })),
+          estimated_subtotal_usd: subtotal,
+          next_steps: ["Validate dealer inventory", "Confirm delivery windows", "Review financing / service plan"]
+        };
+        consoleWrite(packet);
+        return;
+      }
+
+      consoleWrite({ ok:false, error:"Unknown command. Use Help." });
+    };
+    $("#copyConsoleOut").onclick = ()=> copyText($("#consoleOut").textContent || "");
+    $("#consoleIn").addEventListener("keydown", (e)=>{
+      if(e.key==="Enter"){ e.preventDefault(); $("#consoleRun").click(); }
+    });
+
+    // Notes
+    const NOTES = { value:"" };
+    function renderNotes(){ $("#notesOut").textContent = NOTES.value || "(empty)"; }
+    renderNotes();
+    $("#saveNotes").onclick = ()=>{
+      NOTES.value = ($("#notesText").value || "").trim();
+      renderNotes();
+      toast("Saved");
+    };
+    $("#copyNotes").onclick = ()=> copyText($("#notesOut").textContent || "");
+  </script>
+
+  <!-- Optional: embedded machine-readable listing -->
+  <script type="application/ld+json" id="ldjson"></script>
+  <script>
+    const ld = {
+      "@context":"https://schema.org",
+      "@type":"ItemList",
+      "name":"Equipment Catalog",
+      "itemListElement": CATALOG.map((it, idx)=>({
+        "@type":"ListItem",
+        "position": idx+1,
+        "item":{
+          "@type":"Product",
+          "sku": it.id,
+          "name": it.name,
+          "category": it.category,
+          "description": it.summary,
+          "additionalProperty":[
+            { "@type":"PropertyValue", "name":"power", "value": it.power },
+            { "@type":"PropertyValue", "name":"autonomy", "value": it.autonomy },
+            { "@type":"PropertyValue", "name":"environments", "value": it.environments.join(", ") },
+            { "@type":"PropertyValue", "name":"priceBand", "value": it.priceBand }
+          ]
+        }
+      }))
+    };
+    document.getElementById("ldjson").textContent = JSON.stringify(ld);
+  </script>
+</body>
+</html>
