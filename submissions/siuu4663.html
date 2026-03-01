@@ -1,0 +1,1429 @@
+<!--Name: Bharath Raahul Murugesan--><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Caterpillar — Built for Machines. Now Built for Agents.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cat-yellow: #FFCD11;
+    --cat-black: #0A0A0A;
+    --cat-dark: #111111;
+    --cat-mid: #1C1C1C;
+    --cat-border: rgba(255,205,17,0.15);
+    --cat-text: #E8E8E0;
+    --cat-muted: #6B6B60;
+    --cat-green: #39FF14;
+    --cat-mono: 'Space Mono', monospace;
+    --cat-sans: 'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cat-black);
+    color: var(--cat-text);
+    font-family: var(--cat-sans);
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 64px;
+    border-bottom: 1px solid var(--cat-border);
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(16px);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-mark {
+    width: 36px;
+    height: 28px;
+    background: var(--cat-yellow);
+    clip-path: polygon(0 0, 100% 0, 100% 60%, 60% 100%, 0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--cat-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: #000;
+    letter-spacing: -0.5px;
+    padding-bottom: 4px;
+  }
+
+  .logo-text {
+    font-family: var(--cat-sans);
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cat-text);
+  }
+
+  .logo-text span {
+    color: var(--cat-yellow);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--cat-muted);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: var(--cat-mono);
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--cat-yellow); }
+
+  .nav-cta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-ghost {
+    padding: 8px 18px;
+    border: 1px solid var(--cat-border);
+    background: transparent;
+    color: var(--cat-text);
+    font-family: var(--cat-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--cat-yellow);
+    color: var(--cat-yellow);
+  }
+
+  .btn-primary {
+    padding: 8px 18px;
+    background: var(--cat-yellow);
+    color: #000;
+    font-family: var(--cat-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-primary:hover {
+    background: #fff;
+    transform: translateY(-1px);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    padding: 120px 40px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(255,205,17,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,205,17,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,205,17,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-family: var(--cat-mono);
+    font-size: 11px;
+    color: var(--cat-yellow);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--cat-yellow);
+  }
+
+  h1 {
+    font-size: clamp(48px, 6vw, 88px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 28px;
+  }
+
+  h1 .accent {
+    color: var(--cat-yellow);
+    display: block;
+  }
+
+  h1 .outline {
+    -webkit-text-stroke: 1px rgba(255,255,255,0.25);
+    color: transparent;
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    color: var(--cat-muted);
+    line-height: 1.6;
+    max-width: 480px;
+    margin-bottom: 36px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .hero-actions .btn-primary {
+    padding: 14px 28px;
+    font-size: 12px;
+  }
+
+  .hero-actions .btn-ghost {
+    padding: 14px 28px;
+    font-size: 12px;
+  }
+
+  /* ── LIVE TERMINAL ── */
+  .terminal-card {
+    background: var(--cat-dark);
+    border: 1px solid var(--cat-border);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--cat-border);
+    background: var(--cat-mid);
+  }
+
+  .terminal-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  .terminal-dot.red { background: #FF5F57; }
+  .terminal-dot.yellow { background: #FEBC2E; }
+  .terminal-dot.green { background: #28C840; }
+
+  .terminal-title {
+    font-family: var(--cat-mono);
+    font-size: 11px;
+    color: var(--cat-muted);
+    margin-left: 8px;
+  }
+
+  .terminal-badge {
+    margin-left: auto;
+    font-family: var(--cat-mono);
+    font-size: 10px;
+    color: var(--cat-green);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .terminal-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--cat-green);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .terminal-body {
+    padding: 20px;
+    font-family: var(--cat-mono);
+    font-size: 12px;
+    line-height: 1.8;
+    min-height: 280px;
+  }
+
+  .t-line { display: flex; gap: 8px; }
+  .t-prompt { color: var(--cat-yellow); }
+  .t-cmd { color: var(--cat-text); }
+  .t-out { color: var(--cat-muted); padding-left: 16px; }
+  .t-key { color: #7DC8E0; }
+  .t-val { color: #C3E88D; }
+  .t-num { color: #F78C6C; }
+  .t-cursor {
+    display: inline-block;
+    width: 8px; height: 14px;
+    background: var(--cat-yellow);
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* ── TICKER ── */
+  .ticker-bar {
+    border-top: 1px solid var(--cat-border);
+    border-bottom: 1px solid var(--cat-border);
+    overflow: hidden;
+    background: var(--cat-mid);
+    height: 40px;
+    display: flex;
+    align-items: center;
+  }
+
+  .ticker-label {
+    font-family: var(--cat-mono);
+    font-size: 10px;
+    color: var(--cat-yellow);
+    padding: 0 20px;
+    white-space: nowrap;
+    border-right: 1px solid var(--cat-border);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.1em;
+    background: rgba(255,205,17,0.05);
+    flex-shrink: 0;
+  }
+
+  .ticker-track {
+    display: flex;
+    gap: 40px;
+    animation: ticker 30s linear infinite;
+    white-space: nowrap;
+    padding: 0 40px;
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .ticker-item {
+    font-family: var(--cat-mono);
+    font-size: 11px;
+    color: var(--cat-muted);
+    display: flex;
+    gap: 8px;
+  }
+
+  .ticker-item .tag { color: var(--cat-yellow); }
+  .ticker-item .up { color: var(--cat-green); }
+  .ticker-item .dn { color: #FF6B6B; }
+
+  /* ── SECTION BASE ── */
+  section {
+    padding: 100px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--cat-mono);
+    font-size: 10px;
+    color: var(--cat-yellow);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::before {
+    content: attr(data-index);
+    opacity: 0.4;
+  }
+
+  h2 {
+    font-size: clamp(32px, 4vw, 56px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin-bottom: 16px;
+  }
+
+  .section-sub {
+    color: var(--cat-muted);
+    font-size: 16px;
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 60px;
+  }
+
+  /* ── AGENT FEATURES ── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--cat-border);
+    border: 1px solid var(--cat-border);
+  }
+
+  .feature-card {
+    background: var(--cat-dark);
+    padding: 36px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .feature-card:hover {
+    background: var(--cat-mid);
+  }
+
+  .feature-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 2px;
+    width: 0;
+    background: var(--cat-yellow);
+    transition: width 0.4s;
+  }
+
+  .feature-card:hover::after {
+    width: 100%;
+  }
+
+  .feature-icon {
+    font-size: 28px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .feature-num {
+    font-family: var(--cat-mono);
+    font-size: 10px;
+    color: var(--cat-muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+
+  .feature-title {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .feature-desc {
+    font-size: 13px;
+    color: var(--cat-muted);
+    line-height: 1.7;
+  }
+
+  .feature-tag {
+    display: inline-block;
+    margin-top: 16px;
+    font-family: var(--cat-mono);
+    font-size: 10px;
+    color: var(--cat-yellow);
+    border: 1px solid rgba(255,205,17,0.3);
+    padding: 3px 8px;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── EQUIPMENT GRID ── */
+  .equipment-section {
+    padding: 100px 40px;
+    background: var(--cat-dark);
+    border-top: 1px solid var(--cat-border);
+    border-bottom: 1px solid var(--cat-border);
+  }
+
+  .equipment-section > * {
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .equipment-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .equipment-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--cat-border);
+    border: 1px solid var(--cat-border);
+    margin-top: 60px;
+  }
+
+  .equip-card {
+    background: var(--cat-dark);
+    padding: 28px;
+    cursor: pointer;
+    transition: background 0.25s;
+    position: relative;
+  }
+
+  .equip-card:hover { background: #1A1A12; }
+
+  .equip-emoji { font-size: 36px; margin-bottom: 16px; display: block; }
+
+  .equip-name {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .equip-meta {
+    font-family: var(--cat-mono);
+    font-size: 10px;
+    color: var(--cat-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .equip-api {
+    margin-top: 14px;
+    font-family: var(--cat-mono);
+    font-size: 10px;
+    color: var(--cat-yellow);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .equip-card:hover .equip-api { opacity: 1; }
+
+  /* ── API ENDPOINTS PANEL ── */
+  .api-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .endpoint-list {
+    border: 1px solid var(--cat-border);
+    overflow: hidden;
+  }
+
+  .endpoint-header {
+    background: var(--cat-mid);
+    padding: 14px 20px;
+    font-family: var(--cat-mono);
+    font-size: 11px;
+    color: var(--cat-muted);
+    border-bottom: 1px solid var(--cat-border);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .endpoint-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--cat-border);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .endpoint-item:hover { background: var(--cat-mid); }
+  .endpoint-item:last-child { border-bottom: none; }
+
+  .method {
+    font-family: var(--cat-mono);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 7px;
+    border-radius: 1px;
+    min-width: 42px;
+    text-align: center;
+  }
+
+  .method.get { background: rgba(57,255,20,0.15); color: var(--cat-green); }
+  .method.post { background: rgba(255,205,17,0.15); color: var(--cat-yellow); }
+  .method.ws { background: rgba(125,200,224,0.15); color: #7DC8E0; }
+
+  .endpoint-path {
+    font-family: var(--cat-mono);
+    font-size: 12px;
+    color: var(--cat-text);
+    flex: 1;
+  }
+
+  .endpoint-desc {
+    font-family: var(--cat-mono);
+    font-size: 10px;
+    color: var(--cat-muted);
+    text-align: right;
+  }
+
+  /* ── STATS ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--cat-border);
+    border: 1px solid var(--cat-border);
+  }
+
+  .stat-box {
+    background: var(--cat-dark);
+    padding: 40px 32px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 56px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--cat-yellow);
+    display: block;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-family: var(--cat-mono);
+    font-size: 11px;
+    color: var(--cat-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── INDUSTRIES ── */
+  .industries-list {
+    border-top: 1px solid var(--cat-border);
+  }
+
+  .industry-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--cat-border);
+    cursor: pointer;
+    transition: padding-left 0.2s;
+  }
+
+  .industry-row:hover { padding-left: 8px; }
+
+  .ind-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .ind-num {
+    font-family: var(--cat-mono);
+    font-size: 11px;
+    color: var(--cat-muted);
+    width: 28px;
+  }
+
+  .ind-name {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .ind-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .ind-tag {
+    font-family: var(--cat-mono);
+    font-size: 10px;
+    color: var(--cat-yellow);
+    border: 1px solid rgba(255,205,17,0.25);
+    padding: 4px 10px;
+  }
+
+  .ind-arrow {
+    color: var(--cat-muted);
+    font-size: 18px;
+    transition: transform 0.2s, color 0.2s;
+  }
+
+  .industry-row:hover .ind-arrow {
+    transform: translateX(4px);
+    color: var(--cat-yellow);
+  }
+
+  /* ── AGENT CTA ── */
+  .agent-cta {
+    background: var(--cat-yellow);
+    color: #000;
+    padding: 80px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .agent-cta::before {
+    content: 'CAT';
+    position: absolute;
+    font-size: 300px;
+    font-weight: 800;
+    opacity: 0.06;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    letter-spacing: -0.05em;
+    font-family: var(--cat-sans);
+  }
+
+  .cta-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .cta-tag {
+    font-family: var(--cat-mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 20px;
+  }
+
+  .agent-cta h2 {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+    color: #000;
+  }
+
+  .agent-cta p {
+    font-size: 17px;
+    opacity: 0.7;
+    margin-bottom: 36px;
+    line-height: 1.6;
+  }
+
+  .cta-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-dark {
+    padding: 14px 28px;
+    background: #000;
+    color: var(--cat-yellow);
+    font-family: var(--cat-mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-dark:hover { background: #1a1a1a; }
+
+  .btn-outline-dark {
+    padding: 14px 28px;
+    background: transparent;
+    color: #000;
+    font-family: var(--cat-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    border: 1.5px solid rgba(0,0,0,0.4);
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-outline-dark:hover {
+    border-color: #000;
+    background: rgba(0,0,0,0.08);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--cat-dark);
+    border-top: 1px solid var(--cat-border);
+    padding: 60px 40px 40px;
+  }
+
+  .footer-grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--cat-border);
+    margin-bottom: 30px;
+  }
+
+  .footer-brand p {
+    font-size: 13px;
+    color: var(--cat-muted);
+    line-height: 1.7;
+    margin-top: 16px;
+    max-width: 280px;
+  }
+
+  .footer-col h4 {
+    font-family: var(--cat-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cat-yellow);
+    margin-bottom: 16px;
+  }
+
+  .footer-col a {
+    display: block;
+    color: var(--cat-muted);
+    text-decoration: none;
+    font-size: 13px;
+    margin-bottom: 10px;
+    transition: color 0.2s;
+  }
+
+  .footer-col a:hover { color: var(--cat-text); }
+
+  .footer-bottom {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-family: var(--cat-mono);
+    font-size: 10px;
+    color: var(--cat-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .footer-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--cat-mono);
+    font-size: 10px;
+    color: var(--cat-green);
+  }
+
+  .footer-status::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--cat-green);
+    animation: pulse 2s infinite;
+  }
+
+  /* ── ANIMATIONS ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--cat-black); }
+  ::-webkit-scrollbar-thumb { background: var(--cat-border); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--cat-yellow); }
+
+  @media (max-width: 1024px) {
+    .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .equipment-grid { grid-template-columns: repeat(2, 1fr); }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .api-section { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="logo-mark">CAT</div>
+    <div class="logo-text">Caterpillar <span>∕ Agent</span></div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#">Equipment</a></li>
+    <li><a href="#">Industries</a></li>
+    <li><a href="#">Services</a></li>
+    <li><a href="#">Dealers</a></li>
+    <li><a href="#">Agent API</a></li>
+    <li><a href="#">Docs</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="#" class="btn-ghost">Sign In</a>
+    <a href="#" class="btn-primary">Get API Key →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Now Agent-Compatible</div>
+    <h1>
+      Built for<br/>
+      <span class="accent">Machines.</span>
+      <span class="outline">Built for</span>
+      <span class="accent">Agents.</span>
+    </h1>
+    <p class="hero-sub">
+      The world's leading heavy equipment manufacturer — now with a complete API layer for AI agents. Query fleet telemetry, schedule maintenance, order parts, and automate procurement at machine speed.
+    </p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">Explore Agent API →</a>
+      <a href="#" class="btn-ghost">View Equipment</a>
+    </div>
+  </div>
+
+  <div class="terminal-card">
+    <div class="terminal-header">
+      <div class="terminal-dot red"></div>
+      <div class="terminal-dot yellow"></div>
+      <div class="terminal-dot green"></div>
+      <span class="terminal-title">cat-agent-sdk v3.2.1</span>
+      <div class="terminal-badge">LIVE API</div>
+    </div>
+    <div class="terminal-body">
+      <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd"> cat fleet.query --id="D10T2"</span></div>
+      <div class="t-line"><span class="t-out">Fetching machine data...</span></div>
+      <br/>
+      <div class="t-line"><span class="t-out">{</span></div>
+      <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"machine"</span>: <span class="t-val">"Cat D10T2 Dozer"</span>,</span></div>
+      <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"serial"</span>: <span class="t-val">"EML00423"</span>,</span></div>
+      <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"engine_hours"</span>: <span class="t-num">14,823</span>,</span></div>
+      <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"fuel_level"</span>: <span class="t-num">78%</span>,</span></div>
+      <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"location"</span>: <span class="t-val">"Site 7 — Nevada"</span>,</span></div>
+      <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"next_service"</span>: <span class="t-val">"2026-03-14"</span>,</span></div>
+      <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"alerts"</span>: <span class="t-num">0</span>,</span></div>
+      <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"status"</span>: <span class="t-val">"OPERATIONAL"</span></span></div>
+      <div class="t-line"><span class="t-out">}</span></div>
+      <br/>
+      <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd"> _<span class="t-cursor"></span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-label">LIVE FLEET DATA</div>
+  <div class="ticker-track">
+    <div class="ticker-item"><span class="tag">EXCAVATORS</span><span>4,821 units online</span><span class="up">↑ 2.3%</span></div>
+    <div class="ticker-item"><span class="tag">DOZERS</span><span>3,204 units online</span><span class="up">↑ 0.8%</span></div>
+    <div class="ticker-item"><span class="tag">WHEEL LOADERS</span><span>6,130 units online</span><span class="up">↑ 1.1%</span></div>
+    <div class="ticker-item"><span class="tag">HAUL TRUCKS</span><span>2,901 units online</span><span class="dn">↓ 0.4%</span></div>
+    <div class="ticker-item"><span class="tag">API UPTIME</span><span>99.98%</span><span class="up">↑ NOMINAL</span></div>
+    <div class="ticker-item"><span class="tag">PARTS ORDERS</span><span>12,440 processed today</span><span class="up">↑ 4.7%</span></div>
+    <div class="ticker-item"><span class="tag">ACTIVE DEALERS</span><span>3,800+ worldwide</span></div>
+    <div class="ticker-item"><span class="tag">AGENT QUERIES/S</span><span>48,200</span><span class="up">↑ LIVE</span></div>
+    <!-- dupe for loop -->
+    <div class="ticker-item"><span class="tag">EXCAVATORS</span><span>4,821 units online</span><span class="up">↑ 2.3%</span></div>
+    <div class="ticker-item"><span class="tag">DOZERS</span><span>3,204 units online</span><span class="up">↑ 0.8%</span></div>
+    <div class="ticker-item"><span class="tag">WHEEL LOADERS</span><span>6,130 units online</span><span class="up">↑ 1.1%</span></div>
+    <div class="ticker-item"><span class="tag">HAUL TRUCKS</span><span>2,901 units online</span><span class="dn">↓ 0.4%</span></div>
+    <div class="ticker-item"><span class="tag">API UPTIME</span><span>99.98%</span><span class="up">↑ NOMINAL</span></div>
+    <div class="ticker-item"><span class="tag">PARTS ORDERS</span><span>12,440 processed today</span><span class="up">↑ 4.7%</span></div>
+    <div class="ticker-item"><span class="tag">ACTIVE DEALERS</span><span>3,800+ worldwide</span></div>
+    <div class="ticker-item"><span class="tag">AGENT QUERIES/S</span><span>48,200</span><span class="up">↑ LIVE</span></div>
+  </div>
+</div>
+
+<!-- AGENT FEATURES -->
+<section>
+  <div class="section-label" data-index="01">Agent Capabilities</div>
+  <h2>Everything an agent needs<br/>to operate heavy iron.</h2>
+  <p class="section-sub">Built on Cat's 98-year equipment legacy — reimagined as structured, machine-readable APIs your agents can call directly.</p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">⚡</span>
+      <div class="feature-num">CAPABILITY — 001</div>
+      <div class="feature-title">Real-Time Telemetry</div>
+      <p class="feature-desc">Stream live engine data, fuel levels, GPS location, fault codes, and utilization metrics from any Cat machine in your fleet.</p>
+      <span class="feature-tag">GET /fleet/{id}/telemetry</span>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔧</span>
+      <div class="feature-num">CAPABILITY — 002</div>
+      <div class="feature-title">Predictive Maintenance</div>
+      <p class="feature-desc">AI-powered service predictions based on engine hours, operating conditions, and historical failure patterns across 1.4M machines.</p>
+      <span class="feature-tag">POST /maintenance/predict</span>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📦</span>
+      <div class="feature-num">CAPABILITY — 003</div>
+      <div class="feature-title">Parts Procurement</div>
+      <p class="feature-desc">Query parts availability, pricing, and lead times. Place orders programmatically across Cat's global dealer network — no human in the loop.</p>
+      <span class="feature-tag">POST /parts/order</span>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📍</span>
+      <div class="feature-num">CAPABILITY — 004</div>
+      <div class="feature-title">Fleet Geofencing</div>
+      <p class="feature-desc">Create and monitor virtual boundaries. Receive structured alerts when equipment enters or exits defined zones, with full audit trails.</p>
+      <span class="feature-tag">WS /fleet/geofence/stream</span>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">💰</span>
+      <div class="feature-num">CAPABILITY — 005</div>
+      <div class="feature-title">Cat Financial Integration</div>
+      <p class="feature-desc">Query financing options, lease structures, and payment schedules. Agents can model total cost of ownership for any equipment configuration.</p>
+      <span class="feature-tag">GET /financial/options</span>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🤖</span>
+      <div class="feature-num">CAPABILITY — 006</div>
+      <div class="feature-title">MCP Server Ready</div>
+      <p class="feature-desc">Native Model Context Protocol integration. Drop the Cat MCP server into your agent stack and start querying fleet data in under 5 minutes.</p>
+      <span class="feature-tag">MCP://cat.tools/fleet</span>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div style="background: var(--cat-dark); border-top: 1px solid var(--cat-border); border-bottom: 1px solid var(--cat-border); padding: 0 40px;">
+  <div style="max-width: 1400px; margin: 0 auto;">
+    <div class="stats-row">
+      <div class="stat-box">
+        <span class="stat-num">1.4M+</span>
+        <div class="stat-label">Connected Machines</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">190+</span>
+        <div class="stat-label">Countries Served</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">99.98%</span>
+        <div class="stat-label">API Uptime SLA</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">&lt;80ms</span>
+        <div class="stat-label">Avg. API Response</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EQUIPMENT CATALOG -->
+<div class="equipment-section">
+  <div class="equipment-inner">
+    <div class="section-label" data-index="02">Machine Catalog</div>
+    <h2>Query any machine.<br/>Every asset. Fully structured.</h2>
+    <p class="section-sub" style="margin-bottom:0;">All equipment classes are available as API resources with full spec sheets, part numbers, and telemetry schemas.</p>
+
+    <div class="equipment-grid">
+      <div class="equip-card">
+        <span class="equip-emoji">🏗️</span>
+        <div class="equip-name">Excavators</div>
+        <div class="equip-meta">42 MODELS · 7–500 METRIC TONS</div>
+        <div class="equip-api">GET /catalog/excavators →</div>
+      </div>
+      <div class="equip-card">
+        <span class="equip-emoji">🚧</span>
+        <div class="equip-name">Bulldozers</div>
+        <div class="equip-meta">12 MODELS · D3–D11</div>
+        <div class="equip-api">GET /catalog/dozers →</div>
+      </div>
+      <div class="equip-card">
+        <span class="equip-emoji">🚚</span>
+        <div class="equip-name">Haul Trucks</div>
+        <div class="equip-meta">18 MODELS · 40–400T PAYLOAD</div>
+        <div class="equip-api">GET /catalog/haul-trucks →</div>
+      </div>
+      <div class="equip-card">
+        <span class="equip-emoji">🔄</span>
+        <div class="equip-name">Wheel Loaders</div>
+        <div class="equip-meta">30 MODELS · 1–26 M³ BUCKET</div>
+        <div class="equip-api">GET /catalog/wheel-loaders →</div>
+      </div>
+      <div class="equip-card">
+        <span class="equip-emoji">🛣️</span>
+        <div class="equip-name">Motor Graders</div>
+        <div class="equip-meta">8 MODELS · 120–24M SERIES</div>
+        <div class="equip-api">GET /catalog/graders →</div>
+      </div>
+      <div class="equip-card">
+        <span class="equip-emoji">⚙️</span>
+        <div class="equip-name">Generators</div>
+        <div class="equip-meta">200+ SKUs · 20–16,000 KVA</div>
+        <div class="equip-api">GET /catalog/generators →</div>
+      </div>
+      <div class="equip-card">
+        <span class="equip-emoji">🔥</span>
+        <div class="equip-name">Engines</div>
+        <div class="equip-meta">INDUSTRIAL · MARINE · OIL &amp; GAS</div>
+        <div class="equip-api">GET /catalog/engines →</div>
+      </div>
+      <div class="equip-card">
+        <span class="equip-emoji">🏔️</span>
+        <div class="equip-name">Mining Equipment</div>
+        <div class="equip-meta">SURFACE · UNDERGROUND · BLASTHOLE</div>
+        <div class="equip-api">GET /catalog/mining →</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- API DOCS SECTION -->
+<section>
+  <div class="section-label" data-index="03">API Reference</div>
+  <h2>Structured endpoints.<br/>Predictable outputs.</h2>
+  <p class="section-sub">Every Cat data domain is available over REST or WebSocket with OpenAPI 3.1 schemas, built for agents that need deterministic, verifiable outputs.</p>
+
+  <div class="api-section">
+    <div class="endpoint-list">
+      <div class="endpoint-header">
+        <span>ENDPOINT</span>
+        <span>DESCRIPTION</span>
+      </div>
+
+      <div class="endpoint-item">
+        <span class="method get">GET</span>
+        <span class="endpoint-path">/fleet</span>
+        <span class="endpoint-desc">List all assets</span>
+      </div>
+      <div class="endpoint-item">
+        <span class="method get">GET</span>
+        <span class="endpoint-path">/fleet/{id}/telemetry</span>
+        <span class="endpoint-desc">Live sensor data</span>
+      </div>
+      <div class="endpoint-item">
+        <span class="method post">POST</span>
+        <span class="endpoint-path">/maintenance/schedule</span>
+        <span class="endpoint-desc">Book service</span>
+      </div>
+      <div class="endpoint-item">
+        <span class="method get">GET</span>
+        <span class="endpoint-path">/parts/search</span>
+        <span class="endpoint-desc">Part availability</span>
+      </div>
+      <div class="endpoint-item">
+        <span class="method post">POST</span>
+        <span class="endpoint-path">/parts/order</span>
+        <span class="endpoint-desc">Place parts order</span>
+      </div>
+      <div class="endpoint-item">
+        <span class="method get">GET</span>
+        <span class="endpoint-path">/dealers/nearest</span>
+        <span class="endpoint-desc">Find dealer by geo</span>
+      </div>
+      <div class="endpoint-item">
+        <span class="method post">POST</span>
+        <span class="endpoint-path">/fleet/geofence</span>
+        <span class="endpoint-desc">Create boundary</span>
+      </div>
+      <div class="endpoint-item">
+        <span class="method ws">WS</span>
+        <span class="endpoint-path">/fleet/stream</span>
+        <span class="endpoint-desc">Real-time events</span>
+      </div>
+      <div class="endpoint-item">
+        <span class="method get">GET</span>
+        <span class="endpoint-path">/catalog/{category}</span>
+        <span class="endpoint-desc">Equipment specs</span>
+      </div>
+      <div class="endpoint-item">
+        <span class="method get">GET</span>
+        <span class="endpoint-path">/financial/options</span>
+        <span class="endpoint-desc">Financing models</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="terminal-card">
+        <div class="terminal-header">
+          <div class="terminal-dot red"></div>
+          <div class="terminal-dot yellow"></div>
+          <div class="terminal-dot green"></div>
+          <span class="terminal-title">SDK Quick Start</span>
+        </div>
+        <div class="terminal-body" style="font-size:11px; line-height:2;">
+          <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd"> npm install @caterpillar/agent-sdk</span></div>
+          <br/>
+          <div class="t-line" style="color:#7DC8E0;">// Initialize client</div>
+          <div class="t-line"><span class="t-key">const</span><span class="t-cmd"> cat = </span><span class="t-key">new</span><span class="t-cmd"> CatAgent({</span></div>
+          <div class="t-line"><span class="t-cmd">&nbsp;&nbsp;apiKey: </span><span class="t-val">'cat_live_...'</span><span class="t-cmd">,</span></div>
+          <div class="t-line"><span class="t-cmd">&nbsp;&nbsp;fleet: </span><span class="t-val">'fleet_a9f3k'</span></div>
+          <div class="t-line"><span class="t-cmd">});</span></div>
+          <br/>
+          <div class="t-line" style="color:#7DC8E0;">// Query machine state</div>
+          <div class="t-line"><span class="t-key">const</span><span class="t-cmd"> data = </span><span class="t-key">await</span><span class="t-cmd"> cat</span></div>
+          <div class="t-line"><span class="t-cmd">&nbsp;&nbsp;.fleet(<span class="t-val">'EML00423'</span>)</span></div>
+          <div class="t-line"><span class="t-cmd">&nbsp;&nbsp;.telemetry();</span></div>
+          <br/>
+          <div class="t-line"><span class="t-out">// → { engine_hours: 14823, ... }</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top: 16px; display: flex; gap: 12px;">
+        <a href="#" class="btn-primary" style="flex:1; text-align:center; padding: 14px 0;">Read Docs →</a>
+        <a href="#" class="btn-ghost" style="flex:1; text-align:center; padding: 14px 0;">OpenAPI Spec</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<div style="background: var(--cat-dark); border-top: 1px solid var(--cat-border); border-bottom: 1px solid var(--cat-border);">
+  <section style="padding: 100px 40px;">
+    <div class="section-label" data-index="04">Industries</div>
+    <h2>Every industry.<br/>One unified API.</h2>
+    <p class="section-sub">Cat equipment spans dozens of verticals. Agent integrations are pre-configured for each industry's unique data vocabulary and workflows.</p>
+
+    <div class="industries-list">
+      <div class="industry-row">
+        <div class="ind-left">
+          <span class="ind-num">01</span>
+          <span class="ind-name">Construction</span>
+        </div>
+        <div class="ind-right">
+          <span class="ind-tag">42 ENDPOINTS</span>
+          <span class="ind-arrow">→</span>
+        </div>
+      </div>
+      <div class="industry-row">
+        <div class="ind-left">
+          <span class="ind-num">02</span>
+          <span class="ind-name">Mining &amp; Quarrying</span>
+        </div>
+        <div class="ind-right">
+          <span class="ind-tag">38 ENDPOINTS</span>
+          <span class="ind-arrow">→</span>
+        </div>
+      </div>
+      <div class="industry-row">
+        <div class="ind-left">
+          <span class="ind-num">03</span>
+          <span class="ind-name">Oil, Gas &amp; Marine</span>
+        </div>
+        <div class="ind-right">
+          <span class="ind-tag">31 ENDPOINTS</span>
+          <span class="ind-arrow">→</span>
+        </div>
+      </div>
+      <div class="industry-row">
+        <div class="ind-left">
+          <span class="ind-num">04</span>
+          <span class="ind-name">Electric Power</span>
+        </div>
+        <div class="ind-right">
+          <span class="ind-tag">28 ENDPOINTS</span>
+          <span class="ind-arrow">→</span>
+        </div>
+      </div>
+      <div class="industry-row">
+        <div class="ind-left">
+          <span class="ind-num">05</span>
+          <span class="ind-name">Agriculture</span>
+        </div>
+        <div class="ind-right">
+          <span class="ind-tag">19 ENDPOINTS</span>
+          <span class="ind-arrow">→</span>
+        </div>
+      </div>
+      <div class="industry-row">
+        <div class="ind-left">
+          <span class="ind-num">06</span>
+          <span class="ind-name">Forestry &amp; Landscaping</span>
+        </div>
+        <div class="ind-right">
+          <span class="ind-tag">16 ENDPOINTS</span>
+          <span class="ind-arrow">→</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- CTA -->
+<div class="agent-cta">
+  <div class="cta-inner">
+    <div class="cta-tag">Start Building Today</div>
+    <h2>Your agent. Our machines.<br/>Infinite leverage.</h2>
+    <p>Join the fleet operators, procurement teams, and AI builders connecting their agents to the Cat ecosystem. Start with 10,000 free API calls.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-dark">Get Your API Key →</a>
+      <a href="#" class="btn-outline-dark">Talk to Sales</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo">
+        <div class="logo-mark">CAT</div>
+        <div class="logo-text">Caterpillar <span>∕ Agent</span></div>
+      </div>
+      <p>The world's largest heavy equipment manufacturer — now fully API-accessible for AI agents, autonomous systems, and the builders of tomorrow's industrial stack.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Equipment</h4>
+      <a href="#">Excavators</a>
+      <a href="#">Dozers</a>
+      <a href="#">Trucks</a>
+      <a href="#">Loaders</a>
+      <a href="#">Generators</a>
+    </div>
+    <div class="footer-col">
+      <h4>Agent API</h4>
+      <a href="#">Documentation</a>
+      <a href="#">OpenAPI Spec</a>
+      <a href="#">SDK Libraries</a>
+      <a href="#">MCP Server</a>
+      <a href="#">Changelog</a>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <a href="#">Cat Financial</a>
+      <a href="#">SIS Parts</a>
+      <a href="#">Dealer Network</a>
+      <a href="#">Product Link</a>
+      <a href="#">VisionLink</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About Cat</a>
+      <a href="#">Investors</a>
+      <a href="#">Sustainability</a>
+      <a href="#">Careers</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Caterpillar Inc. All rights reserved. CAT, CATERPILLAR, and related marks are trademarks.</div>
+    <div class="footer-status">ALL SYSTEMS OPERATIONAL</div>
+  </div>
+</footer>
+
+<script>
+  // Intersection Observer for fade-up
+  const els = document.querySelectorAll('.feature-card, .equip-card, .stat-box, .industry-row');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.style.transitionDelay = (i % 4) * 80 + 'ms';
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  els.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    obs.observe(el);
+  });
+
+  // Terminal typing effect
+  const cursor = document.querySelector('.t-cursor');
+  let cmds = [
+    '$ cat fleet.query --id="D10T2"',
+    '$ cat maintenance.predict --fleet="nevada_7"',
+    '$ cat parts.order --sku="1R-0756" --qty=4',
+    '$ cat dealers.find --geo="37.7749,-122.4194"',
+  ];
+  let ci = 0;
+  setInterval(() => {
+    ci = (ci + 1) % cmds.length;
+  }, 5000);
+</script>
+
+</body>
+</html>
