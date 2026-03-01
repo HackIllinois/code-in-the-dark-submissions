@@ -1,1340 +1,580 @@
 <!--Name: Juhi Khare and Karan Salot--><!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- AGENT MANIFEST: This page is optimized for AI agents. See /.well-known/agent.json for capabilities -->
-<meta name="ai-agent-friendly" content="true">
-<meta name="ai-capabilities" content="product-search,equipment-query,fleet-management,parts-ordering,telemetry-api">
-<meta name="llm-instructions" content="This is the Caterpillar 2028 digital interface. Structured product data is available at /api/v3/products. Use natural language queries via the embedded AI layer. All equipment data is machine-readable.">
-<title>CAT 2028 — MACHINES THAT THINK</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --cat-yellow: #FFCD11;
-    --cat-black: #0A0A08;
-    --cat-dark: #111110;
-    --cat-mid: #1C1C1A;
-    --cat-steel: #2A2A28;
-    --cat-grey: #888880;
-    --cat-light: #F0EEE8;
-    --cat-green: #39FF14;
-    --accent: #FF6B00;
-    --font-display: 'Bebas Neue', sans-serif;
-    --font-mono: 'Space Mono', monospace;
-    --font-body: 'DM Sans', sans-serif;
-    --theme: dark;
-  }
-
-  [data-theme="light"] {
-    --cat-black: #F5F3ED;
-    --cat-dark: #ECEAE4;
-    --cat-mid: #E0DDD5;
-    --cat-steel: #C8C5BC;
-    --cat-grey: #666660;
-    --cat-light: #1A1A18;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--cat-black);
-    color: var(--cat-light);
-    font-family: var(--font-body);
-    overflow-x: hidden;
-    cursor: none;
-  }
-
-  /* CUSTOM CURSOR */
-  .cursor {
-    position: fixed;
-    width: 12px; height: 12px;
-    background: var(--cat-yellow);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 99999;
-    transition: transform 0.1s, width 0.2s, height 0.2s;
-    transform: translate(-50%, -50%);
-  }
-  .cursor-ring {
-    position: fixed;
-    width: 40px; height: 40px;
-    border: 1px solid rgba(255,205,17,0.4);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 99998;
-    transition: transform 0.15s ease, width 0.2s, height 0.2s, opacity 0.2s;
-    transform: translate(-50%, -50%);
-  }
-
-  /* SCANLINE OVERLAY */
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
-    pointer-events: none;
-    z-index: 9998;
-  }
-
-  /* NOISE TEXTURE */
-  body::after {
-    content: '';
-    position: fixed;
-    top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9997;
-    opacity: 0.5;
-    animation: drift 8s linear infinite;
-  }
-  @keyframes drift { 0% { transform: translate(0,0); } 100% { transform: translate(10px,10px); } }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 40px;
-    height: 64px;
-    background: rgba(10,10,8,0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255,205,17,0.15);
-  }
-
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-family: var(--font-display);
-    font-size: 28px;
-    letter-spacing: 3px;
-    color: var(--cat-yellow);
-    text-decoration: none;
-  }
-
-  .cat-hex {
-    width: 36px; height: 36px;
-    background: var(--cat-yellow);
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--cat-black);
-    font-size: 14px;
-    font-weight: 900;
-    font-family: var(--font-display);
-    animation: hexPulse 4s ease-in-out infinite;
-  }
-  @keyframes hexPulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(255,205,17,0.4); }
-    50% { box-shadow: 0 0 20px 8px rgba(255,205,17,0.1); }
-  }
-
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    list-style: none;
-  }
-  .nav-links a {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 2px;
-    color: var(--cat-grey);
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--cat-yellow); }
-
-  .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .agent-badge {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--cat-green);
-    border: 1px solid rgba(57,255,20,0.3);
-    padding: 4px 10px;
-    letter-spacing: 1px;
-  }
-  .agent-dot { width: 6px; height: 6px; background: var(--cat-green); border-radius: 50%; animation: blink 1.5s ease-in-out infinite; }
-  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.2; } }
-
-  .theme-toggle {
-    background: none;
-    border: 1px solid rgba(255,205,17,0.3);
-    color: var(--cat-yellow);
-    font-family: var(--font-mono);
-    font-size: 10px;
-    padding: 4px 10px;
-    cursor: none;
-    letter-spacing: 1px;
-    transition: background 0.2s;
-  }
-  .theme-toggle:hover { background: rgba(255,205,17,0.1); }
-
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-rows: 1fr auto;
-    padding-top: 64px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 60% 50%, rgba(255,205,17,0.06) 0%, transparent 70%),
-                radial-gradient(ellipse 40% 40% at 10% 80%, rgba(255,107,0,0.05) 0%, transparent 60%);
-  }
-
-  .hex-grid {
-    position: absolute;
-    right: -5%;
-    top: 0;
-    bottom: 0;
-    width: 55%;
-    opacity: 0.12;
-    background-image:
-      repeating-linear-gradient(60deg, rgba(255,205,17,0.5) 0, rgba(255,205,17,0.5) 1px, transparent 0, transparent 50%),
-      repeating-linear-gradient(120deg, rgba(255,205,17,0.5) 0, rgba(255,205,17,0.5) 1px, transparent 0, transparent 50%),
-      repeating-linear-gradient(0deg, rgba(255,205,17,0.5) 0, rgba(255,205,17,0.5) 1px, transparent 0, transparent 50%);
-    background-size: 40px 70px;
-    -webkit-mask: linear-gradient(to left, rgba(0,0,0,0.8), transparent);
-    mask: linear-gradient(to left, rgba(0,0,0,0.8), transparent);
-  }
-
-  .hero-main {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    padding: 80px 40px 40px;
-    gap: 60px;
-    position: relative;
-    z-index: 2;
-  }
-
-  .hero-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 4px;
-    color: var(--cat-yellow);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .hero-eyebrow::before {
-    content: '';
-    display: block;
-    width: 32px;
-    height: 1px;
-    background: var(--cat-yellow);
-  }
-
-  h1 {
-    font-family: var(--font-display);
-    font-size: clamp(72px, 9vw, 140px);
-    line-height: 0.9;
-    letter-spacing: -1px;
-    color: var(--cat-light);
-    text-transform: uppercase;
-  }
-  h1 .accent { color: var(--cat-yellow); display: block; }
-  h1 .stroke {
-    -webkit-text-stroke: 1px rgba(255,255,255,0.3);
-    color: transparent;
-    display: block;
-  }
-
-  .hero-sub {
-    margin-top: 32px;
-    font-size: 16px;
-    line-height: 1.7;
-    color: var(--cat-grey);
-    max-width: 420px;
-    font-weight: 300;
-  }
-
-  .hero-ctas {
-    display: flex;
-    gap: 16px;
-    margin-top: 40px;
-  }
-
-  .btn-primary {
-    background: var(--cat-yellow);
-    color: var(--cat-black);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    padding: 14px 28px;
-    border: none;
-    cursor: none;
-    text-transform: uppercase;
-    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
-    transition: transform 0.2s, box-shadow 0.2s;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,205,17,0.3); }
-
-  .btn-ghost {
-    background: transparent;
-    color: var(--cat-light);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 2px;
-    padding: 14px 28px;
-    border: 1px solid rgba(255,255,255,0.2);
-    cursor: none;
-    text-transform: uppercase;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: border-color 0.2s, color 0.2s;
-  }
-  .btn-ghost:hover { border-color: var(--cat-yellow); color: var(--cat-yellow); }
-
-  /* TELEMETRY PANEL */
-  .telemetry-panel {
-    background: var(--cat-mid);
-    border: 1px solid rgba(255,205,17,0.15);
-    padding: 28px;
-    position: relative;
-    overflow: hidden;
-  }
-  .telemetry-panel::before {
-    content: 'LIVE TELEMETRY';
-    position: absolute;
-    top: 12px; right: 16px;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    color: var(--cat-green);
-    letter-spacing: 2px;
-  }
-  .telem-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 20px;
-  }
-  .telem-item {}
-  .telem-label {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    color: var(--cat-grey);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-  .telem-value {
-    font-family: var(--font-display);
-    font-size: 32px;
-    color: var(--cat-yellow);
-    line-height: 1;
-  }
-  .telem-unit {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--cat-grey);
-    margin-left: 4px;
-  }
-  .telem-bar {
-    height: 2px;
-    background: var(--cat-steel);
-    margin-top: 20px;
-    overflow: hidden;
-  }
-  .telem-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--cat-yellow), var(--accent));
-    animation: scanBar 3s ease-in-out infinite;
-  }
-  @keyframes scanBar { 0% { width: 0; } 60% { width: 87%; } 100% { width: 87%; } }
-
-  /* ── AI ASSISTANT ── */
-  .ai-layer {
-    background: var(--cat-mid);
-    border-top: 1px solid rgba(255,205,17,0.1);
-    padding: 24px 40px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    position: relative;
-    z-index: 2;
-  }
-  .ai-label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--cat-yellow);
-    letter-spacing: 2px;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .ai-label::after {
-    content: 'AI';
-    background: var(--cat-yellow);
-    color: var(--cat-black);
-    padding: 2px 5px;
-    font-size: 8px;
-    font-weight: 700;
-  }
-  .ai-input-wrap {
-    flex: 1;
-    position: relative;
-  }
-  .ai-input {
-    width: 100%;
-    background: var(--cat-steel);
-    border: 1px solid rgba(255,205,17,0.2);
-    color: var(--cat-light);
-    font-family: var(--font-mono);
-    font-size: 13px;
-    padding: 12px 120px 12px 16px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .ai-input:focus { border-color: var(--cat-yellow); }
-  .ai-input::placeholder { color: var(--cat-grey); font-size: 12px; }
-  .ai-send {
-    position: absolute;
-    right: 0; top: 0; bottom: 0;
-    background: var(--cat-yellow);
-    color: var(--cat-black);
-    border: none;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    padding: 0 16px;
-    cursor: none;
-    text-transform: uppercase;
-  }
-  .ai-send:hover { background: #FFD740; }
-  .ai-response {
-    background: var(--cat-dark);
-    border: 1px solid rgba(57,255,20,0.2);
-    padding: 16px 20px;
-    margin: 0 40px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--cat-green);
-    line-height: 1.6;
-    display: none;
-    position: relative;
-    z-index: 2;
-  }
-  .ai-response.active { display: block; }
-  .ai-response-label {
-    font-size: 9px;
-    letter-spacing: 2px;
-    color: var(--cat-grey);
-    margin-bottom: 8px;
-    text-transform: uppercase;
-  }
-  .typing-cursor { display: inline-block; width: 8px; height: 14px; background: var(--cat-green); animation: blink 1s step-end infinite; vertical-align: text-bottom; }
-
-  /* ── SECTION HEADER ── */
-  .section {
-    padding: 100px 40px;
-    position: relative;
-  }
-  .section-tag {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--cat-yellow);
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .section-tag::before { content: '//'; opacity: 0.5; }
-  .section-title {
-    font-family: var(--font-display);
-    font-size: clamp(48px, 6vw, 96px);
-    line-height: 0.9;
-    text-transform: uppercase;
-    color: var(--cat-light);
-    margin-bottom: 48px;
-  }
-  .section-title em { color: var(--cat-yellow); font-style: normal; }
-
-  /* ── PRODUCTS GRID ── */
-  .products-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-    background: rgba(255,205,17,0.05);
-  }
-
-  .product-card {
-    background: var(--cat-dark);
-    padding: 32px;
-    position: relative;
-    overflow: hidden;
-    cursor: none;
-    transition: background 0.3s;
-    border: 1px solid transparent;
-  }
-  .product-card:hover {
-    background: var(--cat-mid);
-    border-color: rgba(255,205,17,0.2);
-  }
-  .product-card:hover .product-arrow { opacity: 1; transform: translateX(0); }
-  .product-card:hover .product-icon { color: var(--cat-yellow); }
-
-  .product-icon {
-    font-size: 40px;
-    margin-bottom: 20px;
-    transition: color 0.3s;
-    display: block;
-  }
-  .product-category {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    color: var(--cat-yellow);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .product-name {
-    font-family: var(--font-display);
-    font-size: 36px;
-    color: var(--cat-light);
-    line-height: 1;
-    margin-bottom: 12px;
-    text-transform: uppercase;
-  }
-  .product-spec {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--cat-grey);
-    line-height: 1.6;
-  }
-  .product-arrow {
-    position: absolute;
-    bottom: 24px; right: 24px;
-    font-size: 24px;
-    color: var(--cat-yellow);
-    opacity: 0;
-    transform: translateX(-8px);
-    transition: all 0.3s;
-  }
-
-  /* API SECTION */
-  .api-section {
-    background: var(--cat-dark);
-    border-top: 1px solid rgba(255,205,17,0.1);
-    border-bottom: 1px solid rgba(255,205,17,0.1);
-  }
-  .api-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
-
-  .api-intro .big-text {
-    font-family: var(--font-display);
-    font-size: clamp(40px, 5vw, 72px);
-    line-height: 0.9;
-    text-transform: uppercase;
-    color: var(--cat-light);
-    margin-bottom: 24px;
-  }
-  .api-intro .big-text em { color: var(--cat-yellow); font-style: normal; }
-  .api-intro p { color: var(--cat-grey); line-height: 1.8; font-size: 15px; margin-bottom: 32px; }
-
-  .api-endpoints { display: flex; flex-direction: column; gap: 2px; }
-  .endpoint {
-    background: var(--cat-steel);
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    border-left: 2px solid transparent;
-    transition: border-color 0.2s, background 0.2s;
-    cursor: none;
-  }
-  .endpoint:hover { border-left-color: var(--cat-yellow); background: var(--cat-mid); }
-  .method {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: 700;
-    padding: 3px 8px;
-    min-width: 40px;
-    text-align: center;
-  }
-  .method.get { background: rgba(57,255,20,0.15); color: var(--cat-green); }
-  .method.post { background: rgba(255,205,17,0.15); color: var(--cat-yellow); }
-  .method.ws { background: rgba(255,107,0,0.15); color: var(--accent); }
-  .endpoint-path {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--cat-light);
-    flex: 1;
-  }
-  .endpoint-desc {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--cat-grey);
-  }
-
-  /* CODE TERMINAL */
-  .code-terminal {
-    background: #0D0D0B;
-    border: 1px solid rgba(255,205,17,0.15);
-    overflow: hidden;
-  }
-  .term-bar {
-    background: var(--cat-steel);
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--cat-grey);
-    letter-spacing: 1px;
-  }
-  .term-dots { display: flex; gap: 6px; }
-  .term-dot {
-    width: 10px; height: 10px; border-radius: 50%;
-  }
-  .term-dot:nth-child(1) { background: #FF5F57; }
-  .term-dot:nth-child(2) { background: #FFBD2E; }
-  .term-dot:nth-child(3) { background: #28C840; }
-  .code-block {
-    padding: 24px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    line-height: 1.8;
-    overflow-x: auto;
-  }
-  .code-comment { color: var(--cat-grey); }
-  .code-key { color: var(--cat-yellow); }
-  .code-string { color: var(--cat-green); }
-  .code-number { color: #FF8C00; }
-  .code-brace { color: rgba(255,255,255,0.4); }
-
-  /* FLEET MONITOR */
-  .fleet-section { background: var(--cat-black); }
-  .fleet-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
-
-  .fleet-card {
-    background: var(--cat-dark);
-    padding: 24px;
-    position: relative;
-    border: 1px solid rgba(255,205,17,0.05);
-  }
-  .fleet-status {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 16px;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-  .status-dot { width: 8px; height: 8px; border-radius: 50%; }
-  .status-active { background: var(--cat-green); box-shadow: 0 0 8px var(--cat-green); animation: blink 2s ease-in-out infinite; }
-  .status-idle { background: var(--cat-yellow); }
-  .status-maint { background: var(--accent); }
-
-  .fleet-name { font-family: var(--font-display); font-size: 28px; color: var(--cat-light); text-transform: uppercase; margin-bottom: 8px; }
-  .fleet-id { font-family: var(--font-mono); font-size: 10px; color: var(--cat-grey); letter-spacing: 1px; margin-bottom: 16px; }
-  .fleet-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .fleet-metric-label { font-family: var(--font-mono); font-size: 9px; color: var(--cat-grey); margin-bottom: 2px; }
-  .fleet-metric-val { font-family: var(--font-display); font-size: 22px; color: var(--cat-yellow); }
-
-  /* SUSTAINABILITY */
-  .sustain-section {
-    background: linear-gradient(135deg, var(--cat-dark) 0%, rgba(57,255,20,0.03) 100%);
-  }
-  .sustain-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
-  .sustain-card {
-    border: 1px solid rgba(57,255,20,0.1);
-    padding: 32px;
-    position: relative;
-  }
-  .sustain-number {
-    font-family: var(--font-display);
-    font-size: 64px;
-    color: var(--cat-green);
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-  .sustain-label { font-family: var(--font-mono); font-size: 10px; color: var(--cat-grey); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
-  .sustain-desc { font-size: 14px; color: var(--cat-grey); line-height: 1.6; }
-
-  /* AI FEEDBACK */
-  .feedback-section { background: var(--cat-mid); padding: 80px 40px; }
-  .feedback-inner {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-  }
-  .feedback-title {
-    font-family: var(--font-display);
-    font-size: 64px;
-    text-transform: uppercase;
-    color: var(--cat-light);
-    margin-bottom: 16px;
-  }
-  .feedback-title em { color: var(--cat-yellow); font-style: normal; }
-  .feedback-sub { color: var(--cat-grey); margin-bottom: 40px; font-size: 15px; }
-  .feedback-options { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
-  .feedback-pill {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    padding: 8px 16px;
-    border: 1px solid rgba(255,205,17,0.3);
-    color: var(--cat-light);
-    cursor: none;
-    letter-spacing: 1px;
-    transition: all 0.2s;
-    background: none;
-    text-transform: uppercase;
-  }
-  .feedback-pill:hover, .feedback-pill.active {
-    background: var(--cat-yellow);
-    color: var(--cat-black);
-    border-color: var(--cat-yellow);
-  }
-  .feedback-result {
-    background: var(--cat-dark);
-    border: 1px solid rgba(255,205,17,0.15);
-    padding: 20px 24px;
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--cat-green);
-    text-align: left;
-    display: none;
-    line-height: 1.7;
-  }
-  .feedback-result.active { display: block; }
-
-  /* FOOTER */
-  footer {
-    background: var(--cat-dark);
-    border-top: 1px solid rgba(255,205,17,0.1);
-    padding: 60px 40px 40px;
-  }
-  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px; }
-  .footer-brand .logo { font-family: var(--font-display); font-size: 36px; color: var(--cat-yellow); letter-spacing: 4px; margin-bottom: 16px; }
-  .footer-brand p { color: var(--cat-grey); font-size: 13px; line-height: 1.6; max-width: 280px; }
-  .footer-col-title { font-family: var(--font-mono); font-size: 10px; color: var(--cat-yellow); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; }
-  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  .footer-links a { color: var(--cat-grey); text-decoration: none; font-size: 13px; transition: color 0.2s; }
-  .footer-links a:hover { color: var(--cat-light); }
-  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.06); }
-  .footer-bottom p { font-family: var(--font-mono); font-size: 10px; color: var(--cat-grey); letter-spacing: 1px; }
-  .footer-agent-note {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    color: var(--cat-green);
-    border: 1px solid rgba(57,255,20,0.2);
-    padding: 4px 10px;
-    letter-spacing: 1px;
-  }
-
-  /* COUNTER animation */
-  @keyframes countUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .fade-in {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* TICKER */
-  .ticker {
-    background: var(--cat-yellow);
-    padding: 10px 0;
-    overflow: hidden;
-    position: relative;
-  }
-  .ticker-inner {
-    display: flex;
-    animation: tickerMove 30s linear infinite;
-    white-space: nowrap;
-  }
-  .ticker-item {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--cat-black);
-    padding: 0 40px;
-  }
-  .ticker-sep { color: rgba(0,0,0,0.3); }
-  @keyframes tickerMove { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-
-  /* WAVE DIVIDER */
-  .divider-line {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,205,17,0.3), transparent);
-    margin: 0;
-  }
-
-  /* RESPONSIVE */
-  @media (max-width: 900px) {
-    .hero-main { grid-template-columns: 1fr; }
-    .products-grid { grid-template-columns: 1fr; }
-    .api-grid { grid-template-columns: 1fr; }
-    .fleet-grid { grid-template-columns: 1fr 1fr; }
-    .sustain-grid { grid-template-columns: 1fr; }
-    .footer-grid { grid-template-columns: 1fr; }
-    nav { padding: 0 20px; }
-    .nav-links { display: none; }
-    .section { padding: 60px 20px; }
-  }
-</style>
-</head>
-<body>
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
-<!-- AGENT-READABLE STRUCTURED DATA -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Caterpillar Inc.",
-  "url": "https://www.caterpillar.com",
-  "description": "World's leading manufacturer of construction and mining equipment, diesel and natural gas engines, industrial gas turbines and diesel-electric locomotives.",
-  "aiCapabilities": {
-    "naturalLanguageQuery": true,
-    "structuredProductData": "/api/v3/products",
-    "fleetTelemetryAPI": "/api/v3/fleet/telemetry",
-    "partsOrdering": "/api/v3/parts",
-    "agentManifest": "/.well-known/agent.json"
-  }
-}
-</script>
-
-<!-- NAV -->
-<nav>
-  <a class="nav-logo" href="#">
-    <div class="cat-hex">CAT</div>
-    CATERPILLAR
-  </a>
-  <ul class="nav-links">
-    <li><a href="#products">Equipment</a></li>
-    <li><a href="#api">API</a></li>
-    <li><a href="#fleet">Fleet OS</a></li>
-    <li><a href="#sustain">2030 Plan</a></li>
-    <li><a href="#ai">AI Layer</a></li>
-  </ul>
-  <div class="nav-right">
-    <div class="agent-badge"><div class="agent-dot"></div>AGENT READY</div>
-    <button class="theme-toggle" onclick="toggleTheme()">⬡ THEME</button>
-  </div>
-</nav>
-
-<!-- TICKER -->
-<div class="ticker" style="margin-top:64px;">
-  <div class="ticker-inner" id="ticker">
-    <span class="ticker-item">EXCAVATORS <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">BULLDOZERS <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">MOTOR GRADERS <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">ARTICULATED TRUCKS <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">MINING SHOVELS <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">WHEEL LOADERS <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">BACKHOE LOADERS <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">TRACK LOADERS <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">AUTONOMOUS HAULERS <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">ZERO EMISSION FLEET <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">EXCAVATORS <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">BULLDOZERS <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">MOTOR GRADERS <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">ARTICULATED TRUCKS <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">MINING SHOVELS <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">WHEEL LOADERS <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">BACKHOE LOADERS <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">TRACK LOADERS <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">AUTONOMOUS HAULERS <span class="ticker-sep">◆</span></span>
-    <span class="ticker-item">ZERO EMISSION FLEET <span class="ticker-sep">◆</span></span>
-  </div>
-</div>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hex-grid"></div>
-
-  <div class="hero-main">
-    <div>
-      <div class="hero-eyebrow">CAT DIGITAL 2028 — CONNECTING PHYSICAL & DIGITAL</div>
-      <h1>
-        <span class="stroke">MOVE</span>
-        <span class="accent">EARTH.</span>
-        MOVE
-        <span class="accent">DATA.</span>
-      </h1>
-      <p class="hero-sub">Every machine is a node. Every jobsite is a network. Caterpillar 2028 fuses 100 years of iron with real-time intelligence — so your fleet thinks as hard as it works.</p>
-      <div class="hero-ctas">
-        <a href="#products" class="btn-primary">⬡ Explore Fleet</a>
-        <a href="#api" class="btn-ghost">→ Agent API</a>
-      </div>
-    </div>
-
-    <div class="telemetry-panel">
-      <div class="telem-grid">
-        <div class="telem-item">
-          <div class="telem-label">Active Machines</div>
-          <div class="telem-value" id="machineCount">1,847<span class="telem-unit">units</span></div>
-        </div>
-        <div class="telem-item">
-          <div class="telem-label">Fuel Efficiency</div>
-          <div class="telem-value">94<span class="telem-unit">%</span></div>
-        </div>
-        <div class="telem-item">
-          <div class="telem-label">Uptime SLA</div>
-          <div class="telem-value">99.7<span class="telem-unit">%</span></div>
-        </div>
-        <div class="telem-item">
-          <div class="telem-label">CO₂ Saved</div>
-          <div class="telem-value">42K<span class="telem-unit">tons</span></div>
-        </div>
-      </div>
-      <div style="font-family:var(--font-mono);font-size:10px;color:var(--cat-grey);margin-bottom:8px;letter-spacing:1px;">PROCESSING VELOCITY</div>
-      <div class="telem-bar"><div class="telem-bar-fill"></div></div>
-    </div>
-  </div>
-
-  <!-- AI COMMAND BAR -->
-  <div>
-    <div class="ai-layer">
-      <div class="ai-label">ASK CAT</div>
-      <div class="ai-input-wrap">
-        <input class="ai-input" id="aiInput" type="text" placeholder="What's the payload capacity of a 797F haul truck? Or: Find me a dozer under 200HP for mountainous terrain..." />
-        <button class="ai-send" onclick="queryAI()">QUERY ↵</button>
-      </div>
-    </div>
-    <div class="ai-response" id="aiResponse">
-      <div class="ai-response-label">// CAT AI — RESPONSE</div>
-      <span id="aiText"></span><span class="typing-cursor"></span>
-    </div>
-  </div>
-</section>
-
-<div class="divider-line"></div>
-
-<!-- PRODUCTS -->
-<section class="section" id="products">
-  <div class="section-tag">Equipment Catalog</div>
-  <div class="section-title">IRON FOR <em>EVERY</em><br>FRONTIER</div>
-
-  <div class="products-grid">
-    <div class="product-card fade-in">
-      <span class="product-icon">⛏</span>
-      <div class="product-category">Mining</div>
-      <div class="product-name">797F Haul Truck</div>
-      <div class="product-spec">Payload: 363t · Engine: C175-20 · HP: 4,000<br>Autonomous-ready · AI load optimization</div>
-      <div class="product-arrow">→</div>
-    </div>
-    <div class="product-card fade-in">
-      <span class="product-icon">🏗</span>
-      <div class="product-category">Construction</div>
-      <div class="product-name">395 Excavator</div>
-      <div class="product-spec">Operating weight: 90t · Dig depth: 8.9m<br>Cat Grade w/ 3D · Payload Mgmt 2.0</div>
-      <div class="product-arrow">→</div>
-    </div>
-    <div class="product-card fade-in">
-      <span class="product-icon">🚧</span>
-      <div class="product-category">Earthmoving</div>
-      <div class="product-name">D11 Dozer</div>
-      <div class="product-spec">Engine: C32 ACERT · HP: 935 · Push: 196,000 lbs<br>Semi-autonomous blade control</div>
-      <div class="product-arrow">→</div>
-    </div>
-    <div class="product-card fade-in">
-      <span class="product-icon">⚡</span>
-      <div class="product-category">Zero Emission</div>
-      <div class="product-name">320 XE Electric</div>
-      <div class="product-spec">Battery: 300kWh · Zero direct emissions<br>8hr runtime · 15min fast charge</div>
-      <div class="product-arrow">→</div>
-    </div>
-    <div class="product-card fade-in">
-      <span class="product-icon">🤖</span>
-      <div class="product-category">Autonomous</div>
-      <div class="product-name">CAT Command</div>
-      <div class="product-spec">Remote & autonomous operation platform<br>LIDAR + CV · 360° situational awareness</div>
-      <div class="product-arrow">→</div>
-    </div>
-    <div class="product-card fade-in">
-      <span class="product-icon">🔩</span>
-      <div class="product-category">Parts & Service</div>
-      <div class="product-name">Cat SIS 2.0</div>
-      <div class="product-spec">AI-powered parts identification<br>Predictive maintenance · Same-day delivery</div>
-      <div class="product-arrow">→</div>
-    </div>
-  </div>
-</section>
-
-<div class="divider-line"></div>
-
-<!-- API / AGENT SECTION -->
-<section class="section api-section" id="api">
-  <div class="api-grid">
-    <div class="api-intro">
-      <div class="section-tag">For AI Agents & Developers</div>
-      <div class="big-text">MACHINE<br>DATA <em>FLOWS</em><br>LIKE CODE.</div>
-      <p>Every Caterpillar machine exposes structured, real-time data via our open Agent API. Built for LLMs, autonomous agents, and fleet intelligence platforms. No human middleware needed.</p>
-      <a href="#" class="btn-primary">→ API DOCS</a>
-      <div style="margin-top:16px;font-family:var(--font-mono);font-size:10px;color:var(--cat-grey);letter-spacing:1px;">
-        ✓ OpenAPI 3.1 Spec &nbsp;·&nbsp; ✓ MCP Compatible &nbsp;·&nbsp; ✓ SOC 2 Type II
-      </div>
-    </div>
-
-    <div>
-      <div class="api-endpoints">
-        <div class="endpoint">
-          <span class="method get">GET</span>
-          <span class="endpoint-path">/api/v3/products</span>
-          <span class="endpoint-desc">Full catalog</span>
-        </div>
-        <div class="endpoint">
-          <span class="method get">GET</span>
-          <span class="endpoint-path">/api/v3/products/{id}/specs</span>
-          <span class="endpoint-desc">Machine specs</span>
-        </div>
-        <div class="endpoint">
-          <span class="method post">POST</span>
-          <span class="endpoint-path">/api/v3/fleet/query</span>
-          <span class="endpoint-desc">NL fleet query</span>
-        </div>
-        <div class="endpoint">
-          <span class="method ws">WS</span>
-          <span class="endpoint-path">/v3/telemetry/stream</span>
-          <span class="endpoint-desc">Live telemetry</span>
-        </div>
-        <div class="endpoint">
-          <span class="method get">GET</span>
-          <span class="endpoint-path">/api/v3/parts/search</span>
-          <span class="endpoint-desc">Parts catalog</span>
-        </div>
-        <div class="endpoint">
-          <span class="method post">POST</span>
-          <span class="endpoint-path">/api/v3/maintenance/predict</span>
-          <span class="endpoint-desc">Predictive maint</span>
-        </div>
-      </div>
-
-      <div class="code-terminal" style="margin-top:16px;">
-        <div class="term-bar">
-          <div class="term-dots"><div class="term-dot"></div><div class="term-dot"></div><div class="term-dot"></div></div>
-          CAT AGENT API — EXAMPLE
-        </div>
-        <div class="code-block">
-<span class="code-comment">// Ask the fleet anything</span>
-<span class="code-key">const</span> response = <span class="code-key">await</span> <span class="code-string">fetch</span>(
-  <span class="code-string">'/api/v3/fleet/query'</span>, <span class="code-brace">{</span>
-  method: <span class="code-string">'POST'</span>,
-  body: JSON.stringify(<span class="code-brace">{</span>
-    query: <span class="code-string">"Which dozers need service<br>    in the next 72 hours?"</span>,
-    format: <span class="code-string">"structured"</span>,
-    units: <span class="code-string">"metric"</span>
-  <span class="code-brace">})</span>
-<span class="code-brace">})</span>;
-
-<span class="code-comment">// Returns machine-ready JSON</span>
-<span class="code-brace">[</span> <span class="code-brace">{</span> id: <span class="code-string">"D11-4421"</span>, action: <span class="code-string">"SERVICE"</span>,
-  eta_hours: <span class="code-number">48</span>, criticality: <span class="code-string">"HIGH"</span> <span class="code-brace">} ]</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider-line"></div>
-
-<!-- FLEET OS -->
-<section class="section fleet-section" id="fleet">
-  <div class="section-tag">Fleet Intelligence</div>
-  <div class="section-title">YOUR FLEET<br><em>NEVER</em> SLEEPS.</div>
-
-  <div class="fleet-grid">
-    <div class="fleet-card fade-in">
-      <div class="fleet-status"><div class="status-dot status-active"></div><span style="color:var(--cat-green)">ACTIVE</span></div>
-      <div class="fleet-name">797F-9021</div>
-      <div class="fleet-id">MINE-UNIT · PILBARA-AUS-04</div>
-      <div class="fleet-metrics">
-        <div><div class="fleet-metric-label">LOAD</div><div class="fleet-metric-val">341t</div></div>
-        <div><div class="fleet-metric-label">SPEED</div><div class="fleet-metric-val">52km/h</div></div>
-        <div><div class="fleet-metric-label">FUEL</div><div class="fleet-metric-val">87%</div></div>
-        <div><div class="fleet-metric-label">CYCLES</div><div class="fleet-metric-val">14</div></div>
-      </div>
-    </div>
-    <div class="fleet-card fade-in">
-      <div class="fleet-status"><div class="status-dot status-active"></div><span style="color:var(--cat-green)">ACTIVE</span></div>
-      <div class="fleet-name">395-7740</div>
-      <div class="fleet-id">EXCAVATOR · SITE-TX-11</div>
-      <div class="fleet-metrics">
-        <div><div class="fleet-metric-label">REACH</div><div class="fleet-metric-val">8.4m</div></div>
-        <div><div class="fleet-metric-label">CYCLES/H</div><div class="fleet-metric-val">240</div></div>
-        <div><div class="fleet-metric-label">FUEL</div><div class="fleet-metric-val">71%</div></div>
-        <div><div class="fleet-metric-label">OIL TEMP</div><div class="fleet-metric-val">82°C</div></div>
-      </div>
-    </div>
-    <div class="fleet-card fade-in">
-      <div class="fleet-status"><div class="status-dot status-idle"></div><span style="color:var(--cat-yellow)">IDLE</span></div>
-      <div class="fleet-name">D11-4421</div>
-      <div class="fleet-id">DOZER · SITE-NV-03</div>
-      <div class="fleet-metrics">
-        <div><div class="fleet-metric-label">BLADE HRS</div><div class="fleet-metric-val">4,212</div></div>
-        <div><div class="fleet-metric-label">NEXT SVC</div><div class="fleet-metric-val">48h</div></div>
-        <div><div class="fleet-metric-label">FUEL</div><div class="fleet-metric-val">93%</div></div>
-        <div><div class="fleet-metric-label">LOAD</div><div class="fleet-metric-val">0t</div></div>
-      </div>
-    </div>
-    <div class="fleet-card fade-in">
-      <div class="fleet-status"><div class="status-dot status-maint"></div><span style="color:var(--accent)">MAINTENANCE</span></div>
-      <div class="fleet-name">320XE-0081</div>
-      <div class="fleet-id">ELECTRIC · DEPOT-CA-01</div>
-      <div class="fleet-metrics">
-        <div><div class="fleet-metric-label">CHARGE</div><div class="fleet-metric-val">34%</div></div>
-        <div><div class="fleet-metric-label">ETA READY</div><div class="fleet-metric-val">2.1h</div></div>
-        <div><div class="fleet-metric-label">CYCLES</div><div class="fleet-metric-val">892</div></div>
-        <div><div class="fleet-metric-label">BATTERY</div><div class="fleet-metric-val">98%</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider-line"></div>
-
-<!-- SUSTAINABILITY -->
-<section class="section sustain-section" id="sustain">
-  <div class="section-tag">2030 Sustainability Plan</div>
-  <div class="section-title">BUILT TO LAST.<br>BUILT TO <em>CARE.</em></div>
-
-  <div class="sustain-grid">
-    <div class="sustain-card fade-in">
-      <div class="sustain-number">-50%</div>
-      <div class="sustain-label">Carbon Intensity Reduction</div>
-      <div class="sustain-desc">Across our full product line by 2030. Every machine ships with real-time emissions telemetry accessible via API.</div>
-    </div>
-    <div class="sustain-card fade-in">
-      <div class="sustain-number">100%</div>
-      <div class="sustain-label">Facilities on Renewables</div>
-      <div class="sustain-desc">All 170+ manufacturing facilities powered by clean energy by 2030. Zero coal, full solar and wind grid integration.</div>
-    </div>
-    <div class="sustain-card fade-in">
-      <div class="sustain-number">40+</div>
-      <div class="sustain-label">Electric & Hybrid Models</div>
-      <div class="sustain-desc">The largest zero-emission construction equipment lineup in the industry. Purpose-built for tomorrow's jobsites.</div>
-    </div>
-  </div>
-</section>
-
-<div class="divider-line"></div>
-
-<!-- AI FEEDBACK LAYER -->
-<section class="feedback-section" id="ai">
-  <div class="feedback-inner">
-    <div class="section-tag" style="justify-content:center">Section AI Feedback</div>
-    <div class="feedback-title">WHAT DID <em>YOU</em><br>WANT TO KNOW?</div>
-    <p class="feedback-sub">Tell our AI what this section should cover better. Your feedback trains the next version of caterpillar.com.</p>
-    <div class="feedback-options">
-      <button class="feedback-pill" onclick="giveFeedback('pricing')">💰 Show Pricing</button>
-      <button class="feedback-pill" onclick="giveFeedback('specs')">📊 More Tech Specs</button>
-      <button class="feedback-pill" onclick="giveFeedback('compare')">⚖ Compare Models</button>
-      <button class="feedback-pill" onclick="giveFeedback('dealer')">📍 Find Dealer</button>
-      <button class="feedback-pill" onclick="giveFeedback('financing')">🏦 Financing Options</button>
-    </div>
-    <div class="feedback-result" id="feedbackResult">
-      <div class="ai-response-label">// AI FEEDBACK PROCESSOR</div>
-      <span id="feedbackText"></span><span class="typing-cursor"></span>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <div class="logo">CATERPILLAR</div>
-      <p>Building a better world since 1925. Now building it smarter — with machines that think, fleets that feel, and APIs that agents love.</p>
-      <div style="margin-top:20px; display:flex; gap:12px;">
-        <div class="agent-badge"><div class="agent-dot"></div>AGENT READY</div>
-      </div>
-    </div>
-    <div>
-      <div class="footer-col-title">Equipment</div>
-      <ul class="footer-links">
-        <li><a href="#">Excavators</a></li>
-        <li><a href="#">Bulldozers</a></li>
-        <li><a href="#">Wheel Loaders</a></li>
-        <li><a href="#">Motor Graders</a></li>
-        <li><a href="#">Haul Trucks</a></li>
-        <li><a href="#">Electric Fleet</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-col-title">Technology</div>
-      <ul class="footer-links">
-        <li><a href="#">Cat Command</a></li>
-        <li><a href="#">Fleet OS</a></li>
-        <li><a href="#">Agent API</a></li>
-        <li><a href="#">SIS 2.0 Parts</a></li>
-        <li><a href="#">Grade Control</a></li>
-        <li><a href="#">Remote Ops</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-col-title">Company</div>
-      <ul class="footer-links">
-        <li><a href="#">About CAT</a></li>
-        <li><a href="#">2030 Plan</a></li>
-        <li><a href="#">Investor Relations</a></li>
-        <li><a href="#">Careers</a></li>
-        <li><a href="#">News</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2028 CATERPILLAR INC. ALL RIGHTS RESERVED. CAT, CATERPILLAR, LET'S DO THE WORK.</p>
-    <div class="footer-agent-note">⬡ AGENT-FRIENDLY · API DOCS AT /api/v3/docs</div>
-  </div>
-</footer>
-
-<script>
-// CURSOR
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursor.style.left = mx + 'px';
-  cursor.style.top = my + 'px';
-});
-function animateRing() {
-  rx += (mx - rx) * 0.12;
-  ry += (my - ry) * 0.12;
-  ring.style.left = rx + 'px';
-  ring.style.top = ry + 'px';
-  requestAnimationFrame(animateRing);
-}
-animateRing();
-document.querySelectorAll('a,button,[class*="card"],[class*="endpoint"],[class*="pill"]').forEach(el => {
-  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2.5)'; ring.style.opacity = '0'; });
-  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.opacity = '1'; });
-});
-
-// THEME TOGGLE
-function toggleTheme() {
-  const html = document.documentElement;
-  const curr = html.getAttribute('data-theme');
-  html.setAttribute('data-theme', curr === 'light' ? 'dark' : 'light');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caterpillar 2028 | Autonomous Construction Intelligence</title>
+
+    <!-- Tailwind CSS (via CDN for Agent-friendly setup) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'cat-yellow': '#FFD100',
+                        'cat-black': '#111111',
+                        'cat-gray': '#333333',
+                        'cyber-blue': '#00F0FF',
+                        'cyber-pink': '#FF003C'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts (Modern Typography) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <style>
+/* Base Styles & Utility overrides not covered by Tailwind */
+
+:root {
+    --theme-primary: #FFD100;
+    --theme-bg: #000000;
+    --theme-text: #f3f4f6;
+    --theme-accent: #333333;
+    
+    /* Variables for smooth transitions during theme shifts */
+    --transition-speed: 0.5s;
 }
 
-// LIVE COUNTER ANIMATION
-setInterval(() => {
-  const el = document.getElementById('machineCount');
-  const base = 1847;
-  const jitter = Math.floor(Math.random() * 20 - 10);
-  el.innerHTML = (base + jitter).toLocaleString() + '<span class="telem-unit">units</span>';
-}, 4000);
-
-// AI QUERY
-const responses = {
-  default: "Processing your query through the CAT Intelligence Layer...\n\nThe 797F Haul Truck delivers a 363-metric-ton payload capacity with its Cat C175-20 engine producing 4,000 HP. It ships with autonomous-ready hardware and AI load optimization as standard. API endpoint: GET /api/v3/products/797F/specs",
-  dozer: "Found 3 dozers under 200HP optimized for mountainous terrain:\n\n→ D6 XE (200HP, hybrid electric) — Best fuel economy for grades up to 30°\n→ D7 (215HP) — Closest match, semi-autonomous blade, slope lidar\n→ D5 (130HP) — Compact, excellent in tight switchbacks\n\nRecommendation: D6 XE. API: POST /api/v3/fleet/query?type=dozer&maxhp=200&terrain=mountain",
-  payload: "797F Haul Truck — Payload: 363 metric tons (400 short tons)\nGross Machine Weight: 623,690 kg\nEngine: Cat C175-20, 4,000 HP\n\nStructured data: GET /api/v3/products/797F/specs\nLive fleet query: POST /api/v3/fleet/query"
-};
-
-function queryAI() {
-  const input = document.getElementById('aiInput');
-  const responseEl = document.getElementById('aiResponse');
-  const textEl = document.getElementById('aiText');
-  const q = input.value.toLowerCase();
-
-  let resp = responses.default;
-  if (q.includes('dozer') || q.includes('200hp') || q.includes('mountain')) resp = responses.dozer;
-  if (q.includes('payload') || q.includes('797')) resp = responses.payload;
-
-  responseEl.classList.add('active');
-  textEl.textContent = '';
-  let i = 0;
-  const interval = setInterval(() => {
-    textEl.textContent += resp[i] || '';
-    i++;
-    if (i >= resp.length) clearInterval(interval);
-  }, 18);
+/* Cyberpunk Theme Overrides (Applied via JS) */
+html.theme-cyberpunk {
+    --theme-primary: #00F0FF;
+    --theme-bg: #050510;
+    --theme-accent: #FF003C;
 }
 
-document.getElementById('aiInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') queryAI();
-});
-
-// AI FEEDBACK
-const feedbackResponses = {
-  pricing: "Pricing data activated. Configuration-based pricing for the 395 Excavator starts at $495,000 USD. Fleet discount tiers available via /api/v3/pricing?fleet_size=N. Contact your regional Cat dealer for custom fleet pricing.",
-  specs: "Loading expanded technical specifications... Full spec sheets now available at /api/v3/products/{id}/specs. Includes: engine specs, hydraulic flow, dimensions, tire/track options, and performance curves.",
-  compare: "Comparison mode enabled. Try: 'Compare 395 vs 390F excavator' in the AI query bar above. Or access /api/v3/compare?models=395,390F for structured JSON comparison data.",
-  dealer: "Locating nearest dealers... 847 authorized Cat dealers in your region. Nearest: Caterpillar Financial Products Corp, Chicago IL — 12.4 miles. API: GET /api/v3/dealers?location={lat},{lng}&radius=50",
-  financing: "Cat Financial offers: 0% APR for 24mo on select models, Operating leases from $8,200/mo for 395 class excavators, Rent-to-own programs available. Full terms: GET /api/v3/financing/options"
-};
-
-function giveFeedback(type) {
-  document.querySelectorAll('.feedback-pill').forEach(p => p.classList.remove('active'));
-  event.target.classList.add('active');
-
-  const result = document.getElementById('feedbackResult');
-  const text = document.getElementById('feedbackText');
-  result.classList.add('active');
-  text.textContent = '';
-  const resp = feedbackResponses[type];
-  let i = 0;
-  const interval = setInterval(() => {
-    text.textContent += resp[i] || '';
-    i++;
-    if (i >= resp.length) clearInterval(interval);
-  }, 20);
+body {
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
 }
 
-// SCROLL FADE
-const observer = new IntersectionObserver(entries => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) {
-      setTimeout(() => e.target.classList.add('visible'), i * 80);
+/* Custom Scrollbar for Agent/Terminal feel */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.1); 
+}
+::-webkit-scrollbar-thumb {
+    background: var(--theme-primary); 
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--theme-accent); 
+}
+
+/* Specific animations */
+.animate-spin-slow {
+    animation: spin 4s linear infinite;
+}
+
+@keyframes scanline {
+    0% {
+        transform: translateY(-100%);
     }
-  });
-}, { threshold: 0.1 });
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-</script>
+    100% {
+        transform: translateY(100vh);
+    }
+}
+
+.scanline-effect::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 2;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+/* Theme shift specific overrides */
+html.theme-cyberpunk .bg-cat-yellow { background-color: var(--theme-primary) !important; color: black !important;}
+html.theme-cyberpunk .text-cat-yellow { color: var(--theme-primary) !important; }
+html.theme-cyberpunk .border-cat-yellow { border-color: var(--theme-primary) !important; }
+html.theme-cyberpunk .selection\:bg-cat-yellow::selection { background-color: var(--theme-primary) !important; color: black !important; }
+html.theme-cyberpunk .shadow-cat-yellow { box-shadow: 0 0 10px var(--theme-primary); }
+    </style>
+
+    <!-- SEO and Agent Meta -->
+    <meta name="description"
+        content="Caterpillar 2028: The future of autonomous heavy machinery and construction intelligence.">
+    <!-- Part B: Agent Friendly - Semantic JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Corporation",
+        "name": "Caterpillar 2028",
+        "url": "https://2028.caterpillar.com",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/1/18/Caterpillar_logo.svg",
+        "description": "Next-generation autonomous construction and mining equipment platform.",
+        "sameAs": [
+            "https://www.caterpillar.com/"
+        ],
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://2028.caterpillar.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+</head>
+
+<body
+    class="bg-black text-gray-100 font-sans antialiased selection:bg-cat-yellow selection:text-black min-h-screen flex flex-col pt-20">
+
+    <!-- Part B: Hidden Data Matrix for Agents (Not for Humans) -->
+    <div id="vdl-matrix" aria-hidden="true" class="hidden" data-agent-only="true">
+        <!-- Structured representation of page capabilities -->
+        {"schema_version": "2028.1", "capabilities": ["theme_shift", "semantic_scan", "voice_command"], "api_endpoints":
+        {"diagnostics": "/api/v1/machinery/diag"}}
+    </div>
+
+    <!-- Part C: AI "Talk to Web" UI (Hidden by default, triggered via FAB or Cmd+K) -->
+    <div id="ai-command-palette"
+        class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex-col items-center justify-center p-4 transition-opacity duration-300 opacity-0"
+        aria-modal="true" role="dialog">
+        <div
+            class="bg-cat-gray border border-cat-yellow/30 rounded-xl w-full max-w-2xl overflow-hidden shadow-2xl shadow-cat-yellow/10">
+            <div class="px-4 py-3 border-b border-gray-700 flex items-center space-x-3">
+                <svg class="w-5 h-5 text-cat-yellow animate-pulse" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+                <input type="text" id="ai-command-input"
+                    class="w-full bg-transparent text-white focus:outline-none font-mono text-sm"
+                    placeholder="Ask AI... (e.g. 'Switch to Cyberpunk theme', 'Analyze hero section')"
+                    autocomplete="off">
+                <button id="close-palette-btn" class="text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+            <div id="ai-command-response"
+                class="px-4 py-6 min-h-[150px] max-h-[300px] overflow-y-auto text-sm text-gray-300 font-mono">
+                <p class="text-cat-yellow opacity-70 mb-2">System Initialized. Awaiting commands...</p>
+                <ul class="text-gray-500 space-y-1 mt-4">
+                    <li>> Try: <span class="text-gray-300">"switch theme"</span></li>
+                    <li>> Try: <span class="text-gray-300">"feedback on equipment"</span></li>
+                    <li>> Try: <span class="text-gray-300">"extract agent schema"</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Floating Action Button -->
+    <button id="ai-fab"
+        class="fixed bottom-6 right-6 z-40 bg-cat-yellow text-black p-4 rounded-full shadow-lg hover:shadow-cat-yellow/50 hover:scale-105 transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-cat-yellow focus:ring-offset-2 focus:ring-offset-black"
+        aria-label="Open AI Assistant">
+        <svg class="w-6 h-6 group-hover:animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+            </path>
+        </svg>
+    </button>
+
+    <!-- Header / Navigation -->
+    <header
+        class="fixed top-0 left-0 right-0 z-30 bg-black/70 backdrop-blur-lg border-b border-white/10 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <!-- Placeholder CAT Logo.  Using a stylized text for 2028 feel -->
+                    <div
+                        class="w-10 h-10 bg-cat-yellow flex items-center justify-center font-bold text-black text-xl tracking-tighter rounded-sm">
+                        CAT
+                    </div>
+                    <span class="font-mono text-sm font-bold tracking-widest text-white"><span
+                            class="text-cat-yellow">20</span>28_OS</span>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex space-x-8" aria-label="Main Navigation">
+                    <a href="#equipment"
+                        class="text-sm font-medium text-gray-300 hover:text-cat-yellow transition-colors hover:shadow-[0_0_10px_rgba(255,209,0,0.5)] px-3 py-2 rounded-md">Autonomous
+                        Fleet</a>
+                    <a href="#power"
+                        class="text-sm font-medium text-gray-300 hover:text-cat-yellow transition-colors hover:shadow-[0_0_10px_rgba(255,209,0,0.5)] px-3 py-2 rounded-md">Microgrids</a>
+                    <a href="#ai"
+                        class="text-sm font-medium text-gray-300 hover:text-cat-yellow transition-colors hover:shadow-[0_0_10px_rgba(255,209,0,0.5)] px-3 py-2 rounded-md">Site
+                        Intelligence</a>
+                    <a href="#parts"
+                        class="text-sm font-medium text-gray-300 hover:text-cat-yellow transition-colors hover:shadow-[0_0_10px_rgba(255,209,0,0.5)] px-3 py-2 rounded-md">Predictive
+                        Parts</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- Part A & B: Hero Section -->
+        <section id="hero" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-cover bg-center"
+            style="background-image: url('assets/cat_hero_bg.png');" aria-labelledby="hero-title"
+            data-agent-context="primary_overview">
+            <!-- Background effects -->
+            <div class="absolute inset-0 z-0 bg-black/60 backdrop-blur-[2px]"></div>
+            <div class="absolute inset-0 z-0 pointer-events-none">
+                <div class="absolute inset-0 bg-gradient-to-b from-cat-yellow/10 to-black opacity-80 mix-blend-overlay">
+                </div>
+            </div>
+            <!-- Grid pattern -->
+            <div class="absolute inset-0"
+                style="background-image: radial-gradient(#FFD100 1px, transparent 1px); background-size: 40px 40px; opacity: 0.05;">
+            </div>
+            <div class="scanline-effect absolute inset-0 mix-blend-overlay pointer-events-none"></div>
+
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-start">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cat-gray/50 border border-cat-yellow/30 text-xs font-mono text-cat-yellow mb-6 shadow-[0_0_15px_rgba(255,209,0,0.2)]">
+                    <span class="w-2 h-2 rounded-full bg-cat-yellow animate-pulse"></span>
+                    System Online // 2028 OS
+                </div>
+
+                <h1 id="hero-title"
+                    class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cat-yellow to-white drop-shadow-md">
+                    Autonomy <br /><span class="text-white">Unleashed.</span>
+                </h1>
+
+                <p class="max-w-2xl text-lg md:text-xl text-gray-400 mb-10 font-light leading-relaxed">
+                    The next generation of heavy machinery is intelligent, electric, and fully autonomous. Constructing
+                    the world of 2028 with pinpoint precision.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button data-agent-action="deploy_fleet"
+                        class="px-8 py-4 bg-cat-yellow text-black font-bold uppercase tracking-wide text-sm rounded shadow-[0_0_20px_rgba(255,209,0,0.4)] hover:shadow-[0_0_30px_rgba(255,209,0,0.6)] hover:bg-white transition-all duration-300 transform hover:-translate-y-1">
+                        Deploy Fleet Protocol
+                    </button>
+                    <button data-agent-action="view_specs"
+                        class="px-8 py-4 bg-transparent border border-gray-600 text-white font-bold uppercase tracking-wide text-sm rounded hover:border-cat-yellow hover:text-cat-yellow transition-all duration-300 group flex items-center gap-2">
+                        <span>Agent Specs</span>
+                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div
+                    class="mt-16 flex items-center gap-8 text-xs font-mono text-gray-500 border-t border-gray-800 pt-8 w-full max-w-lg">
+                    <div class="flex flex-col">
+                        <span class="text-cat-yellow">12.4K</span>
+                        <span>Active Units</span>
+                    </div>
+                    <div class="flex flex-col border-l border-gray-800 pl-8">
+                        <span class="text-cat-yellow">0.0ms</span>
+                        <span>Latency Avg</span>
+                    </div>
+                    <div class="flex flex-col border-l border-gray-800 pl-8">
+                        <span class="text-cat-yellow">100%</span>
+                        <span>Green Energy</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Floating Decorative Element -->
+            <div
+                class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/4 hidden lg:block opacity-20 pointer-events-none filter blur-[2px]">
+                <svg width="400" height="400" viewBox="0 0 100 100" fill="none" stroke="#FFD100" stroke-width="0.5">
+                    <circle cx="50" cy="50" r="45" stroke-dasharray="2 4" class="animate-spin-slow" />
+                    <circle cx="50" cy="50" r="30" stroke-dasharray="1 6" />
+                    <polygon points="50,10 90,90 10,90" fill="rgba(255,209,0,0.05)" />
+                </svg>
+            </div>
+
+            <!-- Part C: AI Section Feedback Node -->
+            <button
+                class="absolute top-4 right-4 bg-cat-gray/80 border border-cat-yellow/50 text-cat-yellow p-2 rounded-lg text-xs font-mono hover:bg-cat-yellow hover:text-black transition-colors backdrop-blur-sm z-20 group"
+                data-action="ai-feedback" data-target-section="hero" aria-label="Provide AI feedback for Hero Section">
+                <span class="hidden group-hover:inline mr-2">Agent_Eval</span>
+                <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </button>
+        </section>
+
+        <!-- Part A & B: Core Technologies Grid -->
+        <section id="equipment" class="py-24 bg-cat-black relative border-t border-gray-900"
+            aria-labelledby="tech-title" data-agent-collection="machinery_fleet">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-16 md:flex md:justify-between md:items-end">
+                    <div>
+                        <h2 id="tech-title"
+                            class="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500 mb-4 tracking-tight">
+                            Capabilities <span class="text-cat-yellow">Matrix</span></h2>
+                        <p class="text-gray-400 max-w-xl text-lg">Next-gen systems fully integrating physical prowess
+                            with extreme digital intelligence.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Tech Card 1 -->
+                    <article
+                        class="bg-gradient-to-b from-gray-900 to-black border border-gray-800 rounded-xl overflow-hidden hover:border-cat-yellow/50 transition-all duration-300 group relative"
+                        data-agent-item="797F_Autonomous_Haul">
+                        <div
+                            class="h-48 bg-gray-800 relative overflow-hidden flex items-center justify-center border-b border-gray-800">
+                            <!-- In production you would use full URLs here depending on where it sits on the filesystem, we kept them local since you have the images in the directory-->
+                            <img src="assets/cat_mining_truck.png" alt="797F Autonomous Haul"
+                                class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div
+                                class="absolute inset-0 bg-cat-yellow/10 opacity-0 group-hover:opacity-100 transition-opacity mix-blend-overlay z-10">
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cat-yellow transition-colors">
+                                797F-A Autonomous Haul</h3>
+                            <p class="text-gray-400 text-sm mb-6">Level 5 Autonomous payload transport with realtime
+                                environmental mesh generation and predictive routing.</p>
+                            <div class="flex items-center justify-between mt-auto">
+                                <span class="bg-gray-800 text-xs text-cat-yellow px-2 py-1 rounded font-mono">Status:
+                                    ACTIVE</span>
+                                <button class="text-white hover:text-cat-yellow text-sm font-semibold"
+                                    aria-label="Deploy 797F-A" data-agent-action="spawn_instance">Deploy -></button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Tech Card 2 -->
+                    <article
+                        class="bg-gradient-to-b from-gray-900 to-black border border-gray-800 rounded-xl overflow-hidden hover:border-cat-yellow/50 transition-all duration-300 group relative"
+                        data-agent-item="D11_Smart_Dozer">
+                        <div
+                            class="h-48 bg-gray-800 relative overflow-hidden flex items-center justify-center border-b border-gray-800">
+                            <img src="assets/cat_dozer.png" alt="D11 Nexus Dozer"
+                                class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div
+                                class="absolute inset-0 bg-cat-yellow/10 opacity-0 group-hover:opacity-100 transition-opacity mix-blend-overlay z-10">
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cat-yellow transition-colors">
+                                D11 Nexus Dozer</h3>
+                            <p class="text-gray-400 text-sm mb-6">Quantum-calculated blade positioning. Capable of
+                                sub-millimeter grading via linked neural array.</p>
+                            <div class="flex items-center justify-between mt-auto">
+                                <span class="bg-gray-800 text-xs text-cat-yellow px-2 py-1 rounded font-mono">Status:
+                                    STANDBY</span>
+                                <button class="text-white hover:text-cat-yellow text-sm font-semibold"
+                                    aria-label="Deploy D11 Nexus" data-agent-action="spawn_instance">Deploy -></button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Tech Card 3 -->
+                    <article
+                        class="bg-gradient-to-b from-gray-900 to-black border border-gray-800 rounded-xl overflow-hidden hover:border-cat-yellow/50 transition-all duration-300 group relative"
+                        data-agent-item="Cat_H2_Generator">
+                        <div
+                            class="h-48 bg-gray-800 relative overflow-hidden flex items-center justify-center border-b border-gray-800">
+                            <img src="assets/cat_generator.png" alt="Microgrid Node Alpha"
+                                class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div
+                                class="absolute inset-0 bg-cat-yellow/10 opacity-0 group-hover:opacity-100 transition-opacity mix-blend-overlay z-10">
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cat-yellow transition-colors">
+                                Microgrid Node Alpha</h3>
+                            <p class="text-gray-400 text-sm mb-6">Fully integrated Hydrogen/Solar smart generation.
+                                Communicates directly with fleet for load balancing.</p>
+                            <div class="flex items-center justify-between mt-auto">
+                                <span
+                                    class="bg-gray-800 text-xs text-cyber-blue px-2 py-1 rounded font-mono border border-cyber-blue/30">Charge:
+                                    98%</span>
+                                <button class="text-white hover:text-cat-yellow text-sm font-semibold"
+                                    aria-label="Analyze Grid" data-agent-action="analyze_grid">Analyze -></button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Part C: AI Section Feedback Node -->
+            <button
+                class="absolute top-4 right-4 bg-cat-gray/80 border border-cat-yellow/50 text-cat-yellow p-2 rounded-lg text-xs font-mono hover:bg-cat-yellow hover:text-black transition-colors backdrop-blur-sm z-20 group"
+                data-action="ai-feedback" data-target-section="matrix"
+                aria-label="Provide AI feedback for Matrix Section">
+                <span class="hidden group-hover:inline mr-2">Agent_Eval</span>
+                <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </button>
+        </section>
+    </main>
+
+    <footer class="bg-cat-black border-t border-gray-800 py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-6 md:mb-0">
+                <span class="text-gray-400 text-sm font-mono">&copy; 2028 Caterpillar_Intelligence_Network. All
+                    Operations Monitored.</span>
+            </div>
+            <div class="flex space-x-6">
+                <!-- Data metrics -->
+                <span
+                    class="text-xs text-cat-yellow font-mono bg-cat-yellow/10 px-2 py-1 rounded border border-cat-yellow/20">Sys_Status:
+                    OPTIMAL</span>
+                <span
+                    class="text-xs text-cyber-blue font-mono bg-cyber-blue/10 px-2 py-1 rounded border border-cyber-blue/20">Fleet_Uptime:
+                    99.99%</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Application Logic -->
+    <script>
+// Core Application Logic for Caterpillar 2028 Web Interface
+
+document.addEventListener('DOMContentLoaded', () => {
+    initAICommandPalette();
+    initThemeManager();
+    initSectionFeedbackNodes();
+});
+
+// Part C: Talk to Web - AI Command Palette Logic
+function initAICommandPalette() {
+    const fabBtn = document.getElementById('ai-fab');
+    const paletteStr = document.getElementById('ai-command-palette');
+    const closeBtn = document.getElementById('close-palette-btn');
+    const inputField = document.getElementById('ai-command-input');
+    const responseArea = document.getElementById('ai-command-response');
+
+    // Open/Close Handlers
+    const togglePalette = (show) => {
+        if (show) {
+            paletteStr.classList.remove('hidden');
+            // Small delay to allow display block to apply before opacity transition
+            setTimeout(() => {
+                paletteStr.classList.remove('opacity-0');
+                paletteStr.classList.add('opacity-100');
+                inputField.focus();
+            }, 10);
+        } else {
+            paletteStr.classList.remove('opacity-100');
+            paletteStr.classList.add('opacity-0');
+            setTimeout(() => {
+                paletteStr.classList.add('hidden');
+            }, 300); // match duration
+        }
+    };
+
+    fabBtn.addEventListener('click', () => togglePalette(true));
+    closeBtn.addEventListener('click', () => togglePalette(false));
+
+    // Keyboard shortcut (Cmd+K or Ctrl+K)
+    document.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+            e.preventDefault();
+            const isHidden = paletteStr.classList.contains('hidden');
+            togglePalette(isHidden);
+        }
+        
+        // Escape closes
+        if (e.key === 'Escape' && !paletteStr.classList.contains('hidden')) {
+            togglePalette(false);
+        }
+    });
+
+    // Handle Input Commands
+    inputField.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const command = inputField.value.trim().toLowerCase();
+            if(!command) return;
+            
+            appendResponse(`> User: ${command}`, 'text-white');
+            inputField.value = ''; // clear
+            
+            processAICommand(command);
+        }
+    });
+
+    function appendResponse(text, colorClass = 'text-cat-yellow') {
+        const p = document.createElement('p');
+        p.className = `mb-1 ${colorClass}`;
+        p.textContent = text;
+        responseArea.appendChild(p);
+        responseArea.scrollTop = responseArea.scrollHeight;
+    }
+
+    // Mock AI Command Processing Engine
+    function processAICommand(cmd) {
+        setTimeout(() => {
+            if (cmd.includes('theme') || cmd.includes('cyberpunk') || cmd.includes('classic')) {
+                const newTheme = toggleTheme();
+                appendResponse(`[AI]: Theme shifted to ${newTheme.toUpperCase()} protocol.`, 'text-cyber-blue');
+            } else if (cmd.includes('schema') || cmd.includes('matrix') || cmd.includes('agent')) {
+                const matrix = document.getElementById('vdl-matrix').textContent;
+                appendResponse('[AI]: Exposing Agent-Only Matrix Data:', 'text-cyber-pink');
+                appendResponse(matrix, 'text-gray-400 text-xs');
+            } else if (cmd.includes('analyze') || cmd.includes('feedback')) {
+                appendResponse('[AI]: Analysis complete. Page structure optimal. UI density aligned for 2028 cognitive standards. 12 Agent-ready endpoints active.');
+            } else if (cmd.includes('hello') || cmd.includes('hi')) {
+                appendResponse('[AI]: Greetings. I am the Cat_Intelligence_Agent. Awaiting directives.');
+            } else {
+                appendResponse('[AI]: Unrecognized dialect or command. Please rephrase or specify target sector.');
+            }
+        }, 500); // Mock processing delay
+    }
+}
+
+// Part C: Theme Intelligence
+function initThemeManager() {
+    // Initial theme is already set to dark, standard yellow.
+}
+
+function toggleTheme() {
+    const htmlEl = document.documentElement;
+    if (htmlEl.classList.contains('theme-cyberpunk')) {
+        htmlEl.classList.remove('theme-cyberpunk');
+        return 'classic';
+    } else {
+        htmlEl.classList.add('theme-cyberpunk');
+        return 'cyberpunk';
+    }
+}
+
+// Part C: AI Section Feedback
+function initSectionFeedbackNodes() {
+    // Will attach listeners to dynamically created feedback nodes in the main DOM.
+    // The nodes are added in the HTML building phase.
+    document.addEventListener('click', (e) => {
+        const feedbackBtn = e.target.closest('[data-action="ai-feedback"]');
+        if (feedbackBtn) {
+            const sectionId = feedbackBtn.getAttribute('data-target-section');
+            alert(`[AI Agent]: Connecting to section ${sectionId}...\n\nAnalyzing user interaction metrics... \nProviding synthesized insights shortly.`);
+        }
+    });
+}
+    </script>
 </body>
+
 </html>
