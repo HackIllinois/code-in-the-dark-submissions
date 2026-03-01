@@ -1,12 +1,137 @@
 <!--Name: Ashraful Islam Tutul--><html>
   <head>
-    <title>Code in the Dark</title>
+    <title>Caterpillar Home Clone</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap');
+      
+      body {
+        font-family: 'Inter', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
 
-    <style></style>
+      .cat-yellow { background-color: #FFCD11; }
+      .cat-yellow-text { color: #FFCD11; }
+      .cat-yellow-border { border-color: #FFCD11; }
+      
+      .logo-italic {
+        font-style: italic;
+        letter-spacing: -0.05em;
+      }
+    </style>
   </head>
 
-  <body>
+  <body class="bg-white text-black">
+    <header class="flex items-center justify-between px-6 py-4 lg:px-24">
+      <div class="flex items-center">
+        <div class="flex items-baseline">
+          <span class="text-4xl font-black uppercase logo-italic">Caterpillar</span>
+          <span class="text-[10px] font-bold align-top ml-0.5">®</span>
+        </div>
+      </div>
 
-    <script></script>
+      <div class="flex flex-1 max-w-2xl mx-8">
+        <div class="relative w-full flex">
+          <input 
+            type="text" 
+            placeholder="Search" 
+            class="w-full border border-gray-300 px-4 py-2 focus:outline-none focus:border-yellow-500"
+          >
+          <button class="cat-yellow p-2 px-4 border cat-yellow-border hover:bg-[#e6b80f] transition-colors cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="hidden md:block">
+        <a href="#" class="text-sm font-bold hover:underline">Contact Us</a>
+      </div>
+    </header>
+
+    <nav class="border-t border-gray-100 px-6 lg:px-24">
+      <div class="flex items-center justify-between py-3">
+        <ul class="flex space-x-8 text-[13px] font-bold uppercase tracking-wide">
+          <li class="flex items-center cursor-pointer hover:text-gray-600 group">
+            Company 
+            <svg class="ml-1 group-hover:translate-y-0.5 transition-transform" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+          </li>
+          <li class="flex items-center cursor-pointer hover:text-gray-600 group">
+            Brands 
+            <svg class="ml-1 group-hover:translate-y-0.5 transition-transform" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+          </li>
+          <li class="flex items-center cursor-pointer hover:text-gray-600 group">
+            Investors 
+            <svg class="ml-1 group-hover:translate-y-0.5 transition-transform" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+          </li>
+          <li class="flex items-center cursor-pointer hover:text-gray-600 group">
+            News 
+            <svg class="ml-1 group-hover:translate-y-0.5 transition-transform" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+          </li>
+          <li class="flex items-center cursor-pointer hover:text-gray-600 group">
+            Careers 
+            <svg class="ml-1 group-hover:translate-y-0.5 transition-transform" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+          </li>
+        </ul>
+        
+        <div class="flex items-center text-[13px] font-bold cursor-pointer hover:text-gray-600">
+          <svg class="mr-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          English
+        </div>
+      </div>
+    </nav>
+
+    <div class="h-2 cat-yellow w-full"></div>
+
+    <section class="relative h-[650px] overflow-hidden bg-black">
+      <div 
+        class="absolute inset-0 bg-cover bg-center transition-transform duration-10000 hover:scale-105" 
+        style="background-image: url('https://images.unsplash.com/photo-1581094288338-2314dddb7ecc?q=80&w=2070&auto=format&fit=crop'); filter: brightness(0.65);"
+      >
+        <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/30 to-transparent"></div>
+      </div>
+
+      <div class="relative h-full flex flex-col justify-center px-6 lg:px-24 text-white max-w-5xl">
+        <div class="mb-6">
+          <button class="hover:bg-white/10 p-1 rounded transition-colors cursor-pointer">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+          </button>
+        </div>
+        
+        <h1 class="text-5xl md:text-7xl font-bold leading-[1.1] mb-6 tracking-tight">
+          Caterpillar Announces Leadership Transition In Construction Industries
+        </h1>
+        
+        <div class="w-16 h-1.5 cat-yellow mb-8"></div>
+        
+        <p class="text-xl md:text-2xl mb-10 font-light max-w-2xl text-gray-100 leading-relaxed">
+          Caterpillar announced that Tony Fassino, group president of Construction Industries, has elected to retire effective May 31, 2026.
+        </p>
+        
+        <button class="cat-yellow text-black font-black py-4 px-10 w-fit uppercase tracking-widest hover:bg-[#e6b80f] transition-all transform hover:scale-105 active:scale-95 cursor-pointer shadow-lg">
+          View Release
+        </button>
+      </div>
+
+      <div class="absolute left-6 top-1/2 -translate-y-1/2 hidden md:block">
+        <button class="p-3 border-2 border-white/50 rounded-full hover:bg-white hover:text-black hover:border-white transition-all cursor-pointer">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+      </div>
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 hidden md:block">
+        <button class="p-3 border-2 border-white/50 rounded-full hover:bg-white hover:text-black hover:border-white transition-all cursor-pointer">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+
+      <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex space-x-3">
+        <div class="w-12 h-1 cat-yellow"></div>
+        <div class="w-12 h-1 bg-white/30"></div>
+        <div class="w-12 h-1 bg-white/30"></div>
+      </div>
+    </section>
+
+    <script>
+      console.log("Caterpillar Landing Page Loaded");
+    </script>
   </body>
 </html>
