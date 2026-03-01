@@ -1,0 +1,214 @@
+<!--Name: Garv Atri--><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Caterpillar | Machine Interface</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Machine Metadata -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Corporation",
+  "name": "Caterpillar Inc.",
+  "foundingDate": "1925",
+  "url": "https://www.caterpillar.com",
+  "industry": "Heavy Equipment Manufacturing",
+  "description": "Global manufacturer of construction and mining equipment.",
+  "sustainabilityCommitments": {
+    "netZeroGoal": 2050,
+    "focusAreas": ["Energy Efficiency", "Emissions Reduction", "Electrification"]
+  }
+}
+</script>
+
+<style>
+body { font-family: monospace; background:#111; color:#f5f5f5; margin:0; padding:20px;}
+h1,h2,h3 { color:#ffcc00; }
+section { margin-bottom:40px; border-bottom:1px solid #333; padding-bottom:20px;}
+button { background:#ffcc00; border:none; padding:8px 16px; cursor:pointer; font-weight:bold;}
+.machine-data { background:#000; padding:10px; white-space:pre-wrap; font-size:13px;}
+.hidden { display:none; }
+</style>
+
+<script>
+function toggleMode() {
+  document.getElementById("machine").classList.toggle("hidden");
+  document.getElementById("human").classList.toggle("hidden");
+}
+</script>
+
+</head>
+<body>
+
+<header>
+<h1>CATERPILLAR — MACHINE INTERFACE</h1>
+<button onclick="toggleMode()">Toggle Human / Machine</button>
+</header>
+
+<!-- HUMAN VIEW -->
+<div id="human">
+
+<section>
+<h2>Company Overview</h2>
+<p>Caterpillar Inc. builds heavy machinery for construction, mining, energy and transportation.</p>
+<ul>
+<li>Founded: 1925</li>
+<li>Headquarters: Irving, Texas</li>
+<li>Employees: 100,000+</li>
+</ul>
+</section>
+
+<section>
+<h2>Products</h2>
+<ul>
+<li>Dozers</li>
+<li>Excavators</li>
+<li>Wheel Loaders</li>
+<li>Motor Graders</li>
+<li>Articulated Trucks</li>
+<li>Engines & Generators</li>
+</ul>
+</section>
+
+<section>
+<h2>Sustainability</h2>
+<ul>
+<li>Net Zero Target: 2050</li>
+<li>Electrification of fleet</li>
+<li>Hydrogen & alternative fuels</li>
+</ul>
+</section>
+
+<section>
+<h2>Investors</h2>
+<ul>
+<li>Annual Revenue: $60B+</li>
+<li>Quarterly Reports Available</li>
+<li>NYSE: CAT</li>
+</ul>
+</section>
+
+<section>
+<h2>Careers</h2>
+<p>Open positions in Engineering, Manufacturing, AI & Digital.</p>
+</section>
+
+<section>
+<h2>News</h2>
+<ul>
+<li>Mining automation expansion announced</li>
+<li>Next-gen electric loader unveiled</li>
+</ul>
+</section>
+
+</div>
+
+<!-- MACHINE VIEW -->
+<div id="machine" class="hidden">
+
+<section>
+<h2>/company/about</h2>
+<div class="machine-data">
+{
+  "name": "Caterpillar Inc.",
+  "founded": 1925,
+  "hq": "Irving, Texas",
+  "industry": "Heavy Equipment",
+  "ticker": "NYSE:CAT"
+}
+</div>
+</section>
+
+<section>
+<h2>/products/equipment</h2>
+<div class="machine-data">
+{
+  "categories": [
+    "dozers",
+    "excavators",
+    "wheel_loaders",
+    "motor_graders",
+    "articulated_trucks",
+    "engines_generators"
+  ]
+}
+</div>
+</section>
+
+<section>
+<h2>/company/sustainability</h2>
+<div class="machine-data">
+{
+  "net_zero_target_year": 2050,
+  "focus_areas": [
+    "fleet_electrification",
+    "hydrogen_fuels",
+    "carbon_reduction"
+  ]
+}
+</div>
+</section>
+
+<section>
+<h2>/investors/financials</h2>
+<div class="machine-data">
+{
+  "annual_revenue_usd": 60000000000,
+  "publicly_traded": true,
+  "exchange": "NYSE",
+  "symbol": "CAT"
+}
+</div>
+</section>
+
+<section>
+<h2>/careers/jobs</h2>
+<div class="machine-data">
+{
+  "open_roles": [
+    {"title": "Software Engineer", "division": "Digital & Technology"},
+    {"title": "Mechanical Engineer", "division": "Machinery"},
+    {"title": "AI Systems Engineer", "division": "Autonomous Systems"}
+  ]
+}
+</div>
+</section>
+
+<section>
+<h2>/news/latest</h2>
+<div class="machine-data">
+{
+  "headlines": [
+    "Electric Mining Truck Released",
+    "Autonomous Fleet Upgrade 2026"
+  ]
+}
+</div>
+</section>
+
+<section>
+<h2>OpenAPI Specification</h2>
+<div class="machine-data">
+openapi: 3.1.0
+info:
+  title: Caterpillar Machine API
+  version: 1.0.0
+paths:
+  /company/about: GET
+  /products/equipment: GET
+  /company/sustainability: GET
+  /investors/financials: GET
+  /careers/jobs: GET
+  /news/latest: GET
+</div>
+</section>
+
+</div>
+
+<footer>
+<p>© 2026 Caterpillar Inc. — Machine Accessible Layer</p>
+</footer>
+
+</body>
+</html>
